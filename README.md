@@ -31,7 +31,7 @@ Bu işlem bittikten sonra, service provider'i projenin `config/app.php` dosyası
 #### Service Provider
 
 ```php
-Caffeinated\Modules\ModulesServiceProvider::class,
+ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider::class,
 ```
 
 Kullanım
