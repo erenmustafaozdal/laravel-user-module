@@ -28,14 +28,42 @@ $ composer update
 ```
 Bu işlem bittikten sonra, service provider'i projenin `config/app.php` dosyasına eklemelisin.
 
-#### Service Provider
-
 ```php
 ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider::class,
 ```
+//
 
 Kullanım
 --------
+### User
+##### Model
+Laravel User Module kendi `User` modelini barındırmaktadır. Bu modeli kullanman için sadece `App\User` sınıfını bu modelden extend etmen gerekiyor.
+```php
+namespace App;
+
+use ErenMustafaOzdal\LaravelUserModule\User as EMOUser;
+
+class User extends EMOUser
+{
+    //
+}
+```
+##### Config
+Laravel User Module ayar dosyasını aşağıdaki kodla publish etmelisin. Bu ayar dosyasındaki varsayılan değerleri düzenleyebilirsin.
+```bash
+php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider" --tag="config"
+```
+##### Migration
+Öncelikle Laravel ile gelen `...create_users_table.php` dosyasını silin. Ardından `php artisan vendor:publish` komutu ile bütün paketleri publish edebileceğin gibi, dilersen aşağıdaki kod ile sadece Laravel User Module paketinin migration dosyalarını da publish edebilirsin.
+```bash
+php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider" --tag="migrations"
+```
+###### NOT
+> Migration dosyasındaki benzersiz giriş sütununu `config/laravel-user-module.php` dosyasındaki **auth_column** değerini değiştirerek; giriş işlemleri için kendine uygun bir veritabanı yapısı oluşturmuş olursun. Buradaki varsayılan değer *email*'dir.
+
+### Role
+//
+### Auth
 //
 Lisans
 ------
