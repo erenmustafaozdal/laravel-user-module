@@ -1,0 +1,13 @@
+{
+    "name": "erenmustafaozdal/laravel-user-module",
+    "description": "laravel 5.1 user, role and auth module package",
+    "license": "MT",
+    "authors": [
+        {
+            "name": "Eren Mustafa ÖZDAL",
+            "email": "eren.060737@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
