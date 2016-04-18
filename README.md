@@ -80,8 +80,9 @@ class Role extends EMORole
 ```
 ### Rotalar
 **Laravel User Module** aşağıdaki tabloda yer alan rotalara sahiptir. Ancak `config/laravel-user-module.php` dosyasında kendine uygun rotaları düzenleyebilirsin.
+
 |  Tür |              Rota             |     Ayar Anahtarı     |
-|:----:|:-----------------------------:|:---------------------:|
+|----|-----------------------------|---------------------|
 | get  | /login                        | login_route           |
 | post | /login                        | login_route           |
 | get  | /logout                       | logout_route          |
@@ -93,10 +94,12 @@ class Role extends EMORole
 | get  | /reset-password/{token}       | reset_password_route  |
 | post | /reset-password               | reset_password_route  |
 | get  | /admin                        | redirect_route        |
+
 ### Görünümler
 Paket içinde bütün view dosyaları varsayılan olarak ayarlanmıştır. Ancak sen kendi projenin yapısına göre `config/laravel-user-module.php` dosyasında yapılandırmaları değiştirebilirsin.
+
 |     Ayar Anahtarı     |   Varsayılan Değer   |         Görünüm Dosyası        |                  Açıklama                  |
-|:---------------------:|:--------------------:|:------------------------------:|:------------------------------------------:|
+|---------------------|--------------------|------------------------------|------------------------------------------|
 | views.login           | auth.login           | auth/login.blade.php           | giriş yapılacak sayfa                      |
 | views.register        | auth.register        | auth/register.blade.php        | kayıt olunacak sayfa                       |
 | views.forget_password | auth.forget_password | auth/forget_password.blade.php | şifremi unuttum sayfası                    |
@@ -109,6 +112,7 @@ Paket içinde bütün view dosyaları varsayılan olarak ayarlanmıştır. Ancak
 | views.role.create     | role.create          | role/create.blade.php          | yeni rol eklenecek sayfa                   |
 | views.role.show       | role.show            | role/show.blade.php            | rol bilgilerinin gösterileceği sayfa       |
 | views.role.edit       | role.edit            | role/edit.blade.php            | rol bilgilerinin düzenleneceği sayfa       |
+
 Lisans
 ------
 MIT
