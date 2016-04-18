@@ -8,6 +8,18 @@
             "email": "eren.060737@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "ErenMustafaOzdal\\LaravelUserModule\\": "src/"
+        }
+    },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "illuminate/support": "~5",
+        "laracasts/flash": "2.0.*",
+        "cartalyst/sentinel": "2.0.*"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "2.2.*"
+    }
 }
