@@ -36,18 +36,14 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     {
         $this->app->register('Laracasts\Flash\FlashServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
-
-        $this->app->booting(function()
-        {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Flash', 'Laracasts\Flash\Flash');
-            $loader->alias('Activation', 'Cartalyst\Sentinel\Laravel\Facades\Activation');
-            $loader->alias('Reminder', 'Cartalyst\Sentinel\Laravel\Facades\Reminder');
-            $loader->alias('Sentinel', 'Cartalyst\Sentinel\Laravel\Facades\Sentinel');
-        });
+        $this->app->register('Barryvdh\Debugbar\ServiceProvider');
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-user-module.php', 'laravel-user-module'
         );
+
+        $router = $this->app['router'];
+        $router->middleware('guest',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\RedirectIfAuthenticated::class);
+        $router->model('user',  'App\User');
     }
 }

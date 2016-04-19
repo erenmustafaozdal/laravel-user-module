@@ -2,19 +2,10 @@
 
 namespace ErenMustafaOzdal\LaravelUserModule;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends SentinelUser
 {
-    use Authenticatable, Authorizable, CanResetPassword;
 
     /**
      * The database table used by the model.
@@ -28,7 +19,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,4 +27,33 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Set and Get Attributes
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the fullname attribute.
+     *
+     * @return string
+     */
+    public function getFullnameAttribute()
+    {
+        return $this->first_name.' '.$this->last_name;
+    }
+
+    /**
+     * Set the is_active attribute.
+     *
+     * @param   boolean     $value
+     * @return string
+     */
+    public function setIsActiveAttribute($value)
+    {
+        $this->attributes['is_active'] = $value ? 1 : 0;
+    }
 }

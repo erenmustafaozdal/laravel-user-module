@@ -51,6 +51,27 @@ Daha sonra migrate işlemini yapabilirsin.
 php artisan migrate
 ```
 
+> :exclamation: Başarılı kayıt işlemi ile tetiklenen olay sonrası, kullanıcıya aktivasyon e-postası göndermek için; `ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener` dinleyicisini `App\Providers\EventServiceProvider` içinde `$subscribe` dizi özelliğine eklemelisin.
+
+```php
+protected $subscribe = [
+    'ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener',
+];
+```
+`config/laravel-user-module.php` dosyasından aktivasyon e-posta blade dosyasını değiştirebilirsin. Varsayılan olarak `emails.activation` değeridir.
+
+> Aktivasyon epostası blade dosyasına kullanıcı bilgileri (`user`) ve Sentinel Aktivasyon nesnesi gönderilmektedir (`activation`). Sentinel Aktivasyon nesnesinden `$activation->code` şeklinde kodu eposta içindeki aktivasyon bağlantısına ekleyebilirsin.
+
+> :exclamation: Paketin bağımlılıklarından Sentinel ayar dosyasında (`config/cartalyst.sentinel.php`) *users* ve *roles* model değerlerini güncellemelisin.
+
+```php
+'users' => [
+    'model' => 'App\User',
+],
+'roles' => [
+    'model' => 'App\Role',
+],
+```
 
 Kullanım
 --------
@@ -66,7 +87,7 @@ class User extends EMOUser
     //
 }
 ```
-### Role
+### Role Model
 Laravel User Module kendi `Role` modelini barındırmaktadır. Bu modeli kullanman için de `App\Role` modelini oluşturman ve bu modelden extend etmen gerekiyor.
 ```php
 namespace App;
@@ -113,6 +134,43 @@ Paket içinde bütün view dosyaları varsayılan olarak ayarlanmıştır. Ancak
 | views.role.show       | role.show            | role/show.blade.php            | rol bilgilerinin gösterileceği sayfa       |
 | views.role.edit       | role.edit            | role/edit.blade.php            | rol bilgilerinin düzenleneceği sayfa       |
 
+##### Görünümlerde kullanılması gereken form isimleri
+:exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
+> `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma!
+
+###### Auth
+1. `auth.register` blade dosyası içindeki register formu
+    * first_name
+    * last_name
+    * email
+    * password
+    * password_confirmation
+2. `auth.login` blade dosyası içindeki login formu
+    * email
+    * password
+    * remember
+
+### Onaylamalar
+**Laravel User Module** paketi yapılan her form isteği için onaylama kurallarını belirlemiştir. Bu tür form istek onaylama kuralları için yapmanız gereken bir şey yoktur.
+
+### Olaylar
+Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi listener dosyanda bu olayları dinleyebilir ve tetiklendiğinde istediğin işlemleri kolay bir şekilde yapabilirsin.
+
+| Olay | İsim Uzayı | Olay Verisi | Açıklama |
+|------|------------|-------------|----------|
+| RegisterSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı kayıt olduğunda tetiklenir |
+| RegisterFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Kayıt formu verileri *(Array)* | Kayıt başarısız olduğunda tetiklenir |
+| LoginSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı giriş olduğunda tetiklenir |
+| LoginFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Giriş formu verileri *(Array)* | Giriş başarısız olduğunda tetiklenir |
+| Logout | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Çıkış yapıldığında tetiklenir |
+| ActivateSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı aktivasyon işleminde tetiklenir |
+| ActivateFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Aktivasyon bağlantı bilgileri *(id,code)* | Aktivasyon işlemi başarısız olduğunda tetiklenir |
+| PasswordResetMailSend | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Şifre sıfırlama e-postası gönderildiğinde tetiklenir |
+| UserNotFound | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifremi unuttum formu verileri *(Array)* | Şifremi unuttum formundan gelen e-posta adresi ile bir kullanıcı eşleşmediğinde tetiklenir |
+| PasswordResetSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı şifre sıfırlama işleminde tetiklenir |
+| PasswordResetFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifre sıfırlama formu verileri (token dahil) *(Array)* | Şifre sıfırlama işlemi başarısız olduğunda tetiklenir |
+ 
+ 
 Lisans
 ------
 MIT
