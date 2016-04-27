@@ -57,7 +57,7 @@ class AuthController extends Controller
      */
     public function getLogin()
     {
-        return view(config('laravel-user-module.views.login'));
+        return view(config('laravel-user-module.views.auth.login'));
     }
 
     /**

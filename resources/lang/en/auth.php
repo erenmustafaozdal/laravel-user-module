@@ -12,6 +12,7 @@ return [
     ],
     // login
     'login' => [
+        'title'                         => 'Login',
         'fail'                          => 'Login failed! Please check your information and try again. If you\'ve been new members, you can not access the account without the account activation.',
         'exception' => [
             'throttling' => [

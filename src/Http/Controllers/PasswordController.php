@@ -16,8 +16,6 @@ class PasswordController extends Controller
 
     /**
      * Create a new password controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -28,6 +26,8 @@ class PasswordController extends Controller
 
     /**
      * get forget password metod
+     *
+     * @return View
      */
     public function getForgetPassword()
     {
@@ -39,7 +39,7 @@ class PasswordController extends Controller
      *
      * @param   Request     $request
      */
-    public function postLogin(Request $request)
+    public function postForgetPassword(Request $request)
     {
         //
     }
@@ -48,6 +48,7 @@ class PasswordController extends Controller
      * get reset password metod
      *
      * @param   string      $token
+     * @return  View
      */
     public function getResetPassword($token)
     {

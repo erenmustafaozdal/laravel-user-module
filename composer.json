@@ -15,9 +15,12 @@
     },
     "minimum-stability": "dev",
     "require": {
+        "php": ">=5.5.9",
         "illuminate/support": "~5",
+        "illuminate/html": "^5.0",
         "laracasts/flash": "2.0.*",
-        "cartalyst/sentinel": "2.0.*"
+        "cartalyst/sentinel": "2.0.*",
+        "yajra/laravel-datatables-oracle": "6.10.*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "2.2.*"

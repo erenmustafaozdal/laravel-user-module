@@ -51,7 +51,7 @@ Daha sonra migrate işlemini yapabilirsin.
 php artisan migrate
 ```
 
-> :exclamation: Başarılı kayıt işlemi ile tetiklenen olay sonrası, kullanıcıya aktivasyon e-postası göndermek için; `ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener` dinleyicisini `App\Providers\EventServiceProvider` içinde `$subscribe` dizi özelliğine eklemelisin.
+> :exclamation: Başarılı kayıt işlemi ile tetiklenen olay sonrası, kullanıcıya aktivasyon e-postası göndermek gibi bazı işlemler için; `ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener` dinleyicisini `App\Providers\EventServiceProvider` içinde `$subscribe` dizi özelliğine eklemelisin.
 
 ```php
 protected $subscribe = [
@@ -117,11 +117,11 @@ class Role extends EMORole
 | get  | /admin                        | redirect_route        |
 
 ### Görünümler
-Paket içinde bütün view dosyaları varsayılan olarak ayarlanmıştır. Ancak sen kendi projenin yapısına göre `config/laravel-user-module.php` dosyasında yapılandırmaları değiştirebilirsin.
+**Laravel User Module** paketi içinde bütün `layout` ve `view` dosyları tanımlanmış ve hemen kullanmaya hazırdır. Ancak kendi görünümlerini ve düzen (*layout*) dosyalarını kullanmak istersen; paketin ayar dosyasından istediğin değişikliği yapabilirsin. `config/laravel-user-module.php` dosyasındaki ilgili alanlar aşağıdaki tabloda yer almaktadır.
 
-|     Ayar Anahtarı     |   Varsayılan Değer   |         Görünüm Dosyası        |                  Açıklama                  |
-|---------------------|--------------------|------------------------------|------------------------------------------|
-| views.login           | auth.login           | auth/login.blade.php           | giriş yapılacak sayfa                      |
+| Ayar Anahtarı | Varsayılan Değer | Görünüm Dosyası | Açıklama |
+|---------------|------------------|-----------------|----------|
+| views.login  | auth.login | auth/login.blade.php | giriş yapılacak sayfa |
 | views.register        | auth.register        | auth/register.blade.php        | kayıt olunacak sayfa                       |
 | views.forget_password | auth.forget_password | auth/forget_password.blade.php | şifremi unuttum sayfası                    |
 | views.reset_password  | auth.reset_password  | auth/reset_password.blade.php  | şifre resetleme sayfası                    |
@@ -134,7 +134,13 @@ Paket içinde bütün view dosyaları varsayılan olarak ayarlanmıştır. Ancak
 | views.role.show       | role.show            | role/show.blade.php            | rol bilgilerinin gösterileceği sayfa       |
 | views.role.edit       | role.edit            | role/edit.blade.php            | rol bilgilerinin düzenleneceği sayfa       |
 
-##### Görünümlerde kullanılması gereken form isimleri
+##### Görünümlerde Kullanılan Varlıklar
+Eğer varsayılan temayı kullanacaksan, paketin viewlerinde kullanılan `css` ve `js` varlıklarını da yayınlamalısın. Bunun için aşağıdaki komutu kullan:
+```bash
+php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider" --tag="public" --force
+```
+
+##### Görünümlerde kullanılması gereken form elemanı isimleri
 :exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
 > `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma!
 

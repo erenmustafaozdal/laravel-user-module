@@ -25,6 +25,15 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/laravel-user-module.php' => config_path('laravel-user-module.php')
         ], 'config');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-user-module');
+        $this->publishes([
+            __DIR__.'/../resources/views' => base_path('views/vendor/laravel-user-module'),
+        ]);
+
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/laravel-user-module'),
+        ], 'public');
     }
 
     /**
@@ -34,9 +43,18 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register('Illuminate\Html\HtmlServiceProvider');
         $this->app->register('Laracasts\Flash\FlashServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
+        $this->app->register('Yajra\Datatables\DatatablesServiceProvider');
         $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+
+        $this->app->booting(function()
+        {
+            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader->alias('Html', 'Illuminate\Html\HtmlFacade');
+            $loader->alias('Form', 'Illuminate\Html\FormFacade');
+        });
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-user-module.php', 'laravel-user-module'
@@ -44,6 +62,7 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
 
         $router = $this->app['router'];
         $router->middleware('guest',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\RedirectIfAuthenticated::class);
+        $router->middleware('auth',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\Authenticate::class);
         $router->model('user',  'App\User');
     }
 }
