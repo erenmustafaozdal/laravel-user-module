@@ -109,7 +109,7 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        return view(config('laravel-user-module.views.register'));
+        return view(config('laravel-user-module.views.auth.register'));
     }
 
     /**
@@ -131,7 +131,7 @@ class AuthController extends Controller
             // event fire
             event(new RegisterSuccess($user));
 
-            Flash::success(str_replace([':email'],[$user->email],trans('laravel-user-module::auth.register_success')));
+            Flash::success(str_replace([':email'],[$user->email],trans('laravel-user-module::auth.register.success')));
             DB::commit();
             return redirect(route('getLogin'));
         } catch (RegisterException $e) {

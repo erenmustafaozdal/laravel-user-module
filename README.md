@@ -142,7 +142,7 @@ php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\Larave
 
 ##### Görünümlerde kullanılması gereken form elemanı isimleri
 :exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
-> `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma!
+> `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.
 
 ###### Auth
 1. `auth.register` blade dosyası içindeki register formu

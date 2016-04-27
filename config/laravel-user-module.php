@@ -8,6 +8,8 @@ return [
     */
     'activation_mail_blade'         => 'emails.activation',
     'date_format'                   => 'd.m.Y H:i:s',
+    'app_name'                      => 'Laravel User Module',   // on some places
+    'copyright_year'                => '2016',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,11 +50,15 @@ return [
         ],
         // auth views
         'auth' => [
-            'layout'                => 'laravel-user-module::layouts.auth',     // auth layout
-            'login'                 => 'laravel-user-module::auth.login',       // get login view blade
-            'register'              => 'auth.register',         // get register view blade
-            'forget_password'       => 'auth.forget_password',  // get forget password view blade
+            'layout'                => 'laravel-user-module::layouts.auth',         // auth layout
+            'login'                 => 'laravel-user-module::auth.login',           // get login view blade
+            'register'              => 'laravel-user-module::auth.register',        // get register view blade
+            'forget_password'       => 'laravel-user-module::auth.forget_password', // get forget password view blade
             'reset_password'        => 'auth.reset_password',   // get reset password view blade
+        ],
+        // email views
+        'email' => [
+            'activation'            => 'laravel-user-module::emails.activation'
         ],
         // user view
         'user' => [

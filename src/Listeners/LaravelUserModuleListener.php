@@ -53,7 +53,7 @@ class LaravelUserModuleListener
             'user'          => $event->user,
             'activation'    => Activation::create($event->user)
         ];
-        Mail::queue('emails.activation', $datas, function($message) use($email,$name) {
+        Mail::queue(config('laravel-user-module.views.email.activation'), $datas, function($message) use($email,$name) {
             $message->to($email, $name)
                 ->subject(trans('laravel-user-module::auth.activation.mail_subject'));
         });

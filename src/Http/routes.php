@@ -1,4 +1,7 @@
 <?php
+//max level nested function 100 hatasını düzeltiyor
+ini_set('xdebug.max_nesting_level', 300);
+
 /*
 |--------------------------------------------------------------------------
 | Auth Routes
