@@ -72,7 +72,9 @@ class AuthController extends Controller
             $credentials = $request->only(['email', 'password']);
             $user = Sentinel::authenticate($credentials, $request->has('remember'));
 
-            if ( ! isset($user->id)) throw new LoginException('');
+            if ( ! isset($user->id)) {
+                throw new LoginException('');
+            }
 
             // event fire
             event(new LoginSuccess($user));
@@ -136,7 +138,7 @@ class AuthController extends Controller
             return redirect(route('getLogin'));
         } catch (RegisterException $e) {
             DB::rollback();
-            Flash::error(trans('auth.register.register_failed'));
+            Flash::error(trans('laravel-user-module::auth.register.fail'));
             // event fire
             event(new RegisterFail($e->getDatas()));
             return redirect(route('getRegister'))->withInput();

@@ -173,8 +173,9 @@ Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi 
 | ActivateFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Aktivasyon bağlantı bilgileri *(id,code)* | Aktivasyon işlemi başarısız olduğunda tetiklenir |
 | PasswordResetMailSend | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Şifre sıfırlama e-postası gönderildiğinde tetiklenir |
 | UserNotFound | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifremi unuttum formu verileri *(Array)* | Şifremi unuttum formundan gelen e-posta adresi ile bir kullanıcı eşleşmediğinde tetiklenir |
-| PasswordResetSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı şifre sıfırlama işleminde tetiklenir |
-| PasswordResetFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifre sıfırlama formu verileri (token dahil) *(Array)* | Şifre sıfırlama işlemi başarısız olduğunda tetiklenir |
+| ResetPasswordSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı şifre sıfırlama işleminde tetiklenir |
+| PasswordResetUserNotFound | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifre sıfırlama formu verileri (token dahil) *(Array)* | Şifre sıfırlama işlemi sırasında gönderilen e-posta adresi ile bağlantılı bir hesap bulunamadığında tetiklenir |
+| ResetPassowrdIncorrectCode | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Şifre sıfırlama bağlantısında bulunan kod yanlış olduğunda tetiklenir |
  
  
 Lisans

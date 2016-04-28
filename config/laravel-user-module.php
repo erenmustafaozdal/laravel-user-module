@@ -54,11 +54,12 @@ return [
             'login'                 => 'laravel-user-module::auth.login',           // get login view blade
             'register'              => 'laravel-user-module::auth.register',        // get register view blade
             'forget_password'       => 'laravel-user-module::auth.forget_password', // get forget password view blade
-            'reset_password'        => 'auth.reset_password',   // get reset password view blade
+            'reset_password'        => 'laravel-user-module::auth.reset_password',   // get reset password view blade
         ],
         // email views
         'email' => [
-            'activation'            => 'laravel-user-module::emails.activation'
+            'activation'            => 'laravel-user-module::emails.activation',
+            'forget_password'       => 'laravel-user-module::emails.forget_password'
         ],
         // user view
         'user' => [

@@ -4,7 +4,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\Auth;
 
 use App\Http\Requests\Request;
 
-class LoginRequest extends Request
+class ResetPasswordRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class LoginRequest extends Request
     {
         return [
             'email'         => 'required|email|max:255',
-            'password'      => 'required|min:6|max:255',
+            'password'      => 'required|confirmed|min:6|max:255',
         ];
     }
 }

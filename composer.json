@@ -23,6 +23,6 @@
         "yajra/laravel-datatables-oracle": "6.10.*"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "2.2.*"
+
     }
 }
