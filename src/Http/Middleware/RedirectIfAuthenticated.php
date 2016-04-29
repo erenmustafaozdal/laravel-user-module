@@ -37,7 +37,7 @@ class RedirectIfAuthenticated
     {
         $user = Sentinel::check();
         if ( isset($user->id) ) {
-            return redirect(route(config('laravel-user-module.redirect_route')));
+            return redirect(route(config('laravel-user-module.url.redirect_route')));
         }
 
         return $next($request);

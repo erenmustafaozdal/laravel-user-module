@@ -119,4 +119,8 @@
 ;(function() {
     "use strict";
     $script('https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js', 'jquery');
+    $script.ready('jquery', function() {
+        $script('//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js','datatables');
+    });
+    $script('//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js', 'bootstrap');
 })();

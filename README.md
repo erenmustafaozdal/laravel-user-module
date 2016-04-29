@@ -45,6 +45,7 @@ Dosyaları yayınladıktan sonra migration işlemi yapmalısın.
 ```php
 $table->string('last_name')->nullable();    // bu satırdan sonra
 $table->boolean('is_active')->default(0);   // bu satırı eklemelisin
+$table->string('photo')->nullable();        // ve arkasından bu satırı
 ```
 Daha sonra migrate işlemini yapabilirsin.
 ```bash

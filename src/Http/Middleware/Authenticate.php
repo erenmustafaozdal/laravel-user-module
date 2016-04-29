@@ -39,7 +39,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect(route(config('laravel-user-module.login')));
+                return redirect(route('getLogin'));
             }
         }
 

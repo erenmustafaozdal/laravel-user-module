@@ -45,6 +45,16 @@ class User extends SentinelUser
     */
 
     /**
+     * Get the photo url attribute.
+     *
+     * @return string
+     */
+    public function getPhotoUrlAttribute()
+    {
+        return $this->photo;
+    }
+
+    /**
      * Get the fullname attribute.
      *
      * @return string

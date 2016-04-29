@@ -8,7 +8,7 @@ return [
     */
     'activation_mail_blade'         => 'emails.activation',
     'date_format'                   => 'd.m.Y H:i:s',
-    'app_name'                      => 'Laravel User Module',   // on some places
+    'app_name'                      => 'Laravel Modules',       // on some places
     'copyright_year'                => '2016',
 
     /*
@@ -56,24 +56,26 @@ return [
             'forget_password'       => 'laravel-user-module::auth.forget_password', // get forget password view blade
             'reset_password'        => 'laravel-user-module::auth.reset_password',   // get reset password view blade
         ],
-        // email views
-        'email' => [
-            'activation'            => 'laravel-user-module::emails.activation',
-            'forget_password'       => 'laravel-user-module::emails.forget_password'
-        ],
         // user view
         'user' => [
-            'index'                 => 'admin.user.index',      // get user index view blade
-            'create'                => 'admin.user.create',     // get user create view blade
-            'show'                  => 'admin.user.show',       // get user show view blade
-            'edit'                  => 'admin.user.edit',       // get user edit view blade
+            'layout'                => 'laravel-user-module::layouts.admin',        // user layout
+            'index'                 => 'laravel-user-module::user.index',           // get user index view blade
+            'create'                => 'laravel-user-module::user.create',          // get user create view blade
+            'show'                  => 'laravel-user-module::user.show',            // get user show view blade
+            'edit'                  => 'laravel-user-module::user.edit',            // get user edit view blade
         ],
         // role view
         'role' => [
-            'index'                 => 'admin.role.index',      // get role index view blade
-            'create'                => 'admin.role.create',     // get role create view blade
-            'show'                  => 'admin.role.show',       // get role show view blade
-            'edit'                  => 'admin.role.edit',       // get role edit view blade
+            'layout'                => 'laravel-user-module::layouts.admin',        // role layout
+            'index'                 => 'laravel-user-module::role.index',           // get role index view blade
+            'create'                => 'laravel-user-module::role.create',          // get role create view blade
+            'show'                  => 'laravel-user-module::role.show',            // get role show view blade
+            'edit'                  => 'laravel-user-module::role.edit',            // get role edit view blade
+        ],
+        // email views
+        'email' => [
+            'activation'            => 'laravel-user-module::emails.activation',    // activation mail view blade
+            'forget_password'       => 'laravel-user-module::emails.forget_password'// forget password mail view blade
         ]
     ]
 

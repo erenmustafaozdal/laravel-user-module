@@ -170,7 +170,7 @@ class AuthController extends Controller
             Flash::success(trans('laravel-user-module::auth.activation.success'));
             // event fire
             event(new ActivateSuccess($user));
-            return redirect(route(config('laravel-user-module.redirect_route')));
+            return redirect(route(config('laravel-user-module.url.redirect_route')));
         } catch (ActivateException $e) {
             Flash::error(trans('laravel-user-module::auth.activation.'.$e->getType()));
             // event fire
