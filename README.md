@@ -141,6 +141,9 @@ Eğer varsayılan temayı kullanacaksan, paketin viewlerinde kullanılan `css` v
 php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider" --tag="public" --force
 ```
 
+##### Varsayılan Menü Tasarımı
+**Laravel User Module** varsayılan tasarımı içinde [caffeinated/menus](https://github.com/caffeinated/menus) paketini kullanarak menü oluşturuyor. Eğer varsayılan tasarımı kullanacaksan `app/Http/Kernel.php` dosyandaki `$middleware` dizi değişkenine `\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\MenuMiddleware::class` değerini eklemeyi unutma!
+
 ##### Görünümlerde kullanılması gereken form elemanı isimleri
 :exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
 > `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.

@@ -31,53 +31,48 @@
                 <div class="left_col scroll-view">
 
                     <div class="navbar nav_title" style="border: 0;">
-                        {!! HTML::link(
-                            '#',
-                            config('laravel-user-module.app_name'),
-                            ['class' => 'site_title']
-                        ) !!}
+                        <a href="#" class="site_title">{!! config('laravel-user-module.app_name') !!}</a>
                     </div>
                     <div class="clearfix"></div>
 
-                    {{-- menu profile quick info --}}
-                    <div class="profile">
-                        <div class="profile_pic">
-                            @if( is_null($auth_user->photo) )
-                                {!! HTML::image(
-                                    'vendor/laravel-user-module/img/avatar.png',
-                                    $auth_user->fullname,
-                                    ['class' => 'img-circle profile_img']
-                                ) !!}
-                            @else
-                                {!! HTML::image(
-                                    $auth_user->photo_url,
-                                    $auth_user->fullname,
-                                    ['class' => 'img-circle profile_img']
-                                ) !!}
-                            @endif
-                        </div>
-                        <div class="profile_info">
-                            <span>{!! trans('laravel-user-module::admin.welcome') !!},</span>
-                            <h2>{{ $auth_user->first_name }}</h2>
-                        </div>
-                    </div>
-                    {{-- /menu profile quick info --}}
+                    @include('laravel-user-module::partials.admin.menu_profile')
 
-                    {{-- sidebar menu --}}
-                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                        <div class="menu_section">
-                            <h3>{!! trans('laravel-user-module::admin.title') !!}</h3>
-                            <ul class="nav side-menu">
-                                @section('sidebar')
-                                    This is the master sidebar.
-                                @show
-                            </ul>
-                        </div>
-                    </div>
-                    {{-- /sidebar menu --}}
+                    @include('laravel-user-module::partials.admin.sidebar', ['items' => $menu_sidebar->roots()])
+
+                    @include('laravel-user-module::partials.admin.sidebar_footer')
 
                 </div>
             </div>
+
+            {{-- top navigation --}}
+            <div class="top_nav">
+
+                <div class="nav_menu">
+                    <nav class="" role="navigation">
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        @include('laravel-user-module::partials.admin.topbar', ['usermenu_items' => $menu_topbarUser->roots()])
+                    </nav>
+                </div>
+
+            </div>
+            {{-- /top navigation --}}
+
+            {{-- page content --}}
+            <div class="right_col" role="main"></div>
+            {{-- /page content --}}
+
+            {{-- footer content --}}
+            <footer>
+                <div class="pull-right">
+                    ©{!! config('laravel-user-module.copyright_year') !!}
+                    {!! str_replace(':app_name',config('laravel-user-module.app_name'),trans('laravel-user-module::global.copyright_message')) !!}
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            {{-- /footer content --}}
 
         </div>
 
@@ -85,6 +80,7 @@
 
 </body>
 
+{!! Html::script('vendor/laravel-user-module/js/adminDatatable7.js') !!}
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>

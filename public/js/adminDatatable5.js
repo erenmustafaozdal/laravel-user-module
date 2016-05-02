@@ -119,11 +119,14 @@
 ;(function() {
     "use strict";
     $script('https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js', 'jquery');
+    $script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', 'bootstrap');
+    $script('/vendor/laravel-user-module/js/pace.js');
+
     $script.ready('jquery', function() {
         $script('//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js','datatables');
-        $script('/js/custom.js');
     });
-    $script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', 'bootstrap');
-    $script('/js/icheck.js');
-    $script('/js/pace.js');
+    $script.ready(['jquery', 'bootstrap'], function() {
+        $script('/vendor/laravel-user-module/js/icheck.js');
+        $script('/vendor/laravel-user-module/js/custom.js');
+    });
 })();

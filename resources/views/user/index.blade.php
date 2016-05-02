@@ -1,7 +1,7 @@
 @extends(config('laravel-user-module.views.user.layout'))
 
 @section('title')
-    {!! trans('laravel-user-module::auth.login.title') !!}
+    {!! trans('laravel-user-module::admin.user.index') !!}
 @stop
 
 @section('js')

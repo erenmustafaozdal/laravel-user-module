@@ -14,7 +14,7 @@
             ]) !!}
                 <h1>{!! trans('laravel-user-module::auth.forget_password.title') !!}</h1>
                 {{-- Error Messages --}}
-                @include('laravel-user-module::global.error_message')
+                @include('laravel-user-module::partials.error_message')
                 <div>
                     {!! Form::text( 'email', null, [
                         'class' => 'form-control',
