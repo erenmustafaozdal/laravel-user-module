@@ -22,18 +22,20 @@ Route::get(config('laravel-user-module.url.logout_route'), [
 ]);
 
 // Registration routes...
-Route::get(config('laravel-user-module.url.register_route'), [
-    'as' => 'getRegister',
-    'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@getRegister'
-]);
-Route::post(config('laravel-user-module.url.register_route'), [
-    'as' => 'postRegister',
-    'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@postRegister'
-]);
-Route::get(config('laravel-user-module.url.activate_route').'/{id}/{code}', [
-    'as' => 'accountActivate',
-    'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@accountActivate'
-]);
+if (config('laravel-user-module.use_register')) {
+    Route::get(config('laravel-user-module.url.register_route'), [
+        'as' => 'getRegister',
+        'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@getRegister'
+    ]);
+    Route::post(config('laravel-user-module.url.register_route'), [
+        'as' => 'postRegister',
+        'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@postRegister'
+    ]);
+    Route::get(config('laravel-user-module.url.activate_route') . '/{id}/{code}', [
+        'as' => 'accountActivate',
+        'uses' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers\AuthController@accountActivate'
+    ]);
+}
 
 // Password reset link request routes...
 Route::get(config('laravel-user-module.url.forget_password_route'), [

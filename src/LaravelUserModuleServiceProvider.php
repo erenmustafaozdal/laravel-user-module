@@ -28,12 +28,8 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-user-module');
         $this->publishes([
-            __DIR__.'/../resources/views' => base_path('views/vendor/laravel-user-module'),
+            __DIR__.'/../resources/views' => base_path('resources/views/vendor/laravel-user-module'),
         ]);
-
-        $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/laravel-user-module'),
-        ], 'public');
     }
 
     /**

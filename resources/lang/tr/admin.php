@@ -6,13 +6,6 @@ return [
     | Laravel User Module language lines for admin panel
     |--------------------------------------------------------------------------
     */
-
-    // globals
-    'welcome'           => 'Hoş geldin',
-    'title'             => 'Yönetim',
-    'profile'           => 'Profil',
-    'logout'            => 'Çıkış yap',
-
     // Titles of the pages, naming is made with each routes' name
     "user" => [
         "index"                     => "Yöneticiler",

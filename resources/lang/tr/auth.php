@@ -9,8 +9,9 @@ return [
         'email'                         => 'E-posta',
         'password'                      => 'Şifre',
         'password_confirmation'         => 'Şifreni onayla',
+        // message and links of terms of service and privacy policy
+        'terms_content'                 => '<a href="javascript:;"> Kullanıcı Sözleşmesi </a> ve <a href="javascript:;"> Gizlilik Politikası </a>\'nı kabul ediyorum.',
         'submit'                        => 'Kayıt Ol',
-        'login_message'                 => 'Daha önce kayıt oldun mu?',
         'login'                         => 'Giriş Yap!',
         'fail'                          => 'Hesabın oluşturulamadı! Lütfen daha sonra tekrar dene.',
         'success'                       => '<p>Hesabın oluşturuldu! Hesabını aktifleştirmen için <strong>:email</strong> e-posta adresine bir posta gönderdik. E-posta adresini ziyaret et ve hesabını aktifleştir.</p><p>Aktivasyon postasının gelmesi sunucumuzdaki yoğunluğa göre, bazen 5 dakika kadar sürebilmektedir. Lütfen e-postanın <em>Spam</em> klasörünü de kontrol etmeyi unutma!</p>',
@@ -33,8 +34,8 @@ return [
         'email'                         => 'E-posta',
         'password'                      => 'Şifre',
         'submit'                        => 'Giriş Yap',
+        'remember'                      => 'Hatırla',
         'forget_password'               => 'Şifreni mi unuttun?',
-        'register_message'              => 'Yeni misin?',
         'register'                      => 'Kayıt Ol!',
         'fail'                          => 'Giriş başarısız! Lütfen bilgilerini kontrol ederek tekrar dene. Eğer yeni üye olduysan, hesabını aktifleştirmeden hesabına ulaşamazsın.',
         'exception' => [
@@ -51,14 +52,13 @@ return [
     // forget password
     'forget_password' => [
         'title'                         => 'Şifreni mi unuttun?',
+        'message'                       => 'E-posta adresini yaz ve şifre sıfırlama bağlantısı ile tekrar hesabına giriş yap.',
         'email'                         => 'E-posta',
         'submit'                        => 'Gönder',
         'login'                         => 'Giriş Yap!',
-        'register_message'              => 'Yeni misin?',
-        'register'                      => 'Kayıt Ol!',
         'mail_subject'                  => 'Şifre Sıfırlama Bağlantın',
         'mail_content'                  => 'Merhaba :name! Şifreni sıfırla: <a href="'.route('getResetPassword',['token'=> ':token']).'">'.route('getResetPassword',['token'=> ':token']).'</a>',
-        'success'                       => '<strong>:email</strong> e-posta adresi ile kayıtlı bir hesap bulamadık.',
+        'success'                       => '<strong>:email</strong> e-posta adresine başarılı bir şekilde şifre sıfırlama bağlantısı gönderildi.',
         'fail'                          => '<strong>:email</strong> e-posta adresi ile kayıtlı bir hesap bulamadık.',
     ],
 
@@ -66,6 +66,7 @@ return [
     // reset password
     'reset_password' => [
         'title'                         => 'Şifreni Sıfırla',
+        'message'                       => 'E-posta adresini yaz ve ve yeni şifreni belirle.',
         'email'                         => 'E-posta',
         'password'                      => 'Yeni şifre',
         'password_confirmation'         => 'Yeni şifreni onayla',

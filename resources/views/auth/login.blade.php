@@ -2,54 +2,79 @@
 
 @section('title')
     {!! trans('laravel-user-module::auth.login.title') !!}
-@stop
+@endsection
+
+@section('script')
+    @parent
+    <script type="text/javascript">
+        var messagesOfRules = {
+            email: {
+                required: "{!! LMCValidation::getMessage('email','required') !!}",
+                email: "{!! LMCValidation::getMessage('email','email') !!}"
+            },
+            password: {
+                required: "{!! LMCValidation::getMessage('password','required') !!}",
+                minlength: "{!! LMCValidation::getMessage('password','min.string', [':min' => 6]) !!}"
+            }
+        };
+        $script.ready('login', function() {
+            Auth.initLogin();
+        });
+    </script>
+@endsection
 
 @section('content')
-    {{-- Login Form --}}
-    <div class="form">
-        <section class="login_content">
-            {!! Form::open([
-                'method' => 'POST',
-                'url' => route('postLogin')
-            ]) !!}
-                <h1>{!! trans('laravel-user-module::auth.login.title') !!}</h1>
-                {{-- Error Messages --}}
-                @include('laravel-user-module::partials.error_message')
-                <div>
-                    {!! Form::text( 'email', null, [
-                        'class' => 'form-control',
-                        'placeholder' => trans('laravel-user-module::auth.login.email'),
-                        'value' => old('email')
-                    ]) !!}
-                </div>
-                <div>
-                    {!! Form::password( 'password', [
-                        'class' => 'form-control',
-                        'placeholder' => trans('laravel-user-module::auth.login.password')
-                    ]) !!}
-                </div>
-                <div>
-                    {!! Form::button( trans('laravel-user-module::auth.login.submit'), [
-                        'class' => 'btn btn-default submit',
-                        'type' => 'submit'
-                    ]) !!}
-                    <a class="reset_pass" href="{!! route('getForgetPassword') !!}">
-                        {!! trans('laravel-user-module::auth.login.forget_password') !!}
-                    </a>
-                </div>
-                <div class="clearfix"></div>
-                <div class="separator">
+    {!! Form::open([
+        'method'    => 'POST',
+        'url'       => route('postLogin'),
+        'class'     => 'login-form'
+    ]) !!}
+        <h3 class="form-title font-green">{!! trans('laravel-user-module::auth.login.title') !!}</h3>
 
-                    <p class="change_link">
-                        {!! trans('laravel-user-module::auth.login.register_message') !!}
-                        <a href="{!! route('getRegister') !!}" class="to_register">
-                            {!! trans('laravel-user-module::auth.login.register') !!}
-                        </a>
-                    </p>
-                    <div class="clearfix"></div>
-                    @include('laravel-user-module::auth.auth_footer')
-                </div>
-            {!! Form::close() !!}
-        </section>
-    </div>
+        {{-- Error Messages --}}
+        @include('laravel-user-module::partials.error_message')
+        {{-- /Error Messages --}}
+
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">
+                <span>{!! trans('laravel-user-module::auth.login.email') !!}</span>
+            </label>
+            {!! Form::text( 'email', null, [
+                'class'         => 'form-control form-control-solid placeholder-no-fix',
+                'placeholder'   => trans('laravel-user-module::auth.login.email'),
+                'value'         => old('email'),
+                'autocomplete'  => 'off'
+            ]) !!}
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">
+                <span>{!! trans('laravel-user-module::auth.login.password') !!}</span>
+            </label>
+            {!! Form::password( 'password', [
+                'class'         => 'form-control form-control-solid placeholder-no-fix',
+                'placeholder'   => trans('laravel-user-module::auth.login.password'),
+                'autocomplete'  => 'off'
+            ]) !!}
+        </div>
+        <div class="form-actions">
+            {!! Form::button( trans('laravel-user-module::auth.login.submit'), [
+                'class' => 'btn green uppercase',
+                'type' => 'submit'
+            ]) !!}
+            <label class="rememberme check">
+                <input type="checkbox" name="remember" value="1" />
+                <span>{!! trans('laravel-user-module::auth.login.remember') !!}</span>
+            </label>
+            <a href="{!! route('getForgetPassword') !!}" id="forget-password" class="forget-password">
+                <span>{!! trans('laravel-user-module::auth.login.forget_password') !!}</span>
+            </a>
+        </div>
+        <div class="create-account">
+            <p>
+                <a href="{!! route('getRegister') !!}" id="register-btn" class="uppercase">
+                    <span>{!! trans('laravel-user-module::auth.login.register') !!}</span>
+                </a>
+            </p>
+        </div>
+    {!! Form::close() !!}
 @endsection

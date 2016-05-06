@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -76,12 +77,13 @@ class PasswordController extends Controller
                     ->subject(trans('laravel-user-module::auth.forget_password.mail_subject'));
             });
             // event fire
-            event(new PasswordResetMailSend($e->getDatas()));
+            event(new PasswordResetMailSend($request->all()));
             Flash::success(str_replace(
                 [':name', ':email'],
                 [$user->first_name,$user->email],
                 trans('laravel-user-module::auth.forget_password.success')
             ));
+            return redirect(route('getLogin'));
         } catch (ForgetPasswordException $e) {
             Flash::error(str_replace(
                 ':email',
@@ -99,9 +101,13 @@ class PasswordController extends Controller
      *
      * @param   string      $token
      * @return  View
+     * @throw   NotFoundHttpException
      */
-    public function getResetPassword($token)
+    public function getResetPassword($token = null)
     {
+        if (is_null($token)) {
+            throw new NotFoundHttpException;
+        }
         return view(config('laravel-user-module.views.auth.reset_password'),compact('token'));
     }
 
