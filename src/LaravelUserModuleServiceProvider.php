@@ -44,7 +44,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $this->app->register('Laracasts\Flash\FlashServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
         $this->app->register('Yajra\Datatables\DatatablesServiceProvider');
-        $this->app->register('Caffeinated\Menus\MenusServiceProvider');
 
         $this->app->booting(function()
         {

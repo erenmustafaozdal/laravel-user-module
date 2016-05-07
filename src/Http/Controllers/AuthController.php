@@ -78,7 +78,7 @@ class AuthController extends Controller
 
             // event fire
             event(new LoginSuccess($user));
-            return redirect( route(config('laravel-user-module.redirect_route')) );
+            return redirect( route(config('laravel-user-module.url.redirect_route')) );
         } catch (NotActivatedException $e) {
             // event fire
             event(new SentinelNotActivated($e));
