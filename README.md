@@ -135,12 +135,6 @@ class Role extends EMORole
 | views.role.show       | role.show            | role/show.blade.php            | rol bilgilerinin gösterileceği sayfa       |
 | views.role.edit       | role.edit            | role/edit.blade.php            | rol bilgilerinin düzenleneceği sayfa       |
 
-##### Görünümlerde Kullanılan Varlıklar
-Eğer varsayılan temayı kullanacaksan, paketin viewlerinde kullanılan `css` ve `js` varlıklarını da yayınlamalısın. Bunun için aşağıdaki komutu kullan:
-```bash
-php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider" --tag="public" --force
-```
-
 ##### Görünümlerde kullanılması gereken form elemanı isimleri
 :exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
 > `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.
