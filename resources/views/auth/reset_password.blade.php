@@ -39,7 +39,7 @@
         <p>{!! trans('laravel-user-module::auth.reset_password.message') !!}</p>
 
         {{-- Error Messages --}}
-        @include('laravel-user-module::partials.error_message')
+        @include('laravel-modules.core::partials.error_message')
         {{-- /Error Messages --}}
 
         <div class="form-group">
