@@ -32,7 +32,7 @@
         <h3 class="form-title font-green">{!! trans('laravel-user-module::auth.login.title') !!}</h3>
 
         {{-- Error Messages --}}
-        @include('laravel-modules.core::partials.error_message')
+        @include('laravel-modules-core::partials.error_message')
         {{-- /Error Messages --}}
 
         <div class="form-group">

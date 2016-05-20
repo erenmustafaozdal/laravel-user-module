@@ -35,9 +35,35 @@ return [
         ],
     ],
 
-    // operartions
+    // operations
+    'ops' => [
+        'action'                    => 'Eylem',
+        'select'                    => 'Seç...',
+        'activate'                  => 'Aktifleştir',
+        'not_activate'              => 'Aktifliği kaldır',
+        'destroy'                   => 'Sil',
+        'submit'                    => 'Gönder',
+        'search'                    => 'Ara',
+        'reset'                     => 'Temizle',
+        'date_from'                 => 'Tarihinden',
+        'date_to'                   => 'Tarihine',
+    ],
 
     // fields
+    'fields' => [
+        'user' => [
+            'id'                    => 'ID',
+            'photo'                 => 'Fotoğraf',
+            'first_name'            => 'Ad',
+            'last_name'             => 'Soyad',
+            'email'                 => 'E-posta',
+            'status'                => 'Durum',
+            'last_login'            => 'Son Giriş',
+            'created_at'            => 'Kayıt',
+            'active'                => 'Aktif',
+            'not_active'            => 'Aktif Değil'
+        ]
+    ],
 
     // errors
 ];

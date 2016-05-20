@@ -96,3 +96,29 @@ Route::group([
         ]
     ]);
 });
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Api Routes
+|--------------------------------------------------------------------------
+*/
+Route::group([
+    'prefix' => 'api',
+    'middleware' => ['auth'],
+    'namespace' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers'
+], function()
+{
+    /*==========  Role Module  ==========*/
+
+    /*==========  User Module  ==========*/
+    Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
+        'names' => [
+            'index'     => 'api.user.index',
+            'store'     => 'api.user.store',
+            'update'    => 'api.user.update',
+            'destroy'   => 'api.user.destroy',
+        ]
+    ]);
+});

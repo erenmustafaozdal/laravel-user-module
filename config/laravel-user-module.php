@@ -64,6 +64,21 @@ return [
             'activation'            => 'laravel-user-module::emails.activation',    // activation mail view blade
             'forget_password'       => 'laravel-user-module::emails.forget_password'// forget password mail view blade
         ]
-    ]
+    ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Models config
+    |--------------------------------------------------------------------------
+    */
+    'user' => [
+        'avatar_url'                => 'vendor/laravel-modules-core/assets/global/img/avatar.png',
+        'upload_photo' => [
+            'url'                   => 'uploads/user', // + /{id}/original && /{id}/thumbnail
+            'thumbnail_size' => [
+                'width'             => '',
+                'height'            => '',
+            ]
+        ]
+    ],
 ];
