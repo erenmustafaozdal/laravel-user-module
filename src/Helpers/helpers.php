@@ -1,26 +1,59 @@
 <?php
-
-if (! function_exists('lmcElixir')) {
+/*
+|--------------------------------------------------------------------------
+| ucfirst with turkish support
+|--------------------------------------------------------------------------
+*/
+if( ! function_exists('ucfirst_tr'))
+{
     /**
-     * Get the path to a versioned Elixir file.
-     *
-     * @param  string  $file
+     * @param string $value
+     * @param bool|true $lower_str_end
+     * @param string $encoding
      * @return string
-     *
-     * @throws \InvalidArgumentException
      */
-    function lmcElixir($file)
-    {
-        static $manifest = null;
+    function ucfirst_tr($value, $lower_str_end = true, $encoding = 'UTF-8') {
+        $values = explode(' ', $value);
+        $values_len = count($values);
 
-        if (is_null($manifest)) {
-            $manifest = json_decode(file_get_contents(public_path('vendor/laravel-modules-core/build/rev-manifest.json')), true);
+        $result = [];
+        for ($i=0; $i<$values_len; $i++)
+        {
+            $first_letter = mb_strtoupper(mb_substr(str_replace(array('İ','i'),array('İ','İ'),$values[$i]), 0, 1, $encoding), $encoding);
+
+            $value_end = "";
+            if ($lower_str_end)
+            {
+                $value_end = mb_strtolower(mb_substr($values[$i], 1, mb_strlen($values[$i], $encoding), $encoding), $encoding);
+            }
+            else
+            {
+                $value_end = mb_substr($values[$i], 1, mb_strlen($values[$i], $encoding), $encoding);
+            }
+
+            array_push($result, $first_letter . $value_end);
         }
 
-        if (isset($manifest[$file])) {
-            return '/vendor/laravel-modules-core/build/'.$manifest[$file];
-        }
+        return implode(' ', $result);
+    }
+}
 
-        throw new InvalidArgumentException("File {$file} not defined in asset manifest.");
+
+
+/*
+|--------------------------------------------------------------------------
+| strtoupper with turkish support
+|--------------------------------------------------------------------------
+*/
+if( ! function_exists('strtoupper_tr'))
+{
+    /**
+     * @param string $value
+     * @param bool|false $lower_str_end
+     * @param string $encoding
+     * @return mixed|string
+     */
+    function strtoupper_tr($value, $lower_str_end = false, $encoding = 'UTF-8') {
+        return mb_strtoupper(str_replace(array('İ','i'),array('İ','İ'),$value), $encoding);
     }
 }

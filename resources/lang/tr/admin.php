@@ -3,47 +3,67 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Laravel Modules Core language lines for admin panel
+    | Laravel User Module language lines for admin panel
     |--------------------------------------------------------------------------
     */
+    // Titles of the pages, naming is made with each routes' name
+    'user' => [
+        'index'                     => 'Yöneticiler',
+        'index_description'         => 'Sistem içindeki bütün yöneticiler',
+        'edit'                      => 'Yönetici Düzenle',
+        'create'                    => 'Yönetici Ekle',
+        'show'                      => 'Yönetici Bilgileri'
+    ],
+    'role' => [
+        'index'                     => 'Yönetici Rolleri',
+        'edit'                      => 'Rol Düzenle',
+        'create'                    => 'Rol Ekle',
+        'show'                      => 'Rol Bilgileri'
+    ],
 
-    // globals
-    'welcome'                               => 'Hoş geldin',
-    'title'                                 => 'Yönetim',
-    'profile'                               => 'Profil',
-    'logout'                                => 'Çıkış yap',
-    'actions'                               => 'Eylemler',
-    // theme toolbar
-    'toolbar' => [
-        'title'                             => 'Tema ayarları',
-        'theme' => [
-            'title'                         => 'Tema',
-            'dark_header'                   => 'Koyu renk başlık',
-            'light_header'                  => 'Açık renk başlık',
+    // menu
+    'menu' => [
+        'user' => [
+            'root'                  => 'Yöneticiler',
+            'all'                   => 'Tüm Yöneticiler',
+            'add'                   => 'Yönetici Ekle'
         ],
-        'layout' => [
-            'title'                         => 'Düzen',
-            'layout_label'                  => 'Yerleşim',
-            'layout_fluid'                  => 'Tam genişlik',
-            'layout_boxed'                  => 'Kutu modeli',
-            'header_label'                  => 'Başlık',
-            'header_fixed'                  => 'Kayan',
-            'header_default'                => 'Varsayılan',
-            'dropdown_label'                => 'Açılan menüler',
-            'dropdown_light'                => 'Açık renk',
-            'dropdown_dark'                 => 'Koyu renk',
-            'sidebar_mode_label'            => 'Yan menü modu',
-            'sidebar_mode_fixed'            => 'Kayan',
-            'sidebar_mode_default'          => 'Varsayılan',
-            'sidebar_menu_label'            => 'Yan menü',
-            'sidebar_menu_accordion'        => 'Akordiyon',
-            'sidebar_menu_hover'            => 'Üzerine gelme',
-            'sidebar_position_label'        => 'Yan menü pozisyonu',
-            'sidebar_position_left'         => 'Sol',
-            'sidebar_position_right'        => 'Sağ',
-            'footer_label'                  => 'Alt bilgi',
-            'footer_fixed'                  => 'Kayan',
-            'footer_default'                => 'Varsayılan',
+        'role' => [
+            'root'                  => 'Yönetici Rolleri',
+            'all'                   => 'Tüm Roller',
+            'add'                   => 'Rol Ekle'
         ],
-    ]
+    ],
+
+    // operations
+    'ops' => [
+        'action'                    => 'Eylem',
+        'select'                    => 'Seç...',
+        'activate'                  => 'Aktifleştir',
+        'not_activate'              => 'Aktifliği kaldır',
+        'destroy'                   => 'Sil',
+        'submit'                    => 'Gönder',
+        'search'                    => 'Ara',
+        'reset'                     => 'Temizle',
+        'date_from'                 => 'Tarihinden',
+        'date_to'                   => 'Tarihine',
+    ],
+
+    // fields
+    'fields' => [
+        'user' => [
+            'id'                    => 'ID',
+            'photo'                 => 'Fotoğraf',
+            'first_name'            => 'Ad',
+            'last_name'             => 'Soyad',
+            'email'                 => 'E-posta',
+            'status'                => 'Durum',
+            'last_login'            => 'Son Giriş',
+            'created_at'            => 'Kayıt',
+            'active'                => 'Aktif',
+            'not_active'            => 'Aktif Değil'
+        ]
+    ],
+
+    // errors
 ];
