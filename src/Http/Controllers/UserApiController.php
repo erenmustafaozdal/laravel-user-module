@@ -26,6 +26,10 @@ class UserApiController extends Controller
         }
 
         return Datatables::of($users)
+            ->addColumn('details_url', function($model)
+            {
+                return route('api.user.index.detail', ['id' => $model->id]);
+            })
             ->addColumn('check_id', '{{ $id }}')
             ->editColumn('photo',function($model)
             {
@@ -45,6 +49,18 @@ class UserApiController extends Controller
             })
             ->removeColumn('is_active')
             ->make(true);
+    }
+
+    /**
+     * get user detail
+     *
+     * @param  Request  $request
+     * @param  integer  $id
+     * @return Datatables
+     */
+    public function getUserDetail(Request $request, $id)
+    {
+        return $id;
     }
 
     /**

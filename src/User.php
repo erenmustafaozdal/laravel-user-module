@@ -85,11 +85,8 @@ class User extends SentinelUser
         }
         // filter first_name
         if ($request->has('first_name')) {
-            $query->where('first_name', 'like', "%{$request->get('first_name')}%");
-        }
-        // filter last_name
-        if ($request->has('first_name')) {
-            $query->where('last_name', 'like', "%{$request->get('first_name')}%");
+            $query->where('first_name', 'like', "%{$request->get('first_name')}%")
+                ->orWhere('last_name', 'like', "%{$request->get('first_name')}%");
         }
         // filter status
         if ($request->has('status')) {
