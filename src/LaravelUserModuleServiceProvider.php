@@ -59,6 +59,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $router = $this->app['router'];
         $router->middleware('guest',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\RedirectIfAuthenticated::class);
         $router->middleware('auth',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\Authenticate::class);
-        $router->model('user',  'App\User');
+        $router->model(config('laravel-user-module.url.user'),  'App\User');
     }
 }

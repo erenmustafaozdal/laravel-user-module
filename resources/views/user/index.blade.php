@@ -121,11 +121,11 @@
                 {{-- /Table Actions --}}
 
                 {{-- DataTable --}}
-                <table class="table table-striped table-bordered table-hover table-checkable lmcDataTable">
+                <table class="table table-striped table-bordered table-hover table-checkable dt-responsive lmcDataTable">
                     <thead>
                         <tr role="row" class="heading">
                             <th width="2%"> <input type="checkbox" class="group-checkable"> </th>
-                            <th></th>
+                            <th class="all"></th>
                             <th width="7%"> {!! trans('laravel-user-module::admin.fields.user.id') !!} </th>
                             <th width="5%"> {!! trans('laravel-user-module::admin.fields.user.photo') !!} </th>
                             <th width="100"> {!! trans('laravel-user-module::admin.fields.user.first_name') !!} </th>

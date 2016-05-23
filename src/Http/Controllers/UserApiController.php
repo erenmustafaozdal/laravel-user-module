@@ -55,11 +55,12 @@ class UserApiController extends Controller
      * get user detail
      *
      * @param  Request  $request
-     * @param  integer  $id
+     * @param  User  $user
      * @return Datatables
      */
-    public function getUserDetail(Request $request, $id)
+    public function getUserDetail(User $user, Request $request)
     {
+        return $user;
         return $id;
     }
 
