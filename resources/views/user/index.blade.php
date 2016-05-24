@@ -121,17 +121,17 @@
                 {{-- /Table Actions --}}
 
                 {{-- DataTable --}}
-                <table class="table table-striped table-bordered table-hover table-checkable dt-responsive lmcDataTable">
+                <table class="table table-striped table-bordered table-hover table-checkable responsive lmcDataTable">
                     <thead>
                         <tr role="row" class="heading">
-                            <th width="2%"> <input type="checkbox" class="group-checkable"> </th>
-                            <th class="all"></th>
-                            <th width="7%"> {!! trans('laravel-user-module::admin.fields.user.id') !!} </th>
-                            <th width="5%"> {!! trans('laravel-user-module::admin.fields.user.photo') !!} </th>
-                            <th width="100"> {!! trans('laravel-user-module::admin.fields.user.first_name') !!} </th>
-                            <th width="10%"> {!! trans('laravel-user-module::admin.fields.user.status') !!} </th>
-                            <th width="20%"> {!! trans('laravel-user-module::admin.fields.user.created_at') !!} </th>
-                            <th width="10%"> {!! trans('laravel-user-module::admin.ops.action') !!} </th>
+                            <th class="all" width="2%"> <input type="checkbox" class="group-checkable"> </th>
+                            <th class="all" width="2%"></th>
+                            <th class="all" width="5%"> {!! trans('laravel-user-module::admin.fields.user.id') !!} </th>
+                            <th class="all" width="5%"> {!! trans('laravel-user-module::admin.fields.user.photo') !!} </th>
+                            <th class="all" width="100"> {!! trans('laravel-user-module::admin.fields.user.first_name') !!} </th>
+                            <th class="all" width="10%"> {!! trans('laravel-user-module::admin.fields.user.status') !!} </th>
+                            <th class="all" width="20%"> {!! trans('laravel-user-module::admin.fields.user.created_at') !!} </th>
+                            <th class="all" width="10%"> {!! trans('laravel-user-module::admin.ops.action') !!} </th>
                         </tr>
                         <tr role="row" class="filter">
                             <td></td>

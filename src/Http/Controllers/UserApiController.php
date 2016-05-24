@@ -54,14 +54,27 @@ class UserApiController extends Controller
     /**
      * get user detail
      *
-     * @param  Request  $request
-     * @param  User  $user
+     * @param Request $request
+     * @param integer $id
      * @return Datatables
      */
-    public function getUserDetail(User $user, Request $request)
+    public function userDetail($id, Request $request)
     {
-        return $user;
-        return $id;
+        $user = User::where('id',$id)->with('roles')->select(['id','email','last_login','updated_at']);
+        return Datatables::of($user)
+            ->editColumn('roles', function($model)
+            {
+                return $model->roles->implode('name', ', ');
+            })
+            ->editColumn('last_login',function($model)
+            {
+                return $model->last_login_table;
+            })
+            ->editColumn('updated_at',function($model)
+            {
+                return $model->updated_at_table;
+            })
+            ->make(true);
     }
 
     /**

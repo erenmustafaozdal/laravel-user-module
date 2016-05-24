@@ -113,8 +113,9 @@ Route::group([
     /*==========  Role Module  ==========*/
 
     /*==========  User Module  ==========*/
-    Route::controller(config('laravel-user-module.url.user'), 'UserApiController', [
-        'getUserDetail' => 'api.user.index.detail',
+    Route::get('user-detail/{id}',  [
+        'as' => 'api.user.index.detail',
+        'uses' => 'UserApiController@userDetail'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
         'names' => [
