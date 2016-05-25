@@ -21,8 +21,9 @@
     @parent
     <script type="text/javascript">
         var datatableJs = "{!! lmcElixir('assets/app/datatable.js') !!}";
+        var editorJs = "{!! lmcElixir('assets/app/editor.js') !!}";
         var ajaxURL = "{!! route('api.user.index') !!}";
-        $script.ready('app_datatable', function()
+        $script.ready('app_editor', function()
         {
             $script("{!! lmcElixir('assets/pages/scripts/user/index.js') !!}",'index');
         });
@@ -47,7 +48,13 @@
             </div>
             <div class="actions">
                 <div class="btn-group">
-                    <a id="sample_editable_1_new" class="btn green btn-outline" href="{!! route('admin.user.create') !!}">
+                    <a class="btn green btn-outline tooltips" data-toggle="modal" href="#editor-modal" data-action="fast-add">
+                        {!! trans('laravel-modules-core::admin.ops.fast_add') !!}
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn green btn-outline" href="{!! route('admin.user.create') !!}">
                         {!! trans('laravel-modules-core::admin.ops.add') !!}
                         <i class="fa fa-plus"></i>
                     </a>
@@ -60,38 +67,38 @@
                     </a>
                     <ul class="dropdown-menu pull-right" id="lmcDataTableTools">
                         <li>
-                            <a href="javascript:;" data-action="0" class="tool-action tooltips" title="Kısayol: (alt + shift + p)">
+                            <a href="javascript:;" data-action="0" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.print') !!}">
                                 <i class="icon-printer"></i>
                                 {!! trans('laravel-modules-core::admin.ops.print') !!}
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;" data-action="1" class="tool-action tooltips" title="Kısayol: (alt + shift + c)">
+                            <a href="javascript:;" data-action="1" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.copy') !!}">
                                 <i class="icon-layers"></i>
                                 {!! trans('laravel-modules-core::admin.ops.copy') !!}
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;" data-action="2" class="tool-action tooltips" title="Kısayol: (alt + shift + d)">
+                            <a href="javascript:;" data-action="2" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.pdf') !!}">
                                 <i class="icon-notebook"></i>
                                 {!! trans('laravel-modules-core::admin.ops.pdf') !!}
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;" data-action="3" class="tool-action tooltips" title="Kısayol: (alt + shift + e)">
+                            <a href="javascript:;" data-action="3" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.excel') !!}">
                                 <i class="icon-doc"></i>
                                 {!! trans('laravel-modules-core::admin.ops.excel') !!}
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;" data-action="4" class="tool-action tooltips" title="Kısayol: (alt + shift + v)">
+                            <a href="javascript:;" data-action="4" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.csv') !!}">
                                 <i class="icon-doc"></i>
                                 {!! trans('laravel-modules-core::admin.ops.csv') !!}
                             </a>
                         </li>
                         <li class="divider"> </li>
                         <li>
-                            <a href="javascript:;" data-action="5" class="tool-action tooltips" title="Kısayol: (alt + shift + r)">
+                            <a href="javascript:;" data-action="5" class="tool-action tooltips" title="{!! trans('laravel-modules-core::admin.ops.shortcut.reload') !!}">
                                 <i class="icon-refresh"></i> 
                                 {!! trans('laravel-modules-core::admin.ops.reload') !!}
                             </a>
@@ -191,4 +198,60 @@
         {{-- /Table Portlet Body --}}
     </div>
     {{-- /Table Portlet --}}
+    
+    {{-- Create and Edit modal --}}
+    <div class="modal fade" id="editor-modal" tabindex="-1" role="dialog" aria-labelledby="editor-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">{!! trans('laravel-modules-core::admin.ops.fast_add') !!}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        {{-- form elements --}}
+                        <form class="editor-form">
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.first_name') !!}</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.first_name') !!}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.last_name') !!}</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.last_name') !!}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.email') !!}</label>
+                                <input type="text" name="email" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.email') !!}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.password') !!}</label>
+                                <input type="password" name="password" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password') !!}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.password_comfirmation') !!}</label>
+                                <input type="password" name="password_comfirmation" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password_comfirmation') !!}">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.status') !!}</label>
+                                <div class="clearfix"></div>
+                                <input type="checkbox" class="make-switch" name="is_active" value="1"
+                                       data-on-text="{!! trans('laravel-user-module::admin.fields.user.active') !!}"
+                                       data-on-color="success"
+                                       data-off-text="{!! trans('laravel-user-module::admin.fields.user.not_active') !!}"
+                                       data-off-color="danger"
+                                >
+                                <span class="help-block"> {!! trans('laravel-user-module::admin.fields.user.is_active_help') !!} </span>
+                            </div>
+                        </form>
+                        {{-- /form elements --}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn red btn-outline" data-dismiss="modal">{!! trans('laravel-modules-core::admin.ops.cancel') !!}</button>
+                    <button type="button" class="btn blue btn-outline editor-action" data-action="create">{!! trans('laravel-modules-core::admin.ops.fast_add') !!}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- /Create and Edit modal --}}
 @endsection

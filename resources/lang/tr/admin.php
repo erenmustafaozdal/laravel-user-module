@@ -57,11 +57,14 @@ return [
             'first_name'            => 'Ad',
             'last_name'             => 'Soyad',
             'email'                 => 'E-posta',
+            'password'              => 'Şifre',
+            'password_comfirmation' => 'Şifre Onayı',
             'status'                => 'Durum',
             'last_login'            => 'Son Giriş',
             'created_at'            => 'Kayıt',
             'active'                => 'Aktif',
-            'not_active'            => 'Aktif Değil'
+            'not_active'            => 'Aktif Değil',
+            'is_active_help'        => 'Hesabını aktifleştir ve giriş yapmasına izin ver. Ya da şimdilik sadece bilgileri ekle.',
         ]
     ],
 
