@@ -48,7 +48,7 @@
             </div>
             <div class="actions">
                 <div class="btn-group">
-                    <a class="btn green btn-outline tooltips" data-toggle="modal" href="#editor-modal" data-action="fast-add">
+                    <a class="btn green btn-outline" data-toggle="modal" href="#editor-modal" data-action="fast-add">
                         {!! trans('laravel-modules-core::admin.ops.fast_add') !!}
                         <i class="fa fa-plus"></i>
                     </a>

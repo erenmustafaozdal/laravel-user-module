@@ -26,11 +26,20 @@ class UserApiController extends Controller
         }
 
         return Datatables::of($users)
-            ->addColumn('details_url', function($model)
+            ->addColumn('urls', function($model)
             {
-                return route('api.user.index.detail', ['id' => $model->id]);
+                return [
+                    'details'   => route('api.user.index.detail', ['id' => $model->id]),
+                    'show'      => route('admin.user.show', ['id' => $model->id]),
+                    'edit'      => route('api.user.update', ['id' => $model->id]),
+                    'destroy'   => route('api.user.destroy', ['id' => $model->id]),
+                ];
             })
             ->addColumn('check_id', '{{ $id }}')
+            ->addColumn('status',function($model)
+            {
+                return $model->is_active;
+            })
             ->editColumn('photo',function($model)
             {
                 return $model->getPhoto([], 'thumbnail', true);
@@ -38,10 +47,6 @@ class UserApiController extends Controller
             ->editColumn('first_name',function($model)
             {
                 return $model->fullname;
-            })
-            ->addColumn('status',function($model)
-            {
-                return $model->is_active;
             })
             ->editColumn('created_at',function($model)
             {
