@@ -23,6 +23,7 @@
         var datatableJs = "{!! lmcElixir('assets/app/datatable.js') !!}";
         var editorJs = "{!! lmcElixir('assets/app/editor.js') !!}";
         var ajaxURL = "{!! route('api.user.index') !!}";
+        var apiStoreURL = "{!! route('api.user.store') !!}";
         $script.ready('app_editor', function()
         {
             $script("{!! lmcElixir('assets/pages/scripts/user/index.js') !!}",'index');
@@ -248,7 +249,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn red btn-outline" data-dismiss="modal">{!! trans('laravel-modules-core::admin.ops.cancel') !!}</button>
-                    <button type="button" class="btn blue btn-outline editor-action" data-action="create">{!! trans('laravel-modules-core::admin.ops.fast_add') !!}</button>
+                    <button type="button" class="btn blue btn-outline editor-action">{!! trans('laravel-modules-core::admin.ops.fast_add') !!}</button>
                 </div>
             </div>
         </div>

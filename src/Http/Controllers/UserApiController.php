@@ -29,7 +29,8 @@ class UserApiController extends Controller
             ->addColumn('urls', function($model)
             {
                 return [
-                    'details'   => route('api.user.index.detail', ['id' => $model->id]),
+                    'details'   => route('api.user.detail', ['id' => $model->id]),
+                    'fast_edit' => route('api.user.fast_edit', ['id' => $model->id]),
                     'show'      => route('admin.user.show', ['id' => $model->id]),
                     'edit'      => route('api.user.update', ['id' => $model->id]),
                     'destroy'   => route('api.user.destroy', ['id' => $model->id]),
@@ -59,8 +60,8 @@ class UserApiController extends Controller
     /**
      * get user detail
      *
-     * @param Request $request
      * @param integer $id
+     * @param Request $request
      * @return Datatables
      */
     public function userDetail($id, Request $request)
@@ -80,6 +81,18 @@ class UserApiController extends Controller
                 return $model->updated_at_table;
             })
             ->make(true);
+    }
+
+    /**
+     * get user data for edit
+     *
+     * @param User $user
+     * @param Request $request
+     * @return Datatables
+     */
+    public function userForFastEdit(User $user, Request $request)
+    {
+        return $user;
     }
 
     /**

@@ -113,9 +113,15 @@ Route::group([
     /*==========  Role Module  ==========*/
 
     /*==========  User Module  ==========*/
+    // data table detail row
     Route::get('user-detail/{id}',  [
-        'as' => 'api.user.index.detail',
+        'as' => 'api.user.detail',
         'uses' => 'UserApiController@userDetail'
+    ]);
+    //
+    Route::post('user-fast-edit/{'. config('laravel-user-module.url.user') .'}',  [
+        'as' => 'api.user.fast_edit',
+        'uses' => 'UserApiController@userForFastEdit'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
         'names' => [
