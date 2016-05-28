@@ -6,8 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
 use Yajra\Datatables\Facades\Datatables;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use DB;
+use App\User;
+
+// requests
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
+// events
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
+// exceptions
+use ErenMustafaOzdal\LaravelUserModule\Exceptions\StoreException;
+
 
 class UserApiController extends Controller
 {
@@ -25,7 +36,7 @@ class UserApiController extends Controller
             $users->filter($request);
         }
 
-        return Datatables::of($users)
+        return Datatables::of($users->orderBy('id', 'desc'))
             ->addColumn('urls', function($model)
             {
                 return [
@@ -98,12 +109,28 @@ class UserApiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $user = Sentinel::create($request->all());
+
+            if ( ! isset($user->id)) {
+                throw new StoreException($request->except('_token'));
+            }
+
+            event(new StoreSuccess($user));
+            DB::commit();
+            $user->result = 'success';
+            return response()->json($user);
+        } catch (StoreException $e) {
+            DB::rollback();
+            event(new StoreFail($e->getDatas()));
+            return response()->json(['result' => 'error']);
+        }
     }
 
     /**

@@ -21,7 +21,7 @@ class User extends SentinelUser
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active'];
 
     /**
      * The attributes excluded from the model's JSON form.

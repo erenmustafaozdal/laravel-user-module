@@ -68,5 +68,9 @@ return [
         ]
     ],
 
-    // errors
+    // flash messages
+    'flash' => [
+        'store_success'             => 'Ekleme işlemi başarılı bir şekilde gerçekleşti.',
+        'store_error'               => 'Ekleme işlemi gerçekleşmedi. Lütfen daha sonra dene!',
+    ]
 ];

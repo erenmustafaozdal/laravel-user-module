@@ -1,10 +1,10 @@
 <?php
 
-namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\Auth;
+namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 
 use App\Http\Requests\Request;
 
-class RegisterRequest extends Request
+class StoreRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +27,7 @@ class RegisterRequest extends Request
             'first_name'    => 'required|max:255',
             'last_name'     => 'required|max:255',
             'email'         => 'required|unique:users|email|max:255',
-            'password'      => 'required|confirmed|min:6|max:255',
-            'terms'         => 'required|in:1|accepted'
+            'password'      => 'required|confirmed|min:6|max:255'
         ];
     }
 }
