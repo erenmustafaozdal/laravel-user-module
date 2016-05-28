@@ -19,7 +19,7 @@
             password_confirmation: {
                 required: "{!! LMCValidation::getMessage('password_confirmation','required') !!}",
                 minlength: "{!! LMCValidation::getMessage('password_confirmation','min.string', [':min' => 6]) !!}",
-                equalTo: "{!! LMCValidation::getMessage('password_confirmation','confirmed') !!}"
+                equalTo: "{!! LMCValidation::getMessage('password','confirmed') !!}"
             }
         };
         $script.ready('login', function() {

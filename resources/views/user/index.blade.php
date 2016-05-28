@@ -20,10 +20,44 @@
 @section('script')
     @parent
     <script type="text/javascript">
+        {{-- js file path --}}
+        var userFormLoaderJs = "{!! lmcElixir('assets/pages/js/loaders/admin-form.js') !!}";
         var datatableJs = "{!! lmcElixir('assets/app/datatable.js') !!}";
         var editorJs = "{!! lmcElixir('assets/app/editor.js') !!}";
+        var validationJs = "{!! lmcElixir('assets/app/validation.js') !!}";
+        var userFormJs = "{!! lmcElixir('assets/pages/scripts/user/user-form.js') !!}";
+        {{-- /js file path --}}
+
+        {{-- routes --}}
         var ajaxURL = "{!! route('api.user.index') !!}";
         var apiStoreURL = "{!! route('api.user.store') !!}";
+        {{-- /routes --}}
+
+        {{-- languages --}}
+        var messagesOfRules = {
+            first_name: {
+                required: "{!! LMCValidation::getMessage('first_name','required') !!}"
+            },
+            last_name: {
+                required: "{!! LMCValidation::getMessage('last_name','required') !!}"
+            },
+            email: {
+                required: "{!! LMCValidation::getMessage('email','required') !!}",
+                email: "{!! LMCValidation::getMessage('email','email') !!}"
+            },
+            password: {
+                required: "{!! LMCValidation::getMessage('password','required') !!}",
+                minlength: "{!! LMCValidation::getMessage('password','min.string', [':min' => 6]) !!}"
+            },
+            password_confirmation: {
+                required: "{!! LMCValidation::getMessage('password_confirmation','required') !!}",
+                minlength: "{!! LMCValidation::getMessage('password_confirmation','min.string', [':min' => 6]) !!}",
+                equalTo: "{!! LMCValidation::getMessage('password','confirmed') !!}"
+            }
+        };
+        {{-- /languages --}}
+
+        {{-- scripts --}}
         $script.ready('app_editor', function()
         {
             $script("{!! lmcElixir('assets/pages/scripts/user/index.js') !!}",'index');
@@ -32,6 +66,7 @@
         {
             Index.init();
         });
+        {{-- /scripts --}}
     </script>
     <script src="{!! lmcElixir('assets/pages/js/loaders/admin-index.js') !!}"></script>
 @endsection
@@ -211,7 +246,7 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         {{-- form elements --}}
-                        <form class="editor-form">
+                        <form class="form">
                             <div class="form-group">
                                 <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.first_name') !!}</label>
                                 <input type="text" name="first_name" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.first_name') !!}">
@@ -226,11 +261,11 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.password') !!}</label>
-                                <input type="password" name="password" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password') !!}">
+                                <input type="password" name="password" id="password" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password') !!}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.password_comfirmation') !!}</label>
-                                <input type="password" name="password_comfirmation" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password_comfirmation') !!}">
+                                <input type="password" name="password_confirmation" class="form-control" placeholder="{!! trans('laravel-user-module::admin.fields.user.password_comfirmation') !!}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.status') !!}</label>
