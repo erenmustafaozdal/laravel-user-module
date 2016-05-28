@@ -152,7 +152,7 @@ class User extends SentinelUser
      */
     public function setIsActiveAttribute($value)
     {
-        //$this->attributes['is_active'] = $value ? 1 : 0;
+        $this->attributes['is_active'] = (boolean) $value;
     }
 
     /**
@@ -163,7 +163,7 @@ class User extends SentinelUser
      */
     public function getIsActiveAttribute($value)
     {
-        return $value ? true : false;
+        return (boolean) $value;
     }
 
     /**

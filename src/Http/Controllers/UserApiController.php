@@ -114,12 +114,15 @@ class UserApiController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $datas = $request->all();
+        $datas['is_active'] = $request->has('is_active');
+
         DB::beginTransaction();
         try {
-            $user = Sentinel::create($request->all());
+            $user = Sentinel::create($datas);
 
             if ( ! isset($user->id)) {
-                throw new StoreException($request->except('_token'));
+                throw new StoreException($datas);
             }
 
             event(new StoreSuccess($user));
