@@ -270,7 +270,7 @@
                             <div class="form-group">
                                 <label class="control-label">{!! trans('laravel-user-module::admin.fields.user.status') !!}</label>
                                 <div class="clearfix"></div>
-                                <input type="checkbox" class="make-switch" id="is_active"
+                                <input type="checkbox" class="make-switch" id="is_active" name="is_active" 
                                        data-on-text="{!! trans('laravel-user-module::admin.fields.user.active') !!}"
                                        data-on-color="success"
                                        data-off-text="{!! trans('laravel-user-module::admin.fields.user.not_active') !!}"

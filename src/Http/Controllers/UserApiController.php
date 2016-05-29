@@ -13,11 +13,15 @@ use App\User;
 
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateFail;
 // exceptions
 use ErenMustafaOzdal\LaravelUserModule\Exceptions\StoreException;
+use ErenMustafaOzdal\LaravelUserModule\Exceptions\UpdateException;
 
 
 class UserApiController extends Controller
@@ -127,8 +131,7 @@ class UserApiController extends Controller
 
             event(new StoreSuccess($user));
             DB::commit();
-            $user->result = 'success';
-            return response()->json($user);
+            return response()->json(['result' => 'success']);
         } catch (StoreException $e) {
             DB::rollback();
             event(new StoreFail($e->getDatas()));
@@ -139,13 +142,34 @@ class UserApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  User $user
+     * @param  UpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        $datas = collect( $request->except('email') );
+        $datas = $datas->reject(function($item)
+        {
+            return $item === '';
+        })->toArray();
+        
+        DB::beginTransaction();
+        try {
+            $user_new = Sentinel::update($user, $datas);
+
+            if ( ! isset($user_new->id)) {
+                throw new UpdateException($user);
+            }
+
+            event(new UpdateSuccess($user_new));
+            DB::commit();
+            return response()->json(['result' => 'success']);
+        } catch (UpdateException $e) {
+            DB::rollback();
+            event(new UpdateFail($e->getDatas()));
+            return response()->json(['result' => 'error']);
+        }
     }
 
     /**
