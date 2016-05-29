@@ -19,9 +19,12 @@ use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroySuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroyFail;
 // exceptions
 use ErenMustafaOzdal\LaravelUserModule\Exceptions\StoreException;
 use ErenMustafaOzdal\LaravelUserModule\Exceptions\UpdateException;
+use ErenMustafaOzdal\LaravelUserModule\Exceptions\DestroyException;
 
 
 class UserApiController extends Controller
@@ -40,7 +43,7 @@ class UserApiController extends Controller
             $users->filter($request);
         }
 
-        return Datatables::of($users->orderBy('id', 'desc'))
+        return Datatables::of($users)
             ->addColumn('urls', function($model)
             {
                 return [
@@ -56,19 +59,21 @@ class UserApiController extends Controller
             {
                 return $model->is_active;
             })
+            ->addColumn('fullname',function($model)
+            {
+                return $model->fullname;
+            })
             ->editColumn('photo',function($model)
             {
                 return $model->getPhoto([], 'thumbnail', true);
-            })
-            ->editColumn('first_name',function($model)
-            {
-                return $model->fullname;
             })
             ->editColumn('created_at',function($model)
             {
                 return $model->created_at_table;
             })
             ->removeColumn('is_active')
+            ->removeColumn('first_name')
+            ->removeColumn('last_name')
             ->make(true);
     }
 
@@ -175,11 +180,21 @@ class UserApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        try {
+            if ( ! $user->delete()) {
+                throw new DestroyException($user);
+            }
+
+            event(new DestroySuccess($user));
+            return response()->json(['result' => 'success']);
+        } catch (DestroyException $e) {
+            event(new DestroyFail($e->getDatas()));
+            return response()->json(['result' => 'error']);
+        }
     }
 }
