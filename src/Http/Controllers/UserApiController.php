@@ -5,29 +5,17 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use DB;
 use App\User;
 
+use ErenMustafaOzdal\LaravelUserModule\Base\Controllers\AdminBaseController;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
-// events
-use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
-use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
-use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateSuccess;
-use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateFail;
-use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroySuccess;
-use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroyFail;
-// exceptions
-use ErenMustafaOzdal\LaravelUserModule\Exceptions\StoreException;
-use ErenMustafaOzdal\LaravelUserModule\Exceptions\UpdateException;
-use ErenMustafaOzdal\LaravelUserModule\Exceptions\DestroyException;
 
 
-class UserApiController extends Controller
+class UserApiController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.
@@ -43,38 +31,17 @@ class UserApiController extends Controller
             $users->filter($request);
         }
 
-        return Datatables::of($users)
-            ->addColumn('urls', function($model)
-            {
-                return [
-                    'details'   => route('api.user.detail', ['id' => $model->id]),
-                    'fast_edit' => route('api.user.fast_edit', ['id' => $model->id]),
-                    'show'      => route('admin.user.show', ['id' => $model->id]),
-                    'edit'      => route('api.user.update', ['id' => $model->id]),
-                    'destroy'   => route('api.user.destroy', ['id' => $model->id]),
-                ];
-            })
-            ->addColumn('check_id', '{{ $id }}')
-            ->addColumn('status',function($model)
-            {
-                return $model->is_active;
-            })
-            ->addColumn('fullname',function($model)
-            {
-                return $model->fullname;
-            })
-            ->editColumn('photo',function($model)
-            {
-                return $model->getPhoto([], 'thumbnail', true);
-            })
-            ->editColumn('created_at',function($model)
-            {
-                return $model->created_at_table;
-            })
-            ->removeColumn('is_active')
-            ->removeColumn('first_name')
-            ->removeColumn('last_name')
-            ->make(true);
+        $addColumns = [
+            'addUrls'       => [],
+            'status'        => function($model) { return $model->is_active; },
+            'fullname'      => function($model) { return $model->fullname; },
+        ];
+        $editColumns = [
+            'photo'         => function($model) { return $model->getPhoto([], 'thumbnail', true); },
+            'created_at'    => function($model) { return $model->created_at_table; }
+        ];
+        $removeColumns = ['is_active', 'first_name', 'last_name'];
+        return $this->getDatatables($users, $addColumns, $editColumns, $removeColumns);
     }
 
     /**
@@ -87,20 +54,14 @@ class UserApiController extends Controller
     public function userDetail($id, Request $request)
     {
         $user = User::where('id',$id)->with('roles')->select(['id','email','last_login','updated_at']);
-        return Datatables::of($user)
-            ->editColumn('roles', function($model)
-            {
-                return $model->roles->implode('name', ', ');
-            })
-            ->editColumn('last_login',function($model)
-            {
-                return $model->last_login_table;
-            })
-            ->editColumn('updated_at',function($model)
-            {
-                return $model->updated_at_table;
-            })
-            ->make(true);
+
+        $editColumns = [
+            'roles'         => function($model) { return $model->roles->implode('name', ', '); },
+            'last_login'    => function($model) { return $model->last_login_table; },
+            'updated_at'    => function($model) { return $model->updated_at_table; }
+        ];
+        $removeColumns = ['is_active', 'first_name', 'last_name'];
+        return $this->getDatatables($user, [], $editColumns, $removeColumns);
     }
 
     /**
@@ -123,25 +84,7 @@ class UserApiController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $datas = $request->all();
-        $datas['is_active'] = $request->has('is_active');
-
-        DB::beginTransaction();
-        try {
-            $user = Sentinel::create($datas);
-
-            if ( ! isset($user->id)) {
-                throw new StoreException($datas);
-            }
-
-            event(new StoreSuccess($user));
-            DB::commit();
-            return response()->json(['result' => 'success']);
-        } catch (StoreException $e) {
-            DB::rollback();
-            event(new StoreFail($e->getDatas()));
-            return response()->json(['result' => 'error']);
-        }
+        return $this->storeModel(User::class, $request);
     }
 
     /**
@@ -153,28 +96,7 @@ class UserApiController extends Controller
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $datas = collect( $request->except('email') );
-        $datas = $datas->reject(function($item)
-        {
-            return $item === '';
-        })->toArray();
-        
-        DB::beginTransaction();
-        try {
-            $user_new = Sentinel::update($user, $datas);
-
-            if ( ! isset($user_new->id)) {
-                throw new UpdateException($user);
-            }
-
-            event(new UpdateSuccess($user_new));
-            DB::commit();
-            return response()->json(['result' => 'success']);
-        } catch (UpdateException $e) {
-            DB::rollback();
-            event(new UpdateFail($e->getDatas()));
-            return response()->json(['result' => 'error']);
-        }
+        return $this->updateModel($user, $request);
     }
 
     /**
@@ -185,16 +107,10 @@ class UserApiController extends Controller
      */
     public function destroy(User $user)
     {
-        try {
-            if ( ! $user->delete()) {
-                throw new DestroyException($user);
-            }
-
-            event(new DestroySuccess($user));
-            return response()->json(['result' => 'success']);
-        } catch (DestroyException $e) {
-            event(new DestroyFail($e->getDatas()));
-            return response()->json(['result' => 'error']);
+        if ($user->id != Sentinel::getUser()->id) {
+            return $this->destroyModel($user);
+        } else {
+            return response()->json(['result' => 'self']);
         }
     }
 }
