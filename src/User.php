@@ -5,6 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule;
 use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class User extends SentinelUser
 {
@@ -142,6 +143,16 @@ class User extends SentinelUser
     public function getFullnameAttribute()
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    /**
+     * Set password encrypted
+     *
+     * @param $password
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] =  Hash::make($password);
     }
 
     /**

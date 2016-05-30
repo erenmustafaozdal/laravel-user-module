@@ -6,25 +6,20 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ActivateFail extends Event
+class ActivateRemove extends Event
 {
     use SerializesModels;
 
-    public $id;
-    public $code;
+    public $user;
 
     /**
      * Create a new event instance.
      *
-     * @param integer $id
-     * @param string $code
-     * @param string $type
+     * @return void
      */
-    public function __construct($id, $code, $type)
+    public function __construct($user)
     {
-        $this->id = $id;
-        $this->code = $code;
-        $this->type = $type;
+        $this->user = $user;
     }
 
     /**
