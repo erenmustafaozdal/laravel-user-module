@@ -74,7 +74,11 @@ abstract class AdminBaseController extends Controller
                 'destroy'   => route('api.user.destroy', ['id' => $model->id]),
             ];
             foreach($addUrls as $key => $value){
-                $urls[$key] = $value;
+                if ($value['id']) {
+                    $urls[$key] = route($value['route'], ['id' => $model->id]);
+                    continue;
+                }
+                $urls[$key] = route($value['route']);
             }
             return $urls;
         });
