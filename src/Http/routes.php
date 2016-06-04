@@ -114,14 +114,24 @@ Route::group([
 
     /*==========  User Module  ==========*/
     // data table detail row
-    Route::get('user-detail/{id}',  [
+    Route::get('user/detail/{id}',  [
         'as' => 'api.user.detail',
         'uses' => 'UserApiController@userDetail'
     ]);
-    //
-    Route::post('user-fast-edit/{'. config('laravel-user-module.url.user') .'}',  [
+    // get user edit data for modal edit
+    Route::post('user/fast-edit/{'. config('laravel-user-module.url.user') .'}',  [
         'as' => 'api.user.fast_edit',
         'uses' => 'UserApiController@userForFastEdit'
+    ]);
+    // api activate user
+    Route::post('user/activate/{'. config('laravel-user-module.url.user') .'}',  [
+        'as' => 'api.user.activate',
+        'uses' => 'UserApiController@activate'
+    ]);
+    // api not activate user
+    Route::post('user/not-activate/{'. config('laravel-user-module.url.user') .'}',  [
+        'as' => 'api.user.not_activate',
+        'uses' => 'UserApiController@notActivate'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
         'names' => [

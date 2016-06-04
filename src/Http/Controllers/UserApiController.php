@@ -32,13 +32,16 @@ class UserApiController extends AdminBaseController
         }
 
         $addColumns = [
-            'addUrls'       => [],
-            'status'        => function($model) { return $model->is_active; },
-            'fullname'      => function($model) { return $model->fullname; },
+            'addUrls' => [
+                'activate'      => ['route' => 'api.user.activate', 'id' => true],
+                'not_activate'  => ['route' => 'api.user.not_activate', 'id' => true]
+            ],
+            'status'            => function($model) { return $model->is_active; },
+            'fullname'          => function($model) { return $model->fullname; },
         ];
         $editColumns = [
-            'photo'         => function($model) { return $model->getPhoto([], 'thumbnail', true); },
-            'created_at'    => function($model) { return $model->created_at_table; }
+            'photo'             => function($model) { return $model->getPhoto([], 'thumbnail', true); },
+            'created_at'        => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = ['is_active', 'first_name', 'last_name'];
         return $this->getDatatables($users, $addColumns, $editColumns, $removeColumns);
@@ -112,5 +115,36 @@ class UserApiController extends AdminBaseController
         } else {
             return response()->json(['result' => 'self']);
         }
+    }
+
+    /**
+     * activate user
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function activate(User $user)
+    {
+        if ($user->is_active = $this->activationComplete($user)) {
+            $user->save();
+            return response()->json(['result' => 'success']);
+        }
+        return response()->json(['result' => 'error']);
+    }
+
+    /**
+     * not activate user
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function notActivate(User $user)
+    {
+        if ($this->activationRemove($user)) {
+            $user->is_active = false;
+            $user->save();
+            return response()->json(['result' => 'success']);
+        }
+        return response()->json(['result' => 'error']);
     }
 }
