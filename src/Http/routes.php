@@ -133,6 +133,11 @@ Route::group([
         'as' => 'api.user.not_activate',
         'uses' => 'UserApiController@notActivate'
     ]);
+    // api group action
+    Route::post('user/group-action',  [
+        'as' => 'api.user.group_action',
+        'uses' => 'UserApiController@groupAction'
+    ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
         'names' => [
             'index'     => 'api.user.index',

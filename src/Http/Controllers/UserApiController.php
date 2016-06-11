@@ -121,12 +121,11 @@ class UserApiController extends AdminBaseController
      * activate user
      *
      * @param User $user
-     * @return bool
+     * @return \Illuminate\Http\Response
      */
     public function activate(User $user)
     {
-        if ($user->is_active = $this->activationComplete($user)) {
-            $user->save();
+        if ($this->activationComplete($user)) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
@@ -136,13 +135,26 @@ class UserApiController extends AdminBaseController
      * not activate user
      *
      * @param User $user
-     * @return bool
+     * @return \Illuminate\Http\Response
      */
     public function notActivate(User $user)
     {
         if ($this->activationRemove($user)) {
-            $user->is_active = false;
-            $user->save();
+            return response()->json(['result' => 'success']);
+        }
+        return response()->json(['result' => 'error']);
+    }
+
+    /**
+     * group action method
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function groupAction(Request $request)
+    {
+        $action = camel_case($request->input('action')) . 'GroupAction';
+        if ( $this->$action(User::class, $request->input('id')) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
