@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        dd($user);
+        return view(config('laravel-user-module.views.user.show'), compact('user'));
     }
 
     /**
