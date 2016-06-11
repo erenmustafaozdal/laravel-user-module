@@ -74,7 +74,7 @@ abstract class AdminBaseController extends Controller
                 'destroy'   => route('api.user.destroy', ['id' => $model->id]),
             ];
             foreach($addUrls as $key => $value){
-                if ($value['id']) {
+                if (isset($value['id']) && $value['id']) {
                     $urls[$key] = route($value['route'], ['id' => $model->id]);
                     continue;
                 }
@@ -222,6 +222,8 @@ abstract class AdminBaseController extends Controller
             if ( ! Activation::complete($user, $activation->code)) {
                 throw new ActivateException($user->id, $activation->code, 'fail');
             }
+            $user->is_active = true;
+            $user->save();
             event(new ActivateSuccess($user));
             return true;
         } catch (ActivateException $e) {
@@ -245,12 +247,62 @@ abstract class AdminBaseController extends Controller
             if ( ! Activation::remove($user)) {
                 throw new ActivateException($user, $activation->code, 'not_remove');
             }
+            $user->is_active = false;
+            $user->save();
             event(new ActivateRemove($user));
             return true;
         } catch (ActivateException $e) {
             event(new ActivateFail($e->getId(),$e->getActivationCode(), $e->getType()));
             return false;
         }
+    }
+
+    /**
+     * activate group action
+     *
+     * @param $class
+     * @param array $ids
+     * @return boolean
+     */
+    protected function activateGroupAction($class, $ids)
+    {
+        $users = $class::whereIn('id', $ids)->get();
+        foreach($users as $user) {
+            $this->activationComplete($user);
+        }
+        return true;
+    }
+
+    /**
+     * not activate group action
+     *
+     * @param $class
+     * @param array $ids
+     * @return boolean
+     */
+    protected function notActivateGroupAction($class, $ids)
+    {
+        $users = $class::whereIn('id', $ids)->get(['id']);
+        foreach($users as $user) {
+            $this->activationRemove($user);
+        }
+        return true;
+    }
+
+    /**
+     * destroy group action
+     *
+     * @param $class
+     * @param array $ids
+     * @return boolean
+     */
+    protected function destroyGroupAction($class, $ids)
+    {
+        $result = $class::destroy($ids);
+        if ( is_integer($result) && $result > 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
