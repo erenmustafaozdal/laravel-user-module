@@ -165,7 +165,7 @@
                 {{-- /Table Actions --}}
 
                 {{-- DataTable --}}
-                <table class="table table-striped table-bordered table-hover table-checkable responsive lmcDataTable">
+                <table class="table table-striped table-bordered table-hover table-checkable lmcDataTable">
                     <thead>
                         <tr role="row" class="heading">
                             <th class="all" width="2%"> <input type="checkbox" class="group-checkable"> </th>
