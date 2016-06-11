@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 use App\Http\Requests;
 use Yajra\Datatables\Facades\Datatables;
