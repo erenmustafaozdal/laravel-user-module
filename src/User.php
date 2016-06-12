@@ -49,7 +49,7 @@ class User extends SentinelUser
      */
     public function getPhoto($attributes = [], $type='thumbnail', $onlyUrl = false)
     {
-        $src = config('laravel-user-module.user.avatar_url');
+        $src = config('laravel-user-module.user.avatar.'.$type);
         $attr = '';
         if( ! is_null($this->photo)) {
             $src = config('laravel-user-module.user.upload_photo.url')."/{$this->id}/{$type}/{$this->photo}";
@@ -189,6 +189,16 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the last_login attribute for humans.
+     *
+     * @return string
+     */
+    public function getLastLoginForHumansAttribute()
+    {
+        return (is_null($this->last_login)) ? null : Carbon::parse($this->last_login)->diffForHumans();
+    }
+
+    /**
      * Get the login_at attribute for datatable.
      *
      * @return array
@@ -196,7 +206,7 @@ class User extends SentinelUser
     public function getLastLoginTableAttribute()
     {
         return is_null($this->last_login) ? ['display' => '', 'timestamp' => ''] : [
-            'display'       => Carbon::parse($this->last_login)->diffForHumans(),
+            'display'       => $this->last_login_for_humans,
             'timestamp'     => Carbon::parse($this->last_login)->timestamp,
         ];
     }
@@ -213,6 +223,16 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the created_at attribute for humans.
+     *
+     * @return string
+     */
+    public function getCreatedAtForHumansAttribute()
+    {
+        return Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    /**
      * Get the created_at attribute for datatable.
      *
      * @return array
@@ -220,7 +240,7 @@ class User extends SentinelUser
     public function getCreatedAtTableAttribute()
     {
         return [
-            'display'       => Carbon::parse($this->created_at)->diffForHumans(),
+            'display'       => $this->created_at_for_humans,
             'timestamp'     => Carbon::parse($this->created_at)->timestamp,
         ];
     }
@@ -237,6 +257,16 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the updated_at attribute for humans.
+     *
+     * @return string
+     */
+    public function getUpdatedAtForHumansAttribute()
+    {
+        return Carbon::parse($this->updated_at)->diffForHumans();
+    }
+
+    /**
      * Get the updated_at attribute for datatable.
      *
      * @return array
@@ -244,7 +274,7 @@ class User extends SentinelUser
     public function getUpdatedAtTableAttribute()
     {
         return [
-            'display'       => Carbon::parse($this->updated_at)->diffForHumans(),
+            'display'       => $this->updated_at_for_humans,
             'timestamp'     => Carbon::parse($this->updated_at)->timestamp,
         ];
     }

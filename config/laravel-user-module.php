@@ -72,7 +72,10 @@ return [
     |--------------------------------------------------------------------------
     */
     'user' => [
-        'avatar_url'                => 'vendor/laravel-modules-core/assets/global/img/avatar.png',
+        'avatar' => [
+            'thumbnail'             => 'vendor/laravel-modules-core/assets/global/img/avatar_thumbnail.jpg',
+            'original'              => 'vendor/laravel-modules-core/assets/global/img/avatar_original.jpg',
+        ],
         'upload_photo' => [
             'url'                   => 'uploads/user', // + /{id}/original && /{id}/thumbnail
             'thumbnail_size' => [
