@@ -5,6 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Base\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
+use Laracasts\Flash\Flash;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use DB;
 use App\User;
@@ -160,10 +161,10 @@ abstract class AdminBaseController extends Controller
      * @param $model
      * @param $request
      * @param bool|false $imageColumn
-     * @param string $path
+     * @param string|null $path
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function updateModel($model, $request, $imageColumn = false, $path = "index")
+    public function updateModel($model, $request, $imageColumn = false, $path = null)
     {
         DB::beginTransaction();
         try {
@@ -173,17 +174,27 @@ abstract class AdminBaseController extends Controller
             }
 
             // eğer üye güncelleme ise is_active durumuna göre aktivasyon işlemi yap
-            if ($model instanceof User && $request->has('is_active')) {
+            if ($model instanceof User) {
                 $request->has('is_active') ? $this->activationComplete($model) : $this->activationRemove($model);
             }
 
             event(new UpdateSuccess($model));
             DB::commit();
-            return response()->json(['result' => 'success']);
+
+            if (is_null($path)) {
+                return response()->json(['result' => 'success']);
+            }
+            Flash::success(lmcTrans('laravel-user-module/admin.flash.update_success'));
         } catch (UpdateException $e) {
             DB::rollback();
             event(new UpdateFail($e->getDatas()));
-            return response()->json(['result' => 'error']);
+
+            if (is_null($path)) {
+                return response()->json(['result' => 'error']);
+            }
+            Flash::error(lmcTrans('laravel-user-module/admin.flash.update_error'));
+        } finally {
+            return $this->redirectRoute($path, $model);
         }
     }
 
@@ -306,18 +317,6 @@ abstract class AdminBaseController extends Controller
     }
 
     /**
-     * Get data, if image column is passed, upload it
-     *
-     * @param $request
-     * @param $imageColumn
-     * @return mixed
-     */
-    protected function getData($request, $imageColumn)
-    {
-        return $imageColumn === false ? $request->all() : $this->uploadImage($request, $imageColumn);
-    }
-
-    /**
      * Upload the image and return the data
      *
      * @param $request
@@ -351,5 +350,45 @@ abstract class AdminBaseController extends Controller
         return empty($this->model) ?
             explode('Controller', substr(strrchr(get_class($this), '\\'), 1))[0]  :
             $this->model;
+    }
+
+    /**
+     * Get data, if image column is passed, upload it
+     *
+     * @param $request
+     * @param $imageColumn
+     * @return mixed
+     */
+    protected function getData($request, $imageColumn)
+    {
+        return $imageColumn === false ? $request->all() : $this->uploadImage($request, $imageColumn);
+    }
+
+    /**
+     * return redirect url path
+     *
+     * @param string $path
+     * @param boolean|false $model
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    protected function redirectRoute($path, $model = false)
+    {
+        if ($model) {
+            return redirect( route($this->routePath($path), ['id' => $model->id]) );
+        }
+        return redirect( route($this->routePath($path)) );
+
+    }
+
+
+    /**
+     * Returns route path as string
+     *
+     * @param string $path
+     * @return string
+     */
+    public function routePath($path = "index")
+    {
+        return 'admin.' . snake_case($this->model) . '.' . $path;
     }
 }

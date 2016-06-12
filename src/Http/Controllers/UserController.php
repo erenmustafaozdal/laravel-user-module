@@ -5,10 +5,14 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\User;
 
-class UserController extends Controller
+use ErenMustafaOzdal\LaravelUserModule\Base\Controllers\AdminBaseController;
+// requests
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
+
+class UserController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.
@@ -33,10 +37,10 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         //
     }
@@ -66,13 +70,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  UpdateRequest  $request
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        return $this->updateModel($user,$request,false,'show');
     }
 
     /**
