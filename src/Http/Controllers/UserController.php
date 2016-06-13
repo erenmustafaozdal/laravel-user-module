@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 
-use ErenMustafaOzdal\LaravelUserModule\Base\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
