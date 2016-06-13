@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Facades\Datatables;
 use Laracasts\Flash\Flash;
+use Intervention\Image\ImageManager;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use DB;
 use App\User;
@@ -328,6 +329,8 @@ abstract class AdminBaseController extends Controller
         $data = $request->except($field);
         if ($request->file($field)) {
             $file = $request->file($field);
+            $originalName = $file->getClientOriginalName();
+            $originalExt = $file->getClientOriginalExtension();
             $request->file($field);
             $fileName = rename_file($file->getClientOriginalName(), $file->getClientOriginalExtension());
             $path = $this->getUploadPath($field);

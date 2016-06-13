@@ -84,6 +84,11 @@ Route::group([
     ]);
 
     /*==========  User Module  ==========*/
+    // upload user template profile photo
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-temp-photo',  [
+        'as' => 'admin.user.temp_photo',
+        'uses' => 'UserController@tempPhoto'
+    ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
             'index'     => 'admin.user.index',
@@ -114,22 +119,22 @@ Route::group([
 
     /*==========  User Module  ==========*/
     // data table detail row
-    Route::get('user/detail/{id}',  [
+    Route::get('user/{id}/detail',  [
         'as' => 'api.user.detail',
         'uses' => 'UserApiController@userDetail'
     ]);
     // get user edit data for modal edit
-    Route::post('user/fast-edit/{'. config('laravel-user-module.url.user') .'}',  [
+    Route::post('user/{' . config('laravel-user-module.url.user') . '}/fast-edit',  [
         'as' => 'api.user.fast_edit',
         'uses' => 'UserApiController@userForFastEdit'
     ]);
     // api activate user
-    Route::post('user/activate/{'. config('laravel-user-module.url.user') .'}',  [
+    Route::post('user/{' . config('laravel-user-module.url.user') . '}/activate',  [
         'as' => 'api.user.activate',
         'uses' => 'UserApiController@activate'
     ]);
     // api not activate user
-    Route::post('user/not-activate/{'. config('laravel-user-module.url.user') .'}',  [
+    Route::post('user/{' . config('laravel-user-module.url.user') . '}/not-activate',  [
         'as' => 'api.user.not_activate',
         'uses' => 'UserApiController@notActivate'
     ]);
