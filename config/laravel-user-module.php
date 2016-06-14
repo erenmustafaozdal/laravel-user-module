@@ -76,11 +76,13 @@ return [
             'thumbnail'             => 'vendor/laravel-modules-core/assets/global/img/avatar_thumbnail.jpg',
             'original'              => 'vendor/laravel-modules-core/assets/global/img/avatar_original.jpg',
         ],
-        'upload_photo' => [
-            'url'                   => 'uploads/user', // + /{id}/original && /{id}/thumbnail
-            'thumbnail_size' => [
-                'width'             => '',
-                'height'            => '',
+        'uploads' => [
+            'column'                => 'photo',
+            'path'                  => 'user', // + /{id}/original && /{id}/thumbnail
+            // bütün küçük resim boyutları
+            'thumbnails' => [
+                'thumbnail'         => [ 'width' => 0, 'height' => 0],
+                'icon'              => [ 'width' => 0, 'height' => 0],
             ]
         ]
     ],

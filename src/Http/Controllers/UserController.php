@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Repositories\ImageRepository;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
@@ -94,12 +95,13 @@ class UserController extends AdminBaseController
     /**
      * uploaded temp photo for this user
      *
+     * @param ImageRepository $image
      * @param PhotoRequest $request
      * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function tempPhoto(PhotoRequest $request, User $user)
+    public function tempPhoto(ImageRepository $image, PhotoRequest $request, User $user)
     {
-        return $this->uploadImage($request,'photo');
+        return $image->uploadPhoto($user, $request, config('laravel-user-module.user.uploads'), true);
     }
 }

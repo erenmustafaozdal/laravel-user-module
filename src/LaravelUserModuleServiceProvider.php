@@ -40,17 +40,8 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleComposerServiceProvider');
-        $this->app->register('Illuminate\Html\HtmlServiceProvider');
-        $this->app->register('Laracasts\Flash\FlashServiceProvider');
+        $this->app->register('ErenMustafaOzdal\LaravelModulesBase\LaravelModulesBaseServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
-        $this->app->register('Yajra\Datatables\DatatablesServiceProvider');
-
-        $this->app->booting(function()
-        {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Html', 'Illuminate\Html\HtmlFacade');
-            $loader->alias('Form', 'Illuminate\Html\FormFacade');
-        });
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-user-module.php', 'laravel-user-module'
