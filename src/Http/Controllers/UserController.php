@@ -102,6 +102,10 @@ class UserController extends AdminBaseController
      */
     public function tempPhoto(ImageRepository $image, PhotoRequest $request, User $user)
     {
-        return $image->uploadPhoto($user, $request, config('laravel-user-module.user.uploads'), true);
+        $photo = $image->uploadPhoto($user, $request, config('laravel-user-module.user.uploads'), true);
+        if ($photo) {
+            return response()->json($photo);
+        }
+        return response()->json(['result' => 'not_file']);
     }
 }
