@@ -84,6 +84,11 @@ Route::group([
     ]);
 
     /*==========  User Module  ==========*/
+    // change password
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/change-password',  [
+        'as' => 'admin.user.changePassword',
+        'uses' => 'UserController@changePassword'
+    ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
             'index'     => 'admin.user.index',

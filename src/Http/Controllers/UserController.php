@@ -9,6 +9,7 @@ use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PasswordRequest;
 
 class UserController extends AdminBaseController
 {
@@ -77,6 +78,18 @@ class UserController extends AdminBaseController
         $result = $this->updateModel($user,$request,false,'show');
         $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
         return $result;
+    }
+
+    /**
+     * change user password
+     *
+     * @param  PasswordRequest  $request
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(PasswordRequest $request, User $user)
+    {
+        return $this->updateModel($user,$request,false,'show');
     }
 
     /**
