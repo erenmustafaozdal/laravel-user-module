@@ -2,13 +2,10 @@
 
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
-use ErenMustafaOzdal\LaravelModulesBase\Repositories\ImageRepository;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
@@ -78,7 +75,9 @@ class UserController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        return $this->updateModel($user,$request,false,'show');
+        $result = $this->updateModel($user,$request,false,'show');
+        $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
+        return $result;
     }
 
     /**
@@ -95,17 +94,12 @@ class UserController extends AdminBaseController
     /**
      * uploaded temp photo for this user
      *
-     * @param ImageRepository $image
      * @param PhotoRequest $request
      * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function tempPhoto(ImageRepository $image, PhotoRequest $request, User $user)
+    public function avatarPhoto(PhotoRequest $request, User $user)
     {
-        $photo = $image->uploadPhoto($user, $request, config('laravel-user-module.user.uploads'), true);
-        if ($photo) {
-            return response()->json($photo);
-        }
-        return response()->json(['result' => 'not_file']);
+        return $this->updateModel($user, $request, config('laravel-user-module.user.uploads'));
     }
 }

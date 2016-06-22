@@ -78,11 +78,23 @@ return [
         ],
         'uploads' => [
             'column'                => 'photo',
-            'path'                  => 'user', // + /{id}/original && /{id}/thumbnail
+            'path'                  => 'uploads/user', // + /{id}/original && /{id}/thumbnail
             // bütün küçük resim boyutları
+            // thumbnails fotoğrafları yüklenirken bakılır:
+            // 1. eğer post olarak x1, y1, x2, y2, width ve height değerleri gönderilmemiş ise bu değerlere göre aşağıda
+            //      belirtilen resimleri sistem içine kaydeder. Yani bu değerler post edilmişse aşağıdaki değerleri yok sayar
+            // 2. Eğer yukarıdaki ilgili değerler post edilmemişse, aşağıdaki değerleri dikkate alarak thumbnails oluşturur
+
+            // Ölçü Belirtme
+            // 1. istenen resmin width ve height değerleri verilerek istenen net bir ölçüde resimler oluşturulabilir
+            // 2. width değeri null verilerek, height değerine göre ölçeklenebilir
+            // 3. height değeri null verilerek, width değerine göre ölçeklenebilir
             'thumbnails' => [
-                'thumbnail'         => [ 'width' => 0, 'height' => 0],
-                'icon'              => [ 'width' => 0, 'height' => 0],
+                'smallest'          => [ 'width' => 35, 'height' => 35],
+                'small'             => [ 'width' => 150, 'height' => 150],
+                'normal'            => [ 'width' => 300, 'height' => 300],
+                'big'               => [ 'width' => 500, 'height' => 500],
+                'biggest'           => [ 'width' => 750, 'height' => 750],
             ]
         ]
     ],

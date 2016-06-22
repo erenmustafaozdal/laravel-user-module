@@ -22,7 +22,7 @@ class User extends SentinelUser
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -43,18 +43,21 @@ class User extends SentinelUser
      * get the html photo element
      *
      * @param array $attributes
-     * @param string $type  original|thumbnail
+     * @param string $type  original or thumbnails key
      * @param boolean $onlyUrl
      * @return string
      */
-    public function getPhoto($attributes = [], $type='thumbnail', $onlyUrl = false)
+    public function getPhoto($attributes = [], $type='original', $onlyUrl = false)
     {
-        $src = config('laravel-user-module.user.avatar.'.$type);
-        $attr = '';
         if( ! is_null($this->photo)) {
-            $src = config('laravel-user-module.user.upload_photo.url')."/{$this->id}/{$type}/{$this->photo}";
+            $src  = config('laravel-user-module.user.uploads.path')."/{$this->id}/";
+            $src .= $type === 'original' ? "original/{$this->photo}" : "thumbnails/{$type}_{$this->photo}";
+        } else {
+            $type = $type === 'original' ? $type : 'thumbnail';
+            $src = config('laravel-user-module.user.avatar.'.$type);
         }
 
+        $attr = '';
         foreach($attributes as $key => $value) {
             $attr .= $key.'="'.$value.'" ';
         }

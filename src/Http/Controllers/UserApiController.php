@@ -39,7 +39,7 @@ class UserApiController extends AdminBaseController
             'fullname'          => function($model) { return $model->fullname; },
         ];
         $editColumns = [
-            'photo'             => function($model) { return $model->getPhoto([], 'thumbnail', true); },
+            'photo'             => function($model) { return $model->getPhoto([], 'smallest', true); },
             'created_at'        => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = ['is_active', 'first_name', 'last_name'];
@@ -98,7 +98,9 @@ class UserApiController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        return $this->updateModel($user, $request);
+        $result = $this->updateModel($user, $request);
+        $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
+        return $result;
     }
 
     /**

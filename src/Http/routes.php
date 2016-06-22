@@ -85,9 +85,9 @@ Route::group([
 
     /*==========  User Module  ==========*/
     // upload user template profile photo
-    Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-temp-photo',  [
-        'as' => 'admin.user.temp_photo',
-        'uses' => 'UserController@tempPhoto'
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-avatar-photo',  [
+        'as' => 'admin.user.avatar_photo',
+        'uses' => 'UserController@avatarPhoto'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
