@@ -84,11 +84,6 @@ Route::group([
     ]);
 
     /*==========  User Module  ==========*/
-    // upload user template profile photo
-    Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-avatar-photo',  [
-        'as' => 'admin.user.avatar_photo',
-        'uses' => 'UserController@avatarPhoto'
-    ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
             'index'     => 'admin.user.index',
@@ -142,6 +137,16 @@ Route::group([
     Route::post('user/group-action',  [
         'as' => 'api.user.group_action',
         'uses' => 'UserApiController@groupAction'
+    ]);
+    // upload user template profile photo
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-avatar-photo',  [
+        'as' => 'api.user.avatar_photo',
+        'uses' => 'UserApiController@avatarPhoto'
+    ]);
+    // delete user uploaded photo
+        Route::post('user/{'. config('laravel-user-module.url.user') .'}/destroy-avatar-photo',  [
+        'as' => 'api.user.destroy_avatar',
+        'uses' => 'UserApiController@destroyAvatar'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [
         'names' => [

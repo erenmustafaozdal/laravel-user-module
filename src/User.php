@@ -53,8 +53,8 @@ class User extends SentinelUser
             $src  = config('laravel-user-module.user.uploads.path')."/{$this->id}/";
             $src .= $type === 'original' ? "original/{$this->photo}" : "thumbnails/{$type}_{$this->photo}";
         } else {
-            $type = $type === 'original' ? $type : 'thumbnail';
-            $src = config('laravel-user-module.user.avatar.'.$type);
+            $type = $type === 'original' ? 'biggest' : $type;
+            $src = config('laravel-user-module.user.avatar_path') . "/{$type}.jpg";
         }
 
         $attr = '';
