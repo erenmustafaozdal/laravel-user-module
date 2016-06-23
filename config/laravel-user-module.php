@@ -72,10 +72,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'user' => [
-        'avatar' => [
-            'thumbnail'             => 'vendor/laravel-modules-core/assets/global/img/avatar_thumbnail.jpg',
-            'original'              => 'vendor/laravel-modules-core/assets/global/img/avatar_original.jpg',
-        ],
+        'avatar_path' => 'vendor/laravel-modules-core/assets/global/img/avatar',
         'uploads' => [
             'column'                => 'photo',
             'path'                  => 'uploads/user', // + /{id}/original && /{id}/thumbnail
@@ -94,7 +91,7 @@ return [
                 'small'             => [ 'width' => 150, 'height' => 150],
                 'normal'            => [ 'width' => 300, 'height' => 300],
                 'big'               => [ 'width' => 500, 'height' => 500],
-                'biggest'           => [ 'width' => 750, 'height' => 750],
+                'biggest'           => [ 'width' => 800, 'height' => 800],
             ]
         ]
     ],

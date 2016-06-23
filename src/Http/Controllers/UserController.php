@@ -9,7 +9,7 @@ use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PhotoRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PasswordRequest;
 
 class UserController extends AdminBaseController
 {
@@ -30,7 +30,7 @@ class UserController extends AdminBaseController
      */
     public function create()
     {
-        //
+        return view(config('laravel-user-module.views.user.create'));
     }
 
     /**
@@ -81,6 +81,18 @@ class UserController extends AdminBaseController
     }
 
     /**
+     * change user password
+     *
+     * @param  PasswordRequest  $request
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(PasswordRequest $request, User $user)
+    {
+        return $this->updateModel($user,$request,false,'show');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -89,17 +101,5 @@ class UserController extends AdminBaseController
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * uploaded temp photo for this user
-     *
-     * @param PhotoRequest $request
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function avatarPhoto(PhotoRequest $request, User $user)
-    {
-        return $this->updateModel($user, $request, config('laravel-user-module.user.uploads'));
     }
 }
