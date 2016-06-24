@@ -121,6 +121,16 @@ Route::group([
         'as' => 'api.role.group',
         'uses' => 'RoleApiController@group'
     ]);
+    // data table detail row
+    Route::get('role/{id}/detail',  [
+        'as' => 'api.role.detail',
+        'uses' => 'RoleApiController@detail'
+    ]);
+    // get role edit data for modal edit
+    Route::post('role/{' . config('laravel-user-module.url.role') . '}/fast-edit',  [
+        'as' => 'api.role.fast_edit',
+        'uses' => 'RoleApiController@fastEdit'
+    ]);
     Route::resource(config('laravel-user-module.url.role'), 'RoleApiController', [
         'names' => [
             'index'     => 'api.role.index',
@@ -144,7 +154,7 @@ Route::group([
     // get user edit data for modal edit
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/fast-edit',  [
         'as' => 'api.user.fast_edit',
-        'uses' => 'UserApiController@userForFastEdit'
+        'uses' => 'UserApiController@fastEdit'
     ]);
     // api activate user
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/activate',  [

@@ -10,16 +10,16 @@ class StoreSuccess extends Event
 {
     use SerializesModels;
 
-    public $user;
+    public $model;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($model)
     {
-        $this->user = $user;
+        $this->model = $model;
     }
 
     /**

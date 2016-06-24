@@ -10,6 +10,16 @@ use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
+// events
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroySuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroyFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateRemove;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateFail;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
@@ -69,13 +79,13 @@ class UserApiController extends AdminBaseController
     }
 
     /**
-     * get user data for edit
+     * get model data for edit
      *
      * @param User $user
      * @param Request $request
      * @return Datatables
      */
-    public function userForFastEdit(User $user, Request $request)
+    public function fastEdit(User $user, Request $request)
     {
         return $user;
     }
@@ -88,7 +98,12 @@ class UserApiController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        return $this->storeModel(User::class, $request);
+        return $this->storeModel(User::class, $request, [
+            'success'           => StoreSuccess::class,
+            'fail'              => StoreFail::class,
+            'activationSuccess' => ActivateSuccess::class,
+            'activationFail'    => ActivateFail::class
+        ]);
     }
 
     /**
@@ -100,7 +115,10 @@ class UserApiController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $result = $this->updateModel($user, $request);
+        $result = $this->updateModel($user, $request, [
+            'success'   => UpdateSuccess::class,
+            'fail'      => UpdateFail::class
+        ]);
         $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
         return $result;
     }
@@ -114,7 +132,10 @@ class UserApiController extends AdminBaseController
     public function destroy(User $user)
     {
         if ($user->id != Sentinel::getUser()->id) {
-            return $this->destroyModel($user);
+            return $this->destroyModel($user, [
+                'success'   => DestroySuccess::class,
+                'fail'      => DestroyFail::class
+            ]);
         } else {
             return response()->json(['result' => 'self']);
         }
@@ -128,7 +149,11 @@ class UserApiController extends AdminBaseController
      */
     public function activate(User $user)
     {
-        if ($this->activationComplete($user)) {
+        $result = $this->activationComplete($user, [
+            'activationSuccess'     => ActivateSuccess::class,
+            'activationFail'        => ActivateFail::class
+        ]);
+        if ($result) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
@@ -142,7 +167,11 @@ class UserApiController extends AdminBaseController
      */
     public function notActivate(User $user)
     {
-        if ($this->activationRemove($user)) {
+        $result = $this->activationRemove($user, [
+            'activationRemove'      => ActivateRemove::class,
+            'activationFail'        => ActivateFail::class
+        ]);
+        if ($result) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
@@ -156,8 +185,21 @@ class UserApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
+        $events = [];
+        switch($request->input('action')) {
+            case 'activate':
+                $events['activationSuccess'] = ActivateSuccess::class;
+                $events['activationFail'] = ActivateFail::class;
+                break;
+            case 'not_activate':
+                $events['activationRemove'] = ActivateRemove::class;
+                $events['activationFail'] = ActivateFail::class;
+                break;
+            case 'destroy':
+                break;
+        }
         $action = camel_case($request->input('action')) . 'GroupAction';
-        if ( $this->$action(User::class, $request->input('id')) ) {
+        if ( $this->$action(User::class, $request->input('id'), $events) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);

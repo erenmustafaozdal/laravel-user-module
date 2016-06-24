@@ -51,7 +51,7 @@ class Role extends Sentinel
         }
         // filter status
         if ($request->has('slug')) {
-            $query->where('slug',$request->get('slug'));
+            $query->where('slug', 'like', "%{$request->get('slug')}%");
         }
         // filter created_at
         if ($request->has('created_at_from')) {
@@ -82,6 +82,19 @@ class Role extends Sentinel
     public function getNameAttribute($name)
     {
         return ucfirst_tr($name);
+    }
+
+    /**
+     * Set slug encrypted
+     *
+     * @param $slug
+     */
+    public function setSlugAttribute($slug)
+    {
+        if ( ! $slug) {
+            $slug = str_slug($this->name, '-');
+        }
+        $this->attributes['slug'] =  $slug;
     }
 
     /**

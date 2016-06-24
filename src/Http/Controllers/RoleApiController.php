@@ -9,11 +9,16 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use App\Role;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
-use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
+// events
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\UpdateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\UpdateFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroySuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroyFail;
 // requests
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PhotoRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\StoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\UpdateRequest;
 
 
 class RoleApiController extends AdminBaseController
@@ -26,10 +31,10 @@ class RoleApiController extends AdminBaseController
      */
     public function index(Request $request)
     {
-        $users = Role::select(['id','name','slug','created_at']);
+        $roles = Role::select(['id','name','slug','created_at']);
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
-            $users->filter($request);
+            $roles->filter($request);
         }
 
         $addColumns = [];
@@ -37,7 +42,7 @@ class RoleApiController extends AdminBaseController
             'created_at'        => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = [];
-        return $this->getDatatables($users, $addColumns, $editColumns, $removeColumns);
+        return $this->getDatatables($roles, $addColumns, $editColumns, $removeColumns);
     }
 
     /**
@@ -49,27 +54,25 @@ class RoleApiController extends AdminBaseController
      */
     public function detail($id, Request $request)
     {
-        $user = User::where('id',$id)->with('roles')->select(['id','email','last_login','updated_at']);
+        $user = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
 
         $editColumns = [
-            'roles'         => function($model) { return $model->roles->implode('name', ', '); },
-            'last_login'    => function($model) { return $model->last_login_table; },
+            'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; }
         ];
-        $removeColumns = ['is_active', 'first_name', 'last_name'];
-        return $this->getDatatables($user, [], $editColumns, $removeColumns);
+        return $this->getDatatables($user, [], $editColumns, []);
     }
 
     /**
-     * get user data for edit
+     * get model data for edit
      *
-     * @param User $user
+     * @param Role $role
      * @param Request $request
      * @return Datatables
      */
-    public function userForFastEdit(User $user, Request $request)
+    public function fastEdit(Role $role, Request $request)
     {
-        return $user;
+        return $role;
     }
 
     /**
@@ -80,64 +83,39 @@ class RoleApiController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        return $this->storeModel(User::class, $request);
+        return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
+            'success'   => StoreSuccess::class,
+            'fail'      => StoreFail::class
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  User $user
+     * @param  Role $role
      * @param  UpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, User $user)
+    public function update(UpdateRequest $request, Role $role)
     {
-        $result = $this->updateModel($user, $request);
-        $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
-        return $result;
+        return $this->updateModel($role, $request, [
+            'success'   => UpdateSuccess::class,
+            'fail'      => UpdateFail::class
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Role $role)
     {
-        if ($user->id != Sentinel::getUser()->id) {
-            return $this->destroyModel($user);
-        } else {
-            return response()->json(['result' => 'self']);
-        }
-    }
-
-    /**
-     * activate user
-     *
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function activate(User $user)
-    {
-        if ($this->activationComplete($user)) {
-            return response()->json(['result' => 'success']);
-        }
-        return response()->json(['result' => 'error']);
-    }
-
-    /**
-     * not activate user
-     *
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function notActivate(User $user)
-    {
-        if ($this->activationRemove($user)) {
-            return response()->json(['result' => 'success']);
-        }
-        return response()->json(['result' => 'error']);
+        return $this->destroyModel($role, [
+            'success'   => DestroySuccess::class,
+            'fail'      => DestroyFail::class
+        ]);
     }
 
     /**
@@ -148,40 +126,9 @@ class RoleApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
-        $action = camel_case($request->input('action')) . 'GroupAction';
-        if ( $this->$action(User::class, $request->input('id')) ) {
+        if ( $this->destroyGroupAction(Role::class, $request->input('id'), []) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
-    }
-
-    /**
-     * destroy photo for this user
-     *
-     * @param FileRepository $file
-     * @param Request $request
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroyAvatar(FileRepository $file, Request $request, User $user)
-    {
-        $file->deleteDirectory(config('laravel-user-module.user.uploads.path') . "/{$user->id}");
-        $user->photo = NULL;
-        if ( $user->save() ) {
-            return response()->json(['result' => 'success']);
-        }
-        return response()->json(['result' => 'error']);
-    }
-
-    /**
-     * upload photo for this user
-     *
-     * @param PhotoRequest $request
-     * @param User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function avatarPhoto(PhotoRequest $request, User $user)
-    {
-        return $this->updateModel($user, $request, config('laravel-user-module.user.uploads'));
     }
 }
