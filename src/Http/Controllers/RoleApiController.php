@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use App\User;
+use App\Role;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
@@ -16,7 +16,7 @@ use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PhotoRequest;
 
 
-class UserApiController extends AdminBaseController
+class RoleApiController extends AdminBaseController
 {
     /**
      * Display a listing of the resource.
@@ -26,25 +26,17 @@ class UserApiController extends AdminBaseController
      */
     public function index(Request $request)
     {
-        $users = User::select(['id','photo','first_name','last_name', 'is_active','created_at']);
+        $users = Role::select(['id','name','slug','created_at']);
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
             $users->filter($request);
         }
 
-        $addColumns = [
-            'addUrls' => [
-                'activate'      => ['route' => 'api.user.activate', 'id' => true],
-                'not_activate'  => ['route' => 'api.user.not_activate', 'id' => true]
-            ],
-            'status'            => function($model) { return $model->is_active; },
-            'fullname'          => function($model) { return $model->fullname; },
-        ];
+        $addColumns = [];
         $editColumns = [
-            'photo'             => function($model) { return $model->getPhoto([], 'smallest', true); },
             'created_at'        => function($model) { return $model->created_at_table; }
         ];
-        $removeColumns = ['is_active', 'first_name', 'last_name'];
+        $removeColumns = [];
         return $this->getDatatables($users, $addColumns, $editColumns, $removeColumns);
     }
 
