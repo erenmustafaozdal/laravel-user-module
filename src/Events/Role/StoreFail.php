@@ -1,25 +1,25 @@
 <?php
 
-namespace ErenMustafaOzdal\LaravelUserModule\Events\User;
+namespace ErenMustafaOzdal\LaravelUserModule\Events\Role;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class DestroyFail extends Event
+class StoreFail extends Event
 {
     use SerializesModels;
 
-    public $model;
+    public $datas;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($model)
+    public function __construct($datas)
     {
-        $this->model = $model;
+        $this->datas = $datas;
     }
 
     /**

@@ -116,17 +116,45 @@ Route::group([
 ], function()
 {
     /*==========  Role Module  ==========*/
+    // api group action
+    Route::post('role/group-action',  [
+        'as' => 'api.role.group',
+        'uses' => 'RoleApiController@group'
+    ]);
+    // data table detail row
+    Route::get('role/{id}/detail',  [
+        'as' => 'api.role.detail',
+        'uses' => 'RoleApiController@detail'
+    ]);
+    // get role edit data for modal edit
+    Route::post('role/{' . config('laravel-user-module.url.role') . '}/fast-edit',  [
+        'as' => 'api.role.fast_edit',
+        'uses' => 'RoleApiController@fastEdit'
+    ]);
+    Route::resource(config('laravel-user-module.url.role'), 'RoleApiController', [
+        'names' => [
+            'index'     => 'api.role.index',
+            'store'     => 'api.role.store',
+            'update'    => 'api.role.update',
+            'destroy'   => 'api.role.destroy',
+        ]
+    ]);
 
     /*==========  User Module  ==========*/
+    // api group action
+    Route::post('user/group-action',  [
+        'as' => 'api.user.group',
+        'uses' => 'UserApiController@group'
+    ]);
     // data table detail row
     Route::get('user/{id}/detail',  [
         'as' => 'api.user.detail',
-        'uses' => 'UserApiController@userDetail'
+        'uses' => 'UserApiController@detail'
     ]);
     // get user edit data for modal edit
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/fast-edit',  [
         'as' => 'api.user.fast_edit',
-        'uses' => 'UserApiController@userForFastEdit'
+        'uses' => 'UserApiController@fastEdit'
     ]);
     // api activate user
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/activate',  [
@@ -137,11 +165,6 @@ Route::group([
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/not-activate',  [
         'as' => 'api.user.not_activate',
         'uses' => 'UserApiController@notActivate'
-    ]);
-    // api group action
-    Route::post('user/group-action',  [
-        'as' => 'api.user.group_action',
-        'uses' => 'UserApiController@groupAction'
     ]);
     // upload user template profile photo
     Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-avatar-photo',  [

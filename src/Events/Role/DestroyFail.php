@@ -1,6 +1,6 @@
 <?php
 
-namespace ErenMustafaOzdal\LaravelUserModule\Events\User;
+namespace ErenMustafaOzdal\LaravelUserModule\Events\Role;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;

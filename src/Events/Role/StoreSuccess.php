@@ -1,12 +1,12 @@
 <?php
 
-namespace ErenMustafaOzdal\LaravelUserModule\Events\User;
+namespace ErenMustafaOzdal\LaravelUserModule\Events\Role;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class DestroyFail extends Event
+class StoreSuccess extends Event
 {
     use SerializesModels;
 

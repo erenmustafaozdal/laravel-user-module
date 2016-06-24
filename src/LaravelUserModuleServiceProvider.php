@@ -53,5 +53,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
 
         // model binding
         $router->model(config('laravel-user-module.url.user'),  'App\User');
+        $router->model(config('laravel-user-module.url.role'),  'App\Role');
     }
 }
