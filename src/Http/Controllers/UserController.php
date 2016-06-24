@@ -30,6 +30,11 @@ class UserController extends AdminBaseController
      */
     public function create()
     {
+        $routeCollection = \Route::getRoutes();
+        foreach($routeCollection as $value) {
+            dd($value->getName());
+        }
+        dd(1);
         return view(config('laravel-user-module.views.user.create'));
     }
 
