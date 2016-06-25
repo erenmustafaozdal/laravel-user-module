@@ -27,7 +27,7 @@ class RoleController extends AdminBaseController
      */
     public function create()
     {
-        //
+        return view(config('laravel-user-module.views.role.create'));
     }
 
     /**
