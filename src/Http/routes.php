@@ -172,7 +172,7 @@ Route::group([
         'uses' => 'UserApiController@avatarPhoto'
     ]);
     // delete user uploaded photo
-        Route::post('user/{'. config('laravel-user-module.url.user') .'}/destroy-avatar-photo',  [
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/destroy-avatar-photo',  [
         'as' => 'api.user.destroy_avatar',
         'uses' => 'UserApiController@destroyAvatar'
     ]);

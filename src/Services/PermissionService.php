@@ -54,9 +54,7 @@ class PermissionService
     protected function takeNames()
     {
         foreach($this->routeCollection as $route) {
-            if ( ! $this->detect($route) ) {
-                continue;
-            }
+            $this->detect($route);
         }
     }
 
@@ -80,17 +78,23 @@ class PermissionService
         }
 
         $subRoute = substr( strchr($routeName, '.'), 1);
+        $transaction = substr( strchr($subRoute, '.'), 1);
+        // eğer api ise create, show ve edit iptal et
+        if ($prefix === 'api' && in_array($transaction, ['create','show','edit'])) {
+            return false;
+        }
+
         $namespace = $this->getHyphenNameSpace($action['namespace']);
         $parts = explode('\\', strchr($action['controller'], '@', true));
         $controller = end($parts);
 
-        $this->allRouteNames['all']->put($subRoute, [
+        $this->allRouteNames['all']->put($routeName, [
             'namespace'     => $namespace,
             'controller'    => $controller,
             'route'         => $routeName,
             'sub_route'     => $subRoute
         ]);
-        $this->allRouteNames[$prefix]->put($subRoute, [
+        $this->allRouteNames[$prefix]->put($routeName, [
             'namespace'     => $namespace,
             'controller'    => $controller,
             'route'         => $routeName,
@@ -174,7 +178,26 @@ class PermissionService
     {
         return $this->getAllNames()->groupBy(function ($item, $key)
         {
-            return $item['controller'];
+            if ( $item['namespace'] === 'laravel-modules-core' ) {
+                return "{$item['namespace']}::admin.permission.{$item['controller']}";
+            }
+            return "laravel-modules-core::{$item['namespace']}/admin.permission.{$item['controller']}";
+        })->sortBy(function ($item, $key) {
+            return $key;
+        });
+    }
+
+    /**
+     * get route names for the blade
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function namesForBlade()
+    {
+        return $this->groupByController()->each(function ($item, $key)
+        {
+            $item["{$item[0]['namespace']}::admin.permission.{$key}"] = $item;
+            return $item;
         });
     }
 
