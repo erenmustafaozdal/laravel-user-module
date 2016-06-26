@@ -5,8 +5,20 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use App\Role;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+// events
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\UpdateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\UpdateFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroySuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroyFail;
+// requests
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\StoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\UpdateRequest;
 
 class RoleController extends AdminBaseController
 {
@@ -33,23 +45,26 @@ class RoleController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
+            'success'   => StoreSuccess::class,
+            'fail'      => StoreFail::class
+        ], [], 'index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Role  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        return view(config('laravel-user-module.views.role.show'));
     }
 
     /**
