@@ -59,12 +59,12 @@ class RoleController extends AdminBaseController
     /**
      * Display the specified resource.
      *
-     * @param  Role  $id
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
     public function show(Role $role)
     {
-        return view(config('laravel-user-module.views.role.show'));
+        return view(config('laravel-user-module.views.role.show'), compact('role'));
     }
 
     /**
@@ -81,23 +81,29 @@ class RoleController extends AdminBaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  UpdateRequest  $request
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Role $role)
     {
-        //
+        return $this->updateModel($role,$request, [
+            'success'   => UpdateSuccess::class,
+            'fail'      => UpdateFail::class
+        ], [],'show');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        return $this->destroyModel($role, [
+            'success'   => DestroySuccess::class,
+            'fail'      => DestroyFail::class
+        ], 'index');
     }
 }
