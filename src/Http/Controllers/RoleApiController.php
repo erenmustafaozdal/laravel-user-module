@@ -37,7 +37,11 @@ class RoleApiController extends AdminBaseController
             $roles->filter($request);
         }
 
-        $addColumns = [];
+        $addColumns = [
+            'addUrls' => [
+                'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
+            ]
+        ];
         $editColumns = [
             'created_at'        => function($model) { return $model->created_at_table; }
         ];

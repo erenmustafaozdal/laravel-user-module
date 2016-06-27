@@ -70,12 +70,12 @@ class RoleController extends AdminBaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Role $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        return view(config('laravel-user-module.views.role.edit'), compact('role'));
     }
 
     /**
