@@ -210,4 +210,15 @@ class PermissionService
     {
         return $this->getAllNames()->count();
     }
+
+    /**
+     * get permission rate
+     *
+     * @param integer $count
+     * @return integer
+     */
+    public function permissionRate($count)
+    {
+        return intval( $count * 100 / $this->getAllNames()->count() );
+    }
 }

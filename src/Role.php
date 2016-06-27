@@ -98,6 +98,17 @@ class Role extends Sentinel
     }
 
     /**
+     * Get the permissions attribute.
+     *
+     * @param  string $permissions
+     * @return string
+     */
+    public function getPermissionsAttribute($permissions)
+    {
+        return $permissions ? collect( json_decode($permissions, true) ) : collect();
+    }
+
+    /**
      * Get the created_at attribute.
      *
      * @param  $date
