@@ -135,4 +135,16 @@ class RoleApiController extends AdminBaseController
         }
         return response()->json(['result' => 'error']);
     }
+
+    /**
+     * get roles with query
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function models(Request $request)
+    {
+        return Role::where('name', 'like', "%{$request->input('query')}%")
+            ->orWhere('slug', 'like', "%{$request->input('query')}%")->get(['id','name']);
+    }
 }

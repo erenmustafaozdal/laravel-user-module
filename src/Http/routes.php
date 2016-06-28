@@ -116,6 +116,11 @@ Route::group([
 ], function()
 {
     /*==========  Role Module  ==========*/
+    // api roles
+    Route::post('role/models',  [
+        'as' => 'api.role.models',
+        'uses' => 'RoleApiController@models'
+    ]);
     // api group action
     Route::post('role/group-action',  [
         'as' => 'api.role.group',
