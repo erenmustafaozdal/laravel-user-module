@@ -6,6 +6,16 @@ use App\Http\Requests;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+// events
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\UpdateFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroySuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\User\DestroyFail;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateSuccess;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateRemove;
+use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateFail;
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
@@ -41,7 +51,12 @@ class UserController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        //
+        return $this->storeModel(User::class, $request, [
+            'success'           => StoreSuccess::class,
+            'fail'              => StoreFail::class,
+            'activationSuccess' => ActivateSuccess::class,
+            'activationFail'    => ActivateFail::class
+        ], config('laravel-user-module.user.uploads'), 'index');
     }
 
     /**

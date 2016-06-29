@@ -37,7 +37,11 @@ class RoleApiController extends AdminBaseController
             $roles->filter($request);
         }
 
-        $addColumns = [];
+        $addColumns = [
+            'addUrls' => [
+                'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
+            ]
+        ];
         $editColumns = [
             'created_at'        => function($model) { return $model->created_at_table; }
         ];
@@ -130,5 +134,17 @@ class RoleApiController extends AdminBaseController
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
+    }
+
+    /**
+     * get roles with query
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function models(Request $request)
+    {
+        return Role::where('name', 'like', "%{$request->input('query')}%")
+            ->orWhere('slug', 'like', "%{$request->input('query')}%")->get(['id','name']);
     }
 }

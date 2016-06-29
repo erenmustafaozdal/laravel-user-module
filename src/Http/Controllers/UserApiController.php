@@ -45,7 +45,8 @@ class UserApiController extends AdminBaseController
         $addColumns = [
             'addUrls' => [
                 'activate'      => ['route' => 'api.user.activate', 'id' => true],
-                'not_activate'  => ['route' => 'api.user.not_activate', 'id' => true]
+                'not_activate'  => ['route' => 'api.user.not_activate', 'id' => true],
+                'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
             ],
             'status'            => function($model) { return $model->is_active; },
             'fullname'          => function($model) { return $model->fullname; },
@@ -232,6 +233,9 @@ class UserApiController extends AdminBaseController
      */
     public function avatarPhoto(PhotoRequest $request, User $user)
     {
-        return $this->updateModel($user, $request, config('laravel-user-module.user.uploads'));
+        return $this->updateModel($user, $request, [
+            'success'   => UpdateSuccess::class,
+            'fail'      => UpdateFail::class
+        ], config('laravel-user-module.user.uploads'));
     }
 }
