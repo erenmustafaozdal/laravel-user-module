@@ -23,7 +23,7 @@ class User extends SentinelUser
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -216,6 +216,17 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the permissions attribute.
+     *
+     * @param  string $permissions
+     * @return string
+     */
+    public function getPermissionsAttribute($permissions)
+    {
+        return $permissions ? collect( json_decode($permissions, true) ) : collect();
+    }
+
+    /**
      * Get the created_at attribute.
      *
      * @param  $date
@@ -312,18 +323,4 @@ class User extends SentinelUser
             }
         });
     }
-
-
-    /**
-     * Set the roles attribute.
-     *
-     * @param boolean $value
-     * @return string
-     */
-    //public function setRolesAttribute($value)
-    //{
-    //    $roles = Sentinel::getRoleRepository()->createModel();
-    //    dd($value);
-    //    $this->attributes['is_active'] = $value == 1 || $value === 'true' || $value === true ? true : false;
-    //}
 }
