@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 
 class User extends SentinelUser
 {
@@ -281,4 +282,48 @@ class User extends SentinelUser
             'timestamp'     => Carbon::parse($this->updated_at)->timestamp,
         ];
     }
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * model boot method
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * model saved metod
+         *
+         * @param $user
+         */
+        parent::saved(function($user)
+        {
+            if (Request::has('roles')) {
+                $user->roles()->sync( Request::get('roles') );
+            }
+        });
+    }
+
+
+    /**
+     * Set the roles attribute.
+     *
+     * @param boolean $value
+     * @return string
+     */
+    //public function setRolesAttribute($value)
+    //{
+    //    $roles = Sentinel::getRoleRepository()->createModel();
+    //    dd($value);
+    //    $this->attributes['is_active'] = $value == 1 || $value === 'true' || $value === true ? true : false;
+    //}
 }
