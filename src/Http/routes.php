@@ -89,6 +89,11 @@ Route::group([
         'as' => 'admin.user.changePassword',
         'uses' => 'UserController@changePassword'
     ]);
+    // permission change
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/change-permission',  [
+        'as' => 'admin.user.permission',
+        'uses' => 'UserController@permission'
+    ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
             'index'     => 'admin.user.index',

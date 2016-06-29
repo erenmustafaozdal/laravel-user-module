@@ -120,7 +120,15 @@ class UserApiController extends AdminBaseController
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
-        $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
+
+        // activation
+        $request->has('is_active') ? $this->activationComplete($this->model, [
+            'activationSuccess'     => ActivateSuccess::class,
+            'activationFail'        => ActivateFail::class
+        ]) : $this->activationRemove($this->model, [
+            'activationRemove'      => ActivateRemove::class,
+            'activationFail'        => ActivateFail::class
+        ]);
         return $result;
     }
 
@@ -233,6 +241,9 @@ class UserApiController extends AdminBaseController
      */
     public function avatarPhoto(PhotoRequest $request, User $user)
     {
-        return $this->updateModel($user, $request, config('laravel-user-module.user.uploads'));
+        return $this->updateModel($user, $request, [
+            'success'   => UpdateSuccess::class,
+            'fail'      => UpdateFail::class
+        ], config('laravel-user-module.user.uploads'));
     }
 }

@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 
 class User extends SentinelUser
 {
@@ -22,7 +23,7 @@ class User extends SentinelUser
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -215,6 +216,17 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the permissions attribute.
+     *
+     * @param  string $permissions
+     * @return string
+     */
+    public function getPermissionsAttribute($permissions)
+    {
+        return $permissions ? collect( json_decode($permissions, true) ) : collect();
+    }
+
+    /**
      * Get the created_at attribute.
      *
      * @param  $date
@@ -280,5 +292,35 @@ class User extends SentinelUser
             'display'       => $this->updated_at_for_humans,
             'timestamp'     => Carbon::parse($this->updated_at)->timestamp,
         ];
+    }
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model Events
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * model boot method
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * model saved metod
+         *
+         * @param $user
+         */
+        parent::saved(function($user)
+        {
+            if (Request::has('roles')) {
+                $user->roles()->sync( Request::get('roles') );
+            }
+        });
     }
 }
