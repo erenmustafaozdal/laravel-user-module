@@ -36,7 +36,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     {
         $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleComposerServiceProvider');
         $this->app->register('ErenMustafaOzdal\LaravelModulesBase\LaravelModulesBaseServiceProvider');
-        $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/laravel-user-module.php', 'laravel-user-module'
