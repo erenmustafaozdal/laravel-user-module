@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use App\Role;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
@@ -58,13 +58,13 @@ class RoleApiController extends AdminBaseController
      */
     public function detail($id, Request $request)
     {
-        $user = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
+        $role = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
 
         $editColumns = [
             'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; }
         ];
-        return $this->getDatatables($user, [], $editColumns, []);
+        return $this->getDatatables($role, [], $editColumns, []);
     }
 
     /**

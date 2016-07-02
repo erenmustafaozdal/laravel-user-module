@@ -23,7 +23,7 @@ class User extends SentinelUser
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -182,6 +182,17 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the is_super_admin attribute.
+     *
+     * @param boolean $value
+     * @return string
+     */
+    public function getIsSuperAdminAttribute($value)
+    {
+        return $value == 1 ? true : false;
+    }
+
+    /**
      * Get the login_at attribute.
      *
      * @param  $date
@@ -213,6 +224,35 @@ class User extends SentinelUser
             'display'       => $this->last_login_for_humans,
             'timestamp'     => Carbon::parse($this->last_login)->timestamp,
         ];
+    }
+
+    /**
+     * Get the permissions attribute.
+     *
+     * @param array $value
+     * @return string
+     */
+    public function getPermissionsAttribute($value)
+    {
+        if ( ! $value) {
+            return [];
+        }
+
+        $permissions = [];
+        foreach(json_decode($value, true) as $route => $permission) {
+            $permissions[$route] = $permission ? true : false;
+        }
+        return $permissions;
+    }
+
+    /**
+     * Get the permission collect attribute.
+     *
+     * @return string
+     */
+    public function getPermissionCollectAttribute()
+    {
+        return $this->permissions ? collect( $this->permissions ) : collect();
     }
 
     /**
@@ -312,18 +352,4 @@ class User extends SentinelUser
             }
         });
     }
-
-
-    /**
-     * Set the roles attribute.
-     *
-     * @param boolean $value
-     * @return string
-     */
-    //public function setRolesAttribute($value)
-    //{
-    //    $roles = Sentinel::getRoleRepository()->createModel();
-    //    dd($value);
-    //    $this->attributes['is_active'] = $value == 1 || $value === 'true' || $value === true ? true : false;
-    //}
 }

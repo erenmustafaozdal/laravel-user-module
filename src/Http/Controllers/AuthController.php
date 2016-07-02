@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
@@ -43,7 +43,7 @@ class AuthController extends Controller
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
+     * @return mixed
      */
     public function __construct()
     {

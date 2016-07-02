@@ -4,7 +4,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 
 class RedirectIfAuthenticated
 {

@@ -20,7 +20,6 @@
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "~5",
-        "cartalyst/sentinel": "2.0.*",
         "erenmustafaozdal/laravel-modules-base": "*"
     },
     "require-dev": {

@@ -18,8 +18,8 @@ class LaravelUserModuleListener
     /**
      * Create the event handler.
      *
-     * @param   Request     $request
-     * @return void
+     * @param Request $request
+     * @return mixed
      */
     public function __construct(Request $request)
     {
@@ -55,7 +55,7 @@ class LaravelUserModuleListener
         ];
         Mail::queue(config('laravel-user-module.views.email.activation'), $datas, function($message) use($email,$name) {
             $message->to($email, $name)
-                ->subject(trans('laravel-user-module::auth.activation.mail_subject'));
+                ->subject(lmcTrans('laravel-user-module/auth.activation.mail_subject'));
         });
     }
     /**

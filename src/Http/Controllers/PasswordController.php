@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Reminder;
 use Laracasts\Flash\Flash;
 use Mail;

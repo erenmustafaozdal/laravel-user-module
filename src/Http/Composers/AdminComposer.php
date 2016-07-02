@@ -3,7 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Composers;
 
 use Illuminate\Contracts\View\View;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 
 class AdminComposer
 {

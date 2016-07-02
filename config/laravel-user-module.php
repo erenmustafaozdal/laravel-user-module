@@ -37,32 +37,32 @@ return [
     'views' => [
         // auth views
         'auth' => [
-            'layout'                => 'laravel-modules-core::auth',                // auth layout
-            'login'                 => 'laravel-user-module::auth.login',           // get login view blade
-            'register'              => 'laravel-user-module::auth.register',        // get register view blade
-            'forget_password'       => 'laravel-user-module::auth.forget_password', // get forget password view blade
-            'reset_password'        => 'laravel-user-module::auth.reset_password',   // get reset password view blade
+            'layout'                => 'laravel-modules-core::layouts.auth',        // auth layout
+            'login'                 => 'laravel-modules-core::auth.login',          // get login view blade
+            'register'              => 'laravel-modules-core::auth.register',       // get register view blade
+            'forget_password'       => 'laravel-modules-core::auth.forget_password',// get forget password view blade
+            'reset_password'        => 'laravel-modules-core::auth.reset_password', // get reset password view blade
         ],
         // user view
         'user' => [
-            'layout'                => 'laravel-modules-core::admin',               // user layout
-            'index'                 => 'laravel-user-module::user.index',           // get user index view blade
-            'create'                => 'laravel-user-module::user.create',          // get user create view blade
-            'show'                  => 'laravel-user-module::user.show',            // get user show view blade
-            'edit'                  => 'laravel-user-module::user.edit',            // get user edit view blade
+            'layout'                => 'laravel-modules-core::layouts.admin',       // user layout
+            'index'                 => 'laravel-modules-core::user.index',          // get user index view blade
+            'create'                => 'laravel-modules-core::user.create',         // get user create view blade
+            'show'                  => 'laravel-modules-core::user.show',           // get user show view blade
+            'edit'                  => 'laravel-modules-core::user.edit',           // get user edit view blade
         ],
         // role view
         'role' => [
-            'layout'                => 'laravel-modules-core::admin',               // role layout
-            'index'                 => 'laravel-user-module::role.index',           // get role index view blade
-            'create'                => 'laravel-user-module::role.create',          // get role create view blade
-            'show'                  => 'laravel-user-module::role.show',            // get role show view blade
-            'edit'                  => 'laravel-user-module::role.edit',            // get role edit view blade
+            'layout'                => 'laravel-modules-core::layouts.admin',       // role layout
+            'index'                 => 'laravel-modules-core::role.index',          // get role index view blade
+            'create'                => 'laravel-modules-core::role.create',         // get role create view blade
+            'show'                  => 'laravel-modules-core::role.show',           // get role show view blade
+            'edit'                  => 'laravel-modules-core::role.edit',           // get role edit view blade
         ],
         // email views
         'email' => [
-            'activation'            => 'laravel-user-module::emails.activation',    // activation mail view blade
-            'forget_password'       => 'laravel-user-module::emails.forget_password'// forget password mail view blade
+            'activation'            => 'laravel-modules-core::emails.activation',   // activation mail view blade
+            'forget_password'       => 'laravel-modules-core::emails.forget_password'// forget password mail view blade
         ]
     ],
 

@@ -66,7 +66,7 @@ Route::post(config('laravel-user-module.url.reset_password_route'), [
 */
 Route::group([
     'prefix' => config('laravel-user-module.url.admin_url_prefix'),
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'permission'],
     'namespace' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers'
 ], function()
 {
@@ -88,6 +88,11 @@ Route::group([
     Route::post('user/{'. config('laravel-user-module.url.user') .'}/change-password',  [
         'as' => 'admin.user.changePassword',
         'uses' => 'UserController@changePassword'
+    ]);
+    // permission change
+    Route::post('user/{'. config('laravel-user-module.url.user') .'}/change-permission',  [
+        'as' => 'admin.user.permission',
+        'uses' => 'UserController@permission'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserController', [
         'names' => [
@@ -111,7 +116,7 @@ Route::group([
 */
 Route::group([
     'prefix' => 'api',
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'permission'],
     'namespace' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers'
 ], function()
 {
@@ -133,7 +138,7 @@ Route::group([
     ]);
     // get role edit data for modal edit
     Route::post('role/{' . config('laravel-user-module.url.role') . '}/fast-edit',  [
-        'as' => 'api.role.fast_edit',
+        'as' => 'api.role.fastEdit',
         'uses' => 'RoleApiController@fastEdit'
     ]);
     Route::resource(config('laravel-user-module.url.role'), 'RoleApiController', [
@@ -158,7 +163,7 @@ Route::group([
     ]);
     // get user edit data for modal edit
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/fast-edit',  [
-        'as' => 'api.user.fast_edit',
+        'as' => 'api.user.fastEdit',
         'uses' => 'UserApiController@fastEdit'
     ]);
     // api activate user
@@ -168,17 +173,17 @@ Route::group([
     ]);
     // api not activate user
     Route::post('user/{' . config('laravel-user-module.url.user') . '}/not-activate',  [
-        'as' => 'api.user.not_activate',
+        'as' => 'api.user.notActivate',
         'uses' => 'UserApiController@notActivate'
     ]);
     // upload user template profile photo
     Route::post('user/{'. config('laravel-user-module.url.user') .'}/upload-avatar-photo',  [
-        'as' => 'api.user.avatar_photo',
+        'as' => 'api.user.avatarPhoto',
         'uses' => 'UserApiController@avatarPhoto'
     ]);
     // delete user uploaded photo
     Route::post('user/{'. config('laravel-user-module.url.user') .'}/destroy-avatar-photo',  [
-        'as' => 'api.user.destroy_avatar',
+        'as' => 'api.user.destroyAvatar',
         'uses' => 'UserApiController@destroyAvatar'
     ]);
     Route::resource(config('laravel-user-module.url.user'), 'UserApiController', [

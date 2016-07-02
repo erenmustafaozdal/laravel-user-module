@@ -4,7 +4,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 
 class Authenticate
 {
@@ -19,7 +19,7 @@ class Authenticate
      * Create a new middleware instance.
      *
      * @param  Guard  $auth
-     * @return void
+     * @return mixed
      */
     public function __construct(Guard $auth)
     {

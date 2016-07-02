@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
@@ -45,7 +45,7 @@ class UserApiController extends AdminBaseController
         $addColumns = [
             'addUrls' => [
                 'activate'      => ['route' => 'api.user.activate', 'id' => true],
-                'not_activate'  => ['route' => 'api.user.not_activate', 'id' => true],
+                'not_activate'  => ['route' => 'api.user.notActivate', 'id' => true],
                 'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
             ],
             'status'            => function($model) { return $model->is_active; },
@@ -120,7 +120,15 @@ class UserApiController extends AdminBaseController
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
-        $request->has('is_active') ? $this->activationComplete($this->model) : $this->activationRemove($this->model);
+
+        // activation
+        $request->has('is_active') ? $this->activationComplete($this->model, [
+            'activationSuccess'     => ActivateSuccess::class,
+            'activationFail'        => ActivateFail::class
+        ]) : $this->activationRemove($this->model, [
+            'activationRemove'      => ActivateRemove::class,
+            'activationFail'        => ActivateFail::class
+        ]);
         return $result;
     }
 
@@ -132,14 +140,10 @@ class UserApiController extends AdminBaseController
      */
     public function destroy(User $user)
     {
-        if ($user->id != Sentinel::getUser()->id) {
-            return $this->destroyModel($user, [
-                'success'   => DestroySuccess::class,
-                'fail'      => DestroyFail::class
-            ]);
-        } else {
-            return response()->json(['result' => 'self']);
-        }
+        return $this->destroyModel($user, [
+            'success'   => DestroySuccess::class,
+            'fail'      => DestroyFail::class
+        ]);
     }
 
     /**
