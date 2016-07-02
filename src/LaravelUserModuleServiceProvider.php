@@ -35,7 +35,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleComposerServiceProvider');
-        $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleAuthServiceProvider');
         $this->app->register('ErenMustafaOzdal\LaravelModulesBase\LaravelModulesBaseServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
 

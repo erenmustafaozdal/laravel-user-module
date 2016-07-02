@@ -66,7 +66,7 @@ Route::post(config('laravel-user-module.url.reset_password_route'), [
 */
 Route::group([
     'prefix' => config('laravel-user-module.url.admin_url_prefix'),
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'permission'],
     'namespace' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers'
 ], function()
 {
@@ -116,7 +116,7 @@ Route::group([
 */
 Route::group([
     'prefix' => 'api',
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'permission'],
     'namespace' => 'ErenMustafaOzdal\LaravelUserModule\Http\Controllers'
 ], function()
 {

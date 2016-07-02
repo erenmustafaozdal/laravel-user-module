@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
@@ -36,8 +36,6 @@ class UserApiController extends AdminBaseController
      */
     public function index(Request $request)
     {
-        $this->authorize('indexApi', Sentinel::getUser());
-
         $users = User::select(['id','photo','first_name','last_name', 'is_active','created_at']);
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
@@ -71,7 +69,6 @@ class UserApiController extends AdminBaseController
     public function detail($id, Request $request)
     {
         $user = User::where('id',$id)->with('roles')->select(['id','email','last_login','updated_at']);
-        $this->authorize('detailApi', $user->get()[0]);
 
         $editColumns = [
             'roles'         => function($model) { return $model->roles->implode('name', ', '); },
@@ -91,7 +88,6 @@ class UserApiController extends AdminBaseController
      */
     public function fastEdit(User $user, Request $request)
     {
-        $this->authorize('fastEditApi', $user);
         return $user;
     }
 
@@ -103,7 +99,6 @@ class UserApiController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize('storeApi', Sentinel::getUser());
         return $this->storeModel(User::class, $request, [
             'success'           => StoreSuccess::class,
             'fail'              => StoreFail::class,
@@ -121,7 +116,6 @@ class UserApiController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $this->authorize('updateApi', $user);
         $result = $this->updateModel($user, $request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -146,7 +140,6 @@ class UserApiController extends AdminBaseController
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroyApi', $user);
         return $this->destroyModel($user, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
@@ -161,7 +154,6 @@ class UserApiController extends AdminBaseController
      */
     public function activate(User $user)
     {
-        $this->authorize('activateApi', $user);
         $result = $this->activationComplete($user, [
             'activationSuccess'     => ActivateSuccess::class,
             'activationFail'        => ActivateFail::class
@@ -180,7 +172,6 @@ class UserApiController extends AdminBaseController
      */
     public function notActivate(User $user)
     {
-        $this->authorize('notActivateApi', $user);
         $result = $this->activationRemove($user, [
             'activationRemove'      => ActivateRemove::class,
             'activationFail'        => ActivateFail::class
@@ -199,7 +190,6 @@ class UserApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
-        $this->authorize('groupApi', Sentinel::getUser());
         $events = [];
         switch($request->input('action')) {
             case 'activate':
@@ -230,7 +220,6 @@ class UserApiController extends AdminBaseController
      */
     public function destroyAvatar(FileRepository $file, Request $request, User $user)
     {
-        $this->authorize('destroyAvatarApi', $user);
         $file->deleteDirectory(config('laravel-user-module.user.uploads.path') . "/{$user->id}");
         $user->photo = NULL;
         if ( $user->save() ) {
@@ -248,7 +237,6 @@ class UserApiController extends AdminBaseController
      */
     public function avatarPhoto(PhotoRequest $request, User $user)
     {
-        $this->authorize('avatarPhotoApi', $user);
         return $this->updateModel($user, $request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class

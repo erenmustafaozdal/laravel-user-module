@@ -3,7 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 
 use App\Http\Requests;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use App\Role;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
@@ -27,7 +27,6 @@ class RoleController extends AdminBaseController
      */
     public function index()
     {
-        $this->authorize(Role::take(1)->get()[0]);
         return view(config('laravel-user-module.views.role.index'));
     }
 
@@ -38,7 +37,6 @@ class RoleController extends AdminBaseController
      */
     public function create()
     {
-        $this->authorize(Role::take(1)->get()[0]);
         return view(config('laravel-user-module.views.role.create'));
     }
 
@@ -50,7 +48,6 @@ class RoleController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize(Role::take(1)->get()[0]);
         return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
@@ -65,7 +62,6 @@ class RoleController extends AdminBaseController
      */
     public function show(Role $role)
     {
-        $this->authorize($role);
         return view(config('laravel-user-module.views.role.show'), compact('role'));
     }
 
@@ -77,7 +73,6 @@ class RoleController extends AdminBaseController
      */
     public function edit(Role $role)
     {
-        $this->authorize($role);
         return view(config('laravel-user-module.views.role.edit'), compact('role'));
     }
 
@@ -90,7 +85,6 @@ class RoleController extends AdminBaseController
      */
     public function update(UpdateRequest $request, Role $role)
     {
-        $this->authorize($role);
         return $this->updateModel($role,$request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -105,7 +99,6 @@ class RoleController extends AdminBaseController
      */
     public function destroy(Role $role)
     {
-        $this->authorize($role);
         return $this->destroyModel($role, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class

@@ -3,7 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Controllers;
 
 use App\Http\Requests;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Sentinel;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
@@ -32,7 +32,6 @@ class UserController extends AdminBaseController
      */
     public function index()
     {
-        $this->authorize(Sentinel::getUser());
         return view(config('laravel-user-module.views.user.index'));
     }
 
@@ -43,7 +42,6 @@ class UserController extends AdminBaseController
      */
     public function create()
     {
-        $this->authorize(Sentinel::getUser());
         return view(config('laravel-user-module.views.user.create'));
     }
 
@@ -55,7 +53,6 @@ class UserController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        $this->authorize(Sentinel::getUser());
         return $this->storeModel(User::class, $request, [
             'success'           => StoreSuccess::class,
             'fail'              => StoreFail::class,
@@ -72,7 +69,6 @@ class UserController extends AdminBaseController
      */
     public function show(User $user)
     {
-        $this->authorize($user);
         return view(config('laravel-user-module.views.user.show'), compact('user'));
     }
 
@@ -84,7 +80,6 @@ class UserController extends AdminBaseController
      */
     public function edit(User $user)
     {
-        $this->authorize($user);
         return view(config('laravel-user-module.views.user.edit'), compact('user'));
     }
 
@@ -97,7 +92,6 @@ class UserController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $this->authorize($user);
         $result = $this->updateModel($user, $request,  [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -123,7 +117,6 @@ class UserController extends AdminBaseController
      */
     public function changePassword(PasswordRequest $request, User $user)
     {
-        $this->authorize($user);
         return $this->updateModel($user,$request,  [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -139,7 +132,6 @@ class UserController extends AdminBaseController
      */
     public function permission(PermissionRequest $request, User $user)
     {
-        $this->authorize($user);
         return $this->updateModel($user,$request,  [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -154,7 +146,6 @@ class UserController extends AdminBaseController
      */
     public function destroy(User $user)
     {
-        $this->authorize($user);
         return $this->destroyModel($user, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
