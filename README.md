@@ -4,9 +4,12 @@ Laravel User Module
 [![Source](https://img.shields.io/badge/source-erenmustafaozdal/laravel--user--module-blue.svg?style=flat-square)](https://github.com/erenmustafaozdal/laravel-user-module)
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://tldrlegal.com/license/mit-license)
 
-**Laravel User Module**, Laravel 5.1 projelerinde *kullanıcı*, *rol* ve *giriş* işlemlerini kapsayan bir modül paketidir. Bu paket kullanıcı arayüzü **(views)** hariç, arka plandaki bütün işlemleri barındırmaktadır.
-Laravel User Module kurulumu ve kullanımı oldukça kolay bir pakettir. Dizin yapısı Laravel'in dizin yapısına benzer olduğu için geliştirici için alışıldık bir görünüm sunar.
+**Laravel User Module**, Laravel 5.1 projelerinde *kullanıcı*, *rol* ve *giriş* işlemlerini kapsayan bir modül paketidir. Bu paket kullanıcı arayüzü **(views)** hariç, arka plandaki bütün işlemleri barındırmaktadır. İstersen görünümleri kapsayan [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketini kullanarak, modüle tam kapsamıyla sahip olabilirsin.
 
+1. [Kurulum](#kurulum)
+    1. [Dosyaların Yayınlanması](#kurulum-dosyalarınYayinlanmasi)
+
+<a name="kurulum"></a>
 Kurulum
 -------
 Composer ile yüklemek için aşağıdaki kodu kullanabilirsin.
@@ -31,6 +34,9 @@ Bu işlem bittikten sonra, service provider'i projenin `config/app.php` dosyası
 ```php
 ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider::class,
 ```
+> :exclamation: Eğer **Laravel Modules Core** paketini kullanacaksan, o paketin service provider dosyasını üstte tanımlamalısın.
+
+<a name="kurulum-dosyalarınYayinlanmasi"></a>
 ##### Dosyaların Yayınlanması
 **Laravel User Module** paketi [Cartaklyst/Sentinel](https://github.com/cartalyst/sentinel) ve [Laracasts/Flash](https://github.com/laracasts/flash) paketleriyle bağımlıdır. Bu sebeple ilgili paketlerin de dosyalarının publish edilmesi için aşağıdaki kodu çalıştırmalısın.
 ```bash
