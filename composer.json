@@ -16,7 +16,6 @@
             "src/Helpers/helpers.php"
         ]
     },
-    "minimum-stability": "dev",
     "require": {
         "erenmustafaozdal/laravel-modules-base": "dev-master"
     },
