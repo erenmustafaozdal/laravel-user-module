@@ -31,6 +31,7 @@ class RoleApiController extends AdminBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('indexApi', Role::take(1)->get()[0]);
         $roles = Role::select(['id','name','slug','created_at']);
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
@@ -58,13 +59,14 @@ class RoleApiController extends AdminBaseController
      */
     public function detail($id, Request $request)
     {
-        $user = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
+        $role = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
+        $this->authorize('detailApi', $role->get()[0]);
 
         $editColumns = [
             'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; }
         ];
-        return $this->getDatatables($user, [], $editColumns, []);
+        return $this->getDatatables($role, [], $editColumns, []);
     }
 
     /**
@@ -76,6 +78,7 @@ class RoleApiController extends AdminBaseController
      */
     public function fastEdit(Role $role, Request $request)
     {
+        $this->authorize('fastEditApi', $role);
         return $role;
     }
 
@@ -87,6 +90,7 @@ class RoleApiController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
+        $this->authorize('storeApi', Role::take(1)->get()[0]);
         return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
@@ -102,6 +106,7 @@ class RoleApiController extends AdminBaseController
      */
     public function update(UpdateRequest $request, Role $role)
     {
+        $this->authorize('updateApi', $role);
         return $this->updateModel($role, $request, [
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
@@ -116,6 +121,7 @@ class RoleApiController extends AdminBaseController
      */
     public function destroy(Role $role)
     {
+        $this->authorize('destroyApi', $role);
         return $this->destroyModel($role, [
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
@@ -130,6 +136,7 @@ class RoleApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
+        $this->authorize('groupApi', Role::take(1)->get()[0]);
         if ( $this->destroyGroupAction(Role::class, $request->input('id'), []) ) {
             return response()->json(['result' => 'success']);
         }
@@ -144,6 +151,7 @@ class RoleApiController extends AdminBaseController
      */
     public function models(Request $request)
     {
+        $this->authorize('modelsApi', Role::take(1)->get()[0]);
         return Role::where('name', 'like', "%{$request->input('query')}%")
             ->orWhere('slug', 'like', "%{$request->input('query')}%")->get(['id','name']);
     }

@@ -25,11 +25,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/laravel-user-module.php' => config_path('laravel-user-module.php')
         ], 'config');
-
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-user-module');
-        $this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/laravel-user-module'),
-        ]);
     }
 
     /**
@@ -40,6 +35,7 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleComposerServiceProvider');
+        $this->app->register('ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleAuthServiceProvider');
         $this->app->register('ErenMustafaOzdal\LaravelModulesBase\LaravelModulesBaseServiceProvider');
         $this->app->register('Cartalyst\Sentinel\Laravel\SentinelServiceProvider');
 

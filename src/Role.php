@@ -100,12 +100,30 @@ class Role extends Sentinel
     /**
      * Get the permissions attribute.
      *
-     * @param  string $permissions
+     * @param array $value
      * @return string
      */
-    public function getPermissionsAttribute($permissions)
+    public function getPermissionsAttribute($value)
     {
-        return $permissions ? collect( json_decode($permissions, true) ) : collect();
+        if ( ! $value) {
+            return [];
+        }
+
+        $permissions = [];
+        foreach(json_decode($value, true) as $route => $permission) {
+            $permissions[$route] = $permission ? true : false;
+        }
+        return $permissions;
+    }
+
+    /**
+     * Get the permission collect attribute.
+     *
+     * @return string
+     */
+    public function getPermissionCollectAttribute()
+    {
+        return $this->permissions ? collect( $this->permissions ) : collect();
     }
 
     /**

@@ -43,7 +43,7 @@ class AuthController extends Controller
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
+     * @return mixed
      */
     public function __construct()
     {
