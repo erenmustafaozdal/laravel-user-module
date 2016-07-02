@@ -20,7 +20,7 @@
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "~5",
-        "erenmustafaozdal/laravel-modules-base": "dev-master"
+        "erenmustafaozdal/laravel-modules-base": "*"
     },
     "require-dev": {
 
