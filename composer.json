@@ -16,8 +16,11 @@
             "src/Helpers/helpers.php"
         ]
     },
+    "minimum-stability": "beta",
     "require": {
-        "erenmustafaozdal/laravel-modules-base": "dev-master"
+        "php": ">=5.5.9",
+        "illuminate/support": "~5",
+        "erenmustafaozdal/laravel-modules-base": "^0.1.0"
     },
     "require-dev": {
 

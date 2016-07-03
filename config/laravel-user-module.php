@@ -6,7 +6,6 @@ return [
     | General config
     |--------------------------------------------------------------------------
     */
-    'activation_mail_blade'         => 'emails.activation',
     'date_format'                   => 'd.m.Y H:i:s',
     'use_register'                  => true,                    // if you want to use register form
 

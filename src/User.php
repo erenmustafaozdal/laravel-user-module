@@ -93,6 +93,11 @@ class User extends SentinelUser
             $query->where('first_name', 'like', "%{$request->get('first_name')}%")
                 ->orWhere('last_name', 'like', "%{$request->get('first_name')}%");
         }
+        // filter first_name
+        if ($request->has('last_name')) {
+            $query->where('first_name', 'like', "%{$request->get('last_name')}%")
+                ->orWhere('last_name', 'like', "%{$request->get('last_name')}%");
+        }
         // filter status
         if ($request->has('status')) {
             $query->where('is_active',$request->get('status'));
@@ -177,17 +182,6 @@ class User extends SentinelUser
      * @return string
      */
     public function getIsActiveAttribute($value)
-    {
-        return $value == 1 ? true : false;
-    }
-
-    /**
-     * Get the is_super_admin attribute.
-     *
-     * @param boolean $value
-     * @return string
-     */
-    public function getIsSuperAdminAttribute($value)
     {
         return $value == 1 ? true : false;
     }

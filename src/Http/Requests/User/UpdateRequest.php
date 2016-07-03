@@ -33,6 +33,7 @@ class UpdateRequest extends Request
             'y'             => 'integer',
             'width'         => 'integer',
             'height'        => 'integer',
+            'permissions'   => 'array',
         ];
     }
 }

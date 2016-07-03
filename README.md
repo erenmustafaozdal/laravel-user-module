@@ -8,6 +8,31 @@ Laravel User Module
 
 1. [Kurulum](#kurulum)
     1. [Dosyaların Yayınlanması](#kurulum-dosyalarınYayinlanmasi)
+    2. [Migration](#kurulum-migration)
+2. [Kullanım](#kullanim)
+    1. [Ayar Dosyası](#kullanim-ayarDosyasi)
+        1. [Genel Ayarlar](#kullanim-ayarDosyasi-genelAyarlar)
+        2. [URL Ayarları](#kullanim-ayarDosyasi-urlAyarlari)
+        3. [Görünüm Ayarları](#kullanim-ayarDosyasi-gorunumAyarlari)
+        4. [Model Ayarları](#kullanim-ayarDosyasi-modelAyarlari)
+    2. [Görünüm Tasarlama](#kullanim-gorunumTasarlama)
+        1. [Model Kullanımı](#kullanim-gorunumTasarlama-modelKullanimi)
+            1. [User](#kullanim-gorunumTasarlama-modelKullanimi-user)
+            2. [Role](#kullanim-gorunumTasarlama-modelKullanimi-role)
+        2. [Rotalar](#kullanim-gorunumTasarlama-rotalar)
+            1. [Giriş - Çıkış - Kayıt Rotaları](#kullanim-gorunumTasarlama-rotalar-auth)
+            2. [Kullanıcı Rotaları](#kullanim-gorunumTasarlama-rotalar-user)
+            3. [Kullanıcı Rolü Rotaları](#kullanim-gorunumTasarlama-rotalar-role)
+        3. [Form Alanları](#kullanim-gorunumTasarlama-formAlanlari)
+            1. [Giriş - Çıkış - Kayıt Formları](#kullanim-gorunumTasarlama-formAlanlari-auth)
+            1. [Kullanıcı Formları](#kullanim-gorunumTasarlama-formAlanlari-user)
+            1. [Kullanıcı Rolü Formları](#kullanim-gorunumTasarlama-formAlanlari-role)
+    3. [Onaylamalar](#kullanim-onaylamalar)
+    4. [Olaylar](#kullanim-olaylar)
+        1. [Giriş - Çıkış - Kayıt Olayları](#kullanim-olaylar-auth)
+        2. [Kullanıcı Olayları](#kullanim-olaylar-user)
+        3. [Kullanıcı Rolü Olayları](#kullanim-olaylar-role)
+
 
 <a name="kurulum"></a>
 Kurulum
@@ -21,7 +46,7 @@ Ya da `composer.json` dosyana, aşağıdaki gibi ekleme yapıp, paketleri günce
 ```json
 {
     "require": {
-        "erenmustafaozdal/laravel-user-module": "dev-master"
+        "erenmustafaozdal/laravel-user-module": "^0.1.0"
     }
 }
 ```
@@ -42,6 +67,8 @@ ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider::class,
 ```bash
 php artisan vendor:publish
 ```
+
+<a name="kurulum-migration"></a>
 ##### Migration
 Dosyaları yayınladıktan sonra migration işlemi yapmalısın.
 > :exclamation: Migration işleminden önce Laravel'in varsayılan migration dosyalarını silmelisin. Sentinel kendi migration dosyalarını ekleyecek.
@@ -58,7 +85,7 @@ Daha sonra migrate işlemini yapabilirsin.
 php artisan migrate
 ```
 
-> :exclamation: Başarılı kayıt işlemi ile tetiklenen olay sonrası, kullanıcıya aktivasyon e-postası göndermek gibi bazı işlemler için; `ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener` dinleyicisini `App\Providers\EventServiceProvider` içinde `$subscribe` dizi özelliğine eklemelisin.
+> :exclamation: Kullanıcının başarılı kayıt işlemi sonrasında tetiklenen olay ile, kullanıcıya aktivasyon e-postası göndermek gibi bazı işlemler için; `ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener` dinleyicisini `App\Providers\EventServiceProvider` içinde `$subscribe` dizi özelliğine eklemelisin.
 
 ```php
 protected $subscribe = [
@@ -80,10 +107,7 @@ protected $subscribe = [
 ],
 ```
 
-Kullanım
---------
-### User Model
-Laravel User Module kendi `User` modelini barındırmaktadır. Bu modeli kullanman için sadece `App\User` sınıfını bu modelden extend etmen gerekiyor.
+Son olarak `App\User` ve `App\Role` modellerini uygun bir şekilde tanımlamalısın. Bunun için `App\User` modelini `ErenMustafaOzdal\LaravelUserModule\User` modelinden, `App\Role` modelini `ErenMustafaOzdal\LaravelUserModule\Role` modelinden genişletmelisin.
 ```php
 namespace App;
 
@@ -94,8 +118,6 @@ class User extends EMOUser
     //
 }
 ```
-### Role Model
-Laravel User Module kendi `Role` modelini barındırmaktadır. Bu modeli kullanman için de `App\Role` modelini oluşturman ve bu modelden extend etmen gerekiyor.
 ```php
 namespace App;
 
@@ -106,62 +128,548 @@ class Role extends EMORole
     //
 }
 ```
-### Rotalar
-**Laravel User Module** aşağıdaki tabloda yer alan rotalara sahiptir. Ancak `config/laravel-user-module.php` dosyasında kendine uygun rotaları düzenleyebilirsin.
 
-|  Tür |              Rota             |     Ayar Anahtarı     |
-|----|-----------------------------|---------------------|
-| get  | /login                        | login_route           |
-| post | /login                        | login_route           |
-| get  | /logout                       | logout_route          |
-| get  | /register                     | register_route        |
-| post | /register                     | register_route        |
-| get  | /account-activate/{id}/{code} | activate_route        |
-| get  | /forget-password              | forget_password_route |
-| post | /forget-password              | forget_password_route |
-| get  | /reset-password/{token}       | reset_password_route  |
-| post | /reset-password               | reset_password_route  |
-| get  | /admin                        | redirect_route        |
+<a name="kullanim"></a>
+Kullanım
+--------
+<a name="kullanim-ayarDosyasi"></a>
+### Ayar Dosyası
 
-### Görünümler
-**Laravel User Module** paketi içinde bütün `layout` ve `view` dosyları tanımlanmış ve hemen kullanmaya hazırdır. Ancak kendi görünümlerini ve düzen (*layout*) dosyalarını kullanmak istersen; paketin ayar dosyasından istediğin değişikliği yapabilirsin. `config/laravel-user-module.php` dosyasındaki ilgili alanlar aşağıdaki tabloda yer almaktadır.
+<a name="kullanim-ayarDosyasi-genelAyarlar"></a>
+##### Genel Ayarlar
+Paketin içinde kullanılan genel ayarlar. Ayar dosyası içinde kök alanda bulunan ayarlar.
 
-| Ayar Anahtarı | Varsayılan Değer | Görünüm Dosyası | Açıklama |
-|---------------|------------------|-----------------|----------|
-| views.login  | auth.login | auth/login.blade.php | giriş yapılacak sayfa |
-| views.register        | auth.register        | auth/register.blade.php        | kayıt olunacak sayfa                       |
-| views.forget_password | auth.forget_password | auth/forget_password.blade.php | şifremi unuttum sayfası                    |
-| views.reset_password  | auth.reset_password  | auth/reset_password.blade.php  | şifre resetleme sayfası                    |
-| views.user.index      | user.index           | user/index.blade.php           | kullanıcıların listeleneceği sayfa         |
-| views.user.create     | user.create          | user/create.blade.php          | yeni kullanıcı eklenecek sayfa             |
-| views.user.show       | user.show            | user/show.blade.php            | kullanıcı bilgilerinin gösterileceği sayfa |
-| views.user.edit       | user.edit            | user/edit.blade.php            | kullanıcı bilgilerinin düzenleneceği sayfa |
-| views.role.index      | role.index           | role/index.blade.php           | rollerin listeleneceği sayfa               |
-| views.role.create     | role.create          | role/create.blade.php          | yeni rol eklenecek sayfa                   |
-| views.role.show       | role.show            | role/show.blade.php            | rol bilgilerinin gösterileceği sayfa       |
-| views.role.edit       | role.edit            | role/edit.blade.php            | rol bilgilerinin düzenleneceği sayfa       |
+| Ayar | Açıklama | Varsayılan Değer |
+|---|---|---|
+| date_format | Kullanılacak tarih formatı | d.m.Y H:i:s |
+| use_register | Kullanıcı kayıt sayfası olacak mı? Eğer bu değer `true` olarak ayarlanırsa; kullanıcların kayıt olması için bir rota tanımlanacak | true |
 
-##### Görünümlerde kullanılması gereken form elemanı isimleri
+<a name="kullanim-ayarDosyasi-urlAyarlari"></a>
+##### URL Ayarları
+Tarayıcının adres çubuğunda görünecek adreslerin tanımlandığı ayarlar. Ayar dosyasının `url` alanında bulunan ayarlardır.
+> Örneğin: `activate_route` ayarı ile aktivasyon sayfası adresi `account-activate` şeklinde tanımlanmıştır. Bu şekilde adres çubuğunda şuna benzer bir görünüm olacaktır: `www.siteadi.com/account-activate/{id}/{code}`
+
+| Ayar | Açıklama | Varsayılan Değer |
+|---|---|---|
+| login_route | Giriş sayfası adresi | login |
+| logout_route | Çıkış sayfası adresi | logout |
+| register_route | Eğer kayıt sayfası olacaksa, kullanıcıların kayıt olacağı sayfanın adresi | register |
+| activate_route | Eğer kayıt sayfası olacaksa, kullanıcıların kayıt sonrası aktivasyon adresi | account-activate |
+| forget_password_route | Şifre sıfırlama sayfası adresi | forget-password |
+| reset_password_route | Şifre sıfırlama e-postası sonrası gelinecek sıfırlama adresi | reset-password |
+| user | Kullanıcı oluşturma, düzenleme vb. sayfalarda kullanılacak adres | users |
+| role | Kullanıcı rolü oluşturma, düzenleme vb. sayfalarda kullanılacak adres | roles |
+| redirect_route | giriş yapan kullanıcının yönlendirileceği adresin rota adı (`route name`). Ör: dashboard | admin |
+| admin_url_prefix | Yönetim panelinin adres çubuğundaki ön adı. Örneğin: `www.siteadi.com/admin/users` | admin |
+
+<a name="kullanim-ayarDosyasi-gorunumAyarlari"></a>
+##### Görünüm Ayarları
+Paketin kullanacağı görünümlerin tanımlandığı ayarlardır. Ayar dosyasının `views` alanı altında bulunan ayarlardır. Buradaki değerler varsayılan olarak [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketinin görünümlerine tanımlıdır.
+
+| Ayar | Açıklama | Varsayılan Değer |
+|---|---|---|
+|auth.layout | Giriş, kayıt gibi sayfaların şablon görünümü | laravel-modules-core::layouts.auth |
+|auth.login | Giriş sayfası görünümü | laravel-modules-core::auth.login |
+|auth.register | Kayıt sayfası görünümü | laravel-modules-core::auth.register |
+|auth.forget_password | Şifremi unuttum sayfası görünümü | laravel-modules-core::auth.forget_password |
+|auth.reset_password | Şifre sıfırlama sayfası görünümü | laravel-modules-core::auth.reset_password |
+|user.layout | Kullanıcı sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
+|user.index | Kullanıcıların listelendiği sayfanın görünümü | laravel-modules-core::user.index |
+|user.create | Kullanıcı ekleme sayfasının görünümü | laravel-modules-core::user.create |
+|user.show | Kullanıcı bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::user.show |
+|user.edit | Kullanıcı bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::user.edit |
+|role.layout | Kullanıcı rolü sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
+|role.index | Kullanıcı rollerinin listelendiği sayfanın görünümü | laravel-modules-core::role.index |
+|role.create | Kullanıcı rolü ekleme sayfasının görünümü | laravel-modules-core::role.create |
+|role.show | Kullanıcı rolü bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::role.show |
+|role.edit | Kullanıcı rolü bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::role.edit |
+| email.activation | Aktivasyon e-postası görünümü | laravel-modules-core::emails.activation |
+| email.forget_password | Şifremi unuttum e-postası görünümü | laravel-modules-core::emails.forget_password |
+
+
+<a name="kullanim-ayarDosyasi-modelAyarlari"></a>
+##### Model Ayarları
+Paket içinde kullanılan modeller ile ilgili bazı ayarlamalar. Şu an için sadece `User` modeli ayarları mevcut. Ve bu ayar da; ayar dosyasının `user` alanında bulunmaktadır.
+
+
+| Ayar | Açıklama | Varsayılan Değer |
+|---|---|---|
+| avatar_path | Varsayılan avatar fotoğraflarının farklı boyutlarda bulunduğu dizini tanımlar. Burada dikkat edilmesi gereken iki nokta vardır: Birincisi, bu dizin içindeki fotoğrafların isimleri aşağıda tanımlanacak `thumbnails` isimleri ile benzer olmalıdır. İkincisi, dosyalar `.jpg` formatında olmalıdır. Varsayılan değer **Laravel Modules Core** paketine tanımlıdır. | vendor/laravel-modules-core/assets/global/img/avatar |
+| uploads.column | Veri tabanındaki fotoğraf sütunu adı | photo |
+| uploads.path | Fotoğrafların yükleneceği dosya yolu | uploads/user |
+| uploads.thumbnails | Fotoğrafın orjinal hali yukarıdaki dosya yolundan sonra `{id}/original` dizini içine kayıt edilir. Burada ise istenilen adette küçük fotoğraf kayıt edilmesi için tanımlama yapılmalıdır. Ayar formatı dosya içinde anlatıldığı için burada sadece bir örnek verilecektir. | `'smallest' => [ 'width' => 35, 'height' => 35]` |
+
+
+<a name="kullanim-gorunumTasarlama"></a>
+### Görünüm Tasarlama
+Paket [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketiyle beraber direkt kullanıma hazırdır. Ancak istersen kendine özel görünümlerde tasarlayabilirsin. Bu bölümü özel tasarımlar için bir rehberdir.
 :exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
 > `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.
 
-###### Auth
-1. `auth.register` blade dosyası içindeki register formu
+<a name="kullanim-gorunumTasarlama-modelKullanimi"></a>
+##### Model Kullanımı
+Görünümler içinde `User` ve `Role` modellerinin özellik ve metot kullanımı hakkında bilgileri kapsamaktadır. Bu metotlar ve özellikler `App\User` ve `App\Role` içinde üzerine yazılarak değiştirilebilir.
+
+<a name="kullanim-gorunumTasarlama-modelKullanimi-user"></a>
+###### User
+
+####### Genel Özellikler
+**protected $table =** 'users'
+**protected $fillable =** ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions']
+**protected $hidden =** ['password', 'remember_token']
+
+####### $user->getPhoto()
+Kullanıcı fotoğrafını HTLM `img` etiketi ile veya sadece url olarak geri döndürür. Eğer fotoğraf yoksa, varsayılan fotoğrafı geri döndürür
+
+| Parametre | Açıklama | Tür | Varsayılan Değer |
+|---|---|---|---|
+| $attributes | HTML `img` etiketi içinde yer alacak özellikler. Örneğin: *class => 'img-responsive'* | array | [] |
+| $type | string | İstenen resmin türü nedir? `original` değeri fotoğrafın orjinal halini döndürür. Bunun dışında da; ayar dosyasında *thumbnails* alanında belirttiğin isimlerden biri ile çağırabilirsin | 'original' |
+| $onlyUrl | boolean | Resim HTML olarak mı, url olarak mı isteniyor? `true` değeri sadece url'yi geri döndürür | false |
+
+####### $user->first_name `string`
+Baş harfi büyük şekilde kullanıcı ilk adı
+
+####### $user->last_name `string`
+Bütün harfler büyük şekilde kullanıcı soyadı
+
+####### $user->fullname `string`
+Kullanıcı ilk ve soyadı birleşimi
+
+####### $user->is_active `boolean`
+Kullanıcının aktif olup olmadığını döndürür
+
+####### $user->last_login `string`
+Kullanıcının son giriş yaptığı tarihi ayar dosyasındaki tanıma göre döndürür
+
+####### $user->last_login_for_humans `string`
+Kullanıcının son giriş yaptığı tarihi okunaklı veri şeklinde döndürür. Örneğin: *1 hafta önce*
+
+####### $user->last_login_table `array`
+Kullanıcının son giriş yaptığı tarihi `display`(last_login_for_humans) ve `timestamp` şeklinde tutulan bir dizi şeklinde döndürür. Datatable'da kullanılması amacıyla oluşturulmuştur
+
+####### $user->permissions `array`
+Kullanıcı işlem izinlerini dizi şeklinde döndürür
+
+####### $user->permission_collect `Collection`
+Kullanıcı işlem izinlerini *Collection objesi* şeklinde döndürür
+
+####### $user->created_at `string`
+Kullanıcının kayıt tarihini ayar dosyasındaki tanıma göre döndürür
+
+####### $user->created_at_for_humans `string`
+Kullanıcının kayıt tarihini okunaklı veri şeklinde döndürür. Örneğin: *1 hafta önce*
+
+####### $user->created_at_table `array`
+Kullanıcının kayıt tarihini `display`(last_login_for_humans) ve `timestamp` şeklinde tutulan bir dizi şeklinde döndürür. Datatable'da kullanılması amacıyla oluşturulmuştur
+
+####### $user->updated_at `string`
+Kullanıcının güncellenme tarihini ayar dosyasındaki tanıma göre döndürür
+
+####### $user->updated_at_for_humans `string`
+Kullanıcının güncellenme tarihini okunaklı veri şeklinde döndürür. Örneğin: *1 hafta önce*
+
+####### $user->updated_at_table `array`
+Kullanıcının güncellenme tarihini `display`(last_login_for_humans) ve `timestamp` şeklinde tutulan bir dizi şeklinde döndürür. Datatable'da kullanılması amacıyla oluşturulmuştur
+
+<a name="kullanim-gorunumTasarlama-modelKullanimi-role"></a>
+###### Role
+
+####### Genel Özellikler
+**protected $table =** 'roles'
+**protected $fillable =** ['name', 'slug', 'permissions']
+
+####### $role->name `string`
+Baş harfi büyük şekilde kullanıcı rolü adı
+
+####### $role->slug `string`
+Kullanıcı rolü url formatındaki hali
+
+####### $role->permissions `array`
+Kullanıcı rolü işlem izinlerini dizi şeklinde döndürür
+
+####### $role->permission_collect `Collection`
+Kullanıcı rolü işlem izinlerini *Collection objesi* şeklinde döndürür
+
+####### $role->created_at `string`
+Kullanıcı rolünün kayıt tarihini ayar dosyasındaki tanıma göre döndürür
+
+####### $role->created_at_for_humans `string`
+Kullanıcı rolünün kayıt tarihini okunaklı veri şeklinde döndürür. Örneğin: *1 hafta önce*
+
+####### $role->created_at_table `array`
+Kullanıcı rolünün kayıt tarihini `display`(last_login_for_humans) ve `timestamp` şeklinde tutulan bir dizi şeklinde döndürür. Datatable'da kullanılması amacıyla oluşturulmuştur
+
+####### $role->updated_at `string`
+Kullanıcı rolünün güncellenme tarihini ayar dosyasındaki tanıma göre döndürür
+
+####### $role->updated_at_for_humans `string`
+Kullanıcı rolünün güncellenme tarihini okunaklı veri şeklinde döndürür. Örneğin: *1 hafta önce*
+
+####### $role->updated_at_table `array`
+Kullanıcı rolünün güncellenme tarihini `display`(last_login_for_humans) ve `timestamp` şeklinde tutulan bir dizi şeklinde döndürür. Datatable'da kullanılması amacıyla oluşturulmuştur
+
+
+
+<a name="kullanim-gorunumTasarlama-rotalar"></a>
+##### Rotalar
+**Laravel User Module** paketi *CRUD* işlemleri için sahip olduğu rotaların dışında, `ajax` ile işlem yapabileceğin birçok rotaya da sahiptir. Görünümlerini tasarlarken bunları kullanabilirsin.
+
+> Rotalarda kullanılabilecek form elemanları bir sonraki bölümde anlatılacaktır.
+
+<a name="kullanim-gorunumTasarlama-rotalar-auth"></a>
+###### Giriş - Çıkış - Kayıt Rotaları
+Giriş, çıkış, kayıt, şifre hatırlatma vb. işlemler için kullanılan rotalardır.
+
+| Rota Adı | Açıklama | Tür|
+|---|---|---|
+| getLogin | Giriş sayfası | GET |
+| postLogin | Giriş sayfasından form verilerinin gönderildiği sayfa | POST |
+| getLogout | Çıkış sayfası | GET |
+| getRegister | Kayıt sayfası | GET |
+| postRegister | Kayıt sayfasından form verilerinin gönderildiği sayfa | POST |
+| accountActivate | Kayıt sonrası hesabın aktifleştirileceği rota. Bu rotada kullanıcı `id`si ve Sentinel Activation tarafından üretilen `code` kullanılıyor. Paket kayıt sonrası bu adresi direkt kullanıcıya e-posta olarak gönderiyor. | GET |
+| getForgetPassword | Şifremi unuttum sayfası | GET |
+| postForgetPassword | Şifremi unuttum sayfasından form verilerinin gönderildiği sayfa | POST |
+| getResetPassword | Şifre sıfırlama sayfası. Şifremi unuttum işlemi sonrası paket kullanıcıya *şifre sıfırlama* e-postası gönderir. Bu bağlantı burada kullanıcıya ulaşmış olur | GET |
+| postResetPassword | Şifre sıfırlama sayfasından form verilerinin gönderildiği sayfa | POST |
+
+<a name="kullanim-gorunumTasarlama-rotalar-user"></a>
+###### Kullanıcı Rotaları
+Başta kullanıcı CRUD işlemleri olmak üzere, bir kısım *ajax* işlemini de kapsayan rotalar.
+
+| Rota Adı | Açıklama | Tür|
+|---|---|---|
+| admin.user.index | Kullanıcıların listelendiği sayfa | GET |
+| admin.user.create | Yeni kullanıcı eklendiği sayfa | GET |
+| admin.user.store | Yeni kullanıcı eklendiği sayfadan form verilerinin gönderildiği sayfa | POST |
+| admin.user.show | Kullanıcı bilgilerinin gösterildiği sayfa. Bu sayfayı oluşturulacak görünümlere `$user` değişkeni aktarılır. | GET |
+| admin.user.edit | Kullanıcı bilgilerinin düzenlendiği sayfa. Bu sayfayı oluşturulacak görünümlere `$user` değişkeni aktarılır. | GET |
+| admin.user.update | Kullanıcı bilgilerinin düzenlendiği sayfadan form verilerinin gönderildiği sayfa | PUT-PATCH |
+| admin.user.destroy | Kullanıcının silindiği sayfa | DELETE |
+| admin.user.changePassword | Kullanıcı şifresininin güncellenmesi için form verilerinin gönderildiği sayfa | POST |
+| admin.user.permission | Kullanıcı işlem izinleri verilerinin gönderileceği sayfa. Kullanıcı izinleri formunu oluşturman için aşağıda bir bahis daha geçecek. | POST |
+| api.user.index | Bu rotada ajax ile Datatable türü veriler çekilir. Gelen sütunlar şunlardır: `id`, `photo`, `fullaname` *(first_name ve last_name sütunlarından oluşturulur)*, `created_at`, `status` *(is_active sütunundan oluşturulur)*, `urls` *(tablonun eylemler sütununda kullanılmak üzere oluşturulmuş bazı adreslerdir.)*. Bütün bunlar dışında `action=filter` verisi ile birlikte; *id*, *first_name*, *last_name*, *status*, *created_at_from* ve *created_at_to* verileri gönderilerek; filtrelenmiş veriler elde edebilirsin | GET |
+| api.user.store | Yeni kullanıcı eklenmesi için verilerin gönderildiği sayfa. Fotoğraf dışında bütün veriler gönderilebilir | POST |
+| api.user.update | Kullanıcı bilgilerinin düzenlenmesi için verilerin gönderildiği sayfa. Fotoğraf dışında bütün veriler gönderilebilir. | PUT-PATCH |
+| api.user.destroy | Kullanıcının silinmesi için verilerin gönderildiği sayfa | DELETE |
+| api.user.group | Kullanıcılar üzerinde grup işlemleri yapmak için kullanılan bir rota. Aktifleştirme, aktifliği kaldırma ve silme işlemlerini destekliyor. `action=activate` gibi bir veri ile birlikte, dizi içinde işlem yapılacak kullanıcı id'leri gönderilir. Aşağıda veri detayları açıklanmıştır. | POST |
+| api.user.detail | Kullanıcı id'si iliştirilmiş rota ile kullanıcı *id*, *email*, *last_login*, *updated_at*, *roles* (virgül ile ayrılmış metin türünde) bilgileri Datatable formatında gönderilir | GET |
+| api.user.fastEdit | Hızlı bir şekilde kullanıcı bilgisini düzenlemek için; bilgilerin çekildiği rotadır. Rotaya kullanıcı id'si iliştirilir ve kullanıcı bilgilerinin tamamı çekilir | POST |
+| api.user.activate | Id'si iliştirilen kullanıcının hesabını aktifleştirildiği rota | POST |
+| api.user.notActivate | Id'si iliştirilen kullanıcının hesabınının aktifliğinin kaldırıldığı rota | POST |
+| api.user.avatarPhoto | Kullanıcının fotoğrafının eklendiği rota. Eski fotoğrafı siler ve yeni fotoğrafı ayar dosyasına göre ekler | POST |
+| api.user.destroyAvatar | Id'si iliştirilen kullanıcının fotoğrafını siler ve varsayılan fotoğrafın tekrar kullanılmasını sağlar | POST |
+
+
+<a name="kullanim-gorunumTasarlama-rotalar-role"></a>
+###### Kullanıcı Rolü Rotaları
+Başta kullanıcı rolü CRUD işlemleri olmak üzere, bir kısım *ajax* işlemini de kapsayan rotalar.
+
+| Rota Adı | Açıklama | Tür|
+|---|---|---|
+| admin.role.index | Kullanıcı rollerinin listelendiği sayfa | GET |
+| admin.role.create | Yeni kullanıcı rolü eklendiği sayfa | GET |
+| admin.role.store | Yeni kullanıcı rolü eklendiği sayfadan form verilerinin gönderildiği sayfa | POST |
+| admin.role.show | Kullanıcı rolü bilgilerinin gösterildiği sayfa. Bu sayfayı oluşturulacak görünümlere `$role` değişkeni aktarılır. | GET |
+| admin.role.edit | Kullanıcı rolü bilgilerinin düzenlendiği sayfa. Bu sayfayı oluşturulacak görünümlere `$role` değişkeni aktarılır. | GET |
+| admin.role.update | Kullanıcı rolü bilgilerinin düzenlendiği sayfadan form verilerinin gönderildiği sayfa | PUT-PATCH |
+| admin.role.destroy | Kullanıcı rolünün silindiği sayfa | DELETE |
+| api.role.index | Bu rotada ajax ile Datatable türü veriler çekilir. Gelen sütunlar şunlardır: `id`, `name`, `slug`, `created_at`, `urls` *(tablonun eylemler sütununda kullanılmak üzere oluşturulmuş bazı adreslerdir.)*. Bütün bunlar dışında `action=filter` verisi ile birlikte; *id*, *name*, *slug*, *created_at_from* ve *created_at_to* verileri gönderilerek; filtrelenmiş veriler elde edebilirsin | GET |
+| api.role.store | Yeni kullanıcı rolü eklenmesi için verilerin gönderildiği sayfa | POST |
+| api.role.update | Kullanıcı rolü bilgilerinin düzenlenmesi için verilerin gönderildiği sayfa | PUT-PATCH |
+| api.role.destroy | Kullanıcı rolünün silinmesi için verilerin gönderildiği sayfa | DELETE |
+| api.role.models | Kullanıcı rollerinin isme veya url tanımlamasına göre filtrelenip döndürüldüğü rota  | POST |
+| api.role.group | Kullanıcı rolleri üzerinde grup işlemleri yapmak için kullanılan bir rota. Silme işlemini destekliyor. `action=destroy` şeklinde bir veri ile birlikte, dizi içinde işlem yapılacak kullanıcı id'leri gönderilir. Aşağıda veri detayları açıklanmıştır. | POST |
+| api.role.detail | Kullanıcı rolü id'si iliştirilmiş rota ile kullanıcı rolü *id*, *name*, *slug*, *created_at*, *updated_at* bilgileri Datatable formatında gönderilir | GET |
+| api.role.fastEdit | Hızlı bir şekilde kullanıcı rolü bilgisini düzenlemek için; bilgilerin çekildiği rotadır. Rotaya kullanıcı rolü id'si iliştirilir ve kullanıcı rolü bilgilerinin tamamı çekilir | POST |
+
+
+<a name="kullanim-gorunumTasarlama-formAlanlari"></a>
+##### Form Alanları
+İşlemler sırasında görünümlerinde kullanacağın form elemanları veri tabanı tablolarındaki sütun isimleriyle aynı olmalıdır. Aşağıda her işlem için gereken eleman listesi verilmiştir.
+
+<a name="kullanim-gorunumTasarlama-formAlanlari-auth"></a>
+###### Giriş - Çıkış - Kayıt Formları
+
+1. `register` işlemi form elemanları
     * first_name
     * last_name
     * email
     * password
     * password_confirmation
-2. `auth.login` blade dosyası içindeki login formu
+    * terms
+
+**RegisterRequest**
+
+```php
+public function rules()
+{
+    return [
+        'first_name'    => 'required|max:255',
+        'last_name'     => 'required|max:255',
+        'email'         => 'required|unique:users|email|max:255',
+        'password'      => 'required|confirmed|min:6|max:255',
+        'terms'         => 'required|in:1|accepted'
+    ];
+}
+```
+
+2. `login` işlemi form elemanları
     * email
     * password
     * remember
 
-### Onaylamalar
-**Laravel User Module** paketi yapılan her form isteği için onaylama kurallarını belirlemiştir. Bu tür form istek onaylama kuralları için yapmanız gereken bir şey yoktur.
+**LoginRequest**
 
+```php
+public function rules()
+{
+    return [
+        'email'         => 'required|email|max:255',
+        'password'      => 'required|min:6|max:255',
+    ];
+}
+```
+
+3. `forgetPassword` işlemi form elemanları
+    * email
+
+**ForgetPasswordRequest**
+
+```php
+public function rules()
+{
+    return [
+        'email'         => 'required|email|max:255',
+    ];
+}
+```
+
+4. `resetPassword` işlemi form elemanları
+    * email
+    * password
+    * password_confirmation
+
+**ResetPasswordRequest**
+
+```php
+public function rules()
+{
+    return [
+        'email'         => 'required|email|max:255',
+        'password'      => 'required|confirmed|min:6|max:255',
+    ];
+}
+```
+
+<a name="kullanim-gorunumTasarlama-formAlanlari-user"></a>
+###### Kullanıcı Formları
+
+1. `store` işlemi form elemanları
+    * first_name
+    * last_name
+    * email
+    * password
+    * password_confirmation
+    * photo
+    * x (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu x değeri)
+    * y (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu y değeri)
+    * width (fotoğraf kırpılacaksa; kırpılacak halin width değeri)
+    * height (fotoğraf kırpılacaksa; kırpılacak halin height değeri)
+    * permissions
+
+**StoreRequest**
+
+```php
+public function rules()
+{
+    return [
+        'first_name'    => 'required|max:255',
+        'last_name'     => 'required|max:255',
+        'email'         => 'required|unique:users|email|max:255',
+        'password'      => 'required|confirmed|min:6|max:255',
+        'photo'         => 'max:5120|image|mimes:jpeg,jpg,png',
+        'x'             => 'integer',
+        'y'             => 'integer',
+        'width'         => 'integer',
+        'height'        => 'integer',
+        'permissions'   => 'array',
+    ];
+}
+```
+
+2. `update` işlemi form elemanları
+    * first_name
+    * last_name
+    * email
+    * password
+    * password_confirmation
+    * photo
+    * x (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu x değeri)
+    * y (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu y değeri)
+    * width (fotoğraf kırpılacaksa; kırpılacak halin width değeri)
+    * height (fotoğraf kırpılacaksa; kırpılacak halin height değeri)
+    * permissions
+
+**UpdateRequest**
+
+```php
+public function rules()
+{
+    return [
+        'first_name'    => 'required|max:255',
+        'last_name'     => 'required|max:255',
+        'slug'          => 'email|max:255|unique:users,slug,'.$this->segment(3),
+        'password'      => 'confirmed|min:6|max:255',
+        'photo'         => 'max:5120|image|mimes:jpeg,jpg,png',
+        'x'             => 'integer',
+        'y'             => 'integer',
+        'width'         => 'integer',
+        'height'        => 'integer',
+        'permissions'   => 'array',
+    ];
+}
+```
+
+3. `changePassword` işlemi form elemanları
+    * password
+    * password_confirmation
+
+**PasswordRequest**
+
+```php
+public function rules()
+{
+    return [
+        'password'      => 'required|confirmed|min:6|max:255'
+    ];
+}
+```
+
+4. `permission` işlemi form elemanları
+    * permissions
+
+**PermissionRequest**
+
+```php
+public function rules()
+{
+    return [
+        'permissions'      => 'array'
+    ];
+}
+```
+
+5. Api `index` filtreleme işlemi verileri
+    * action=filter
+    * id
+    * first_name
+    * last_name
+    * status (is_active sütunu filtrelemesi için; 1 veya 0)
+    * created_at_from
+    * created_at_to
+
+6. Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
+
+7. Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
+
+8. Api `group` işlemi verileri
+    * action=activate|not_activate|destroy
+    * id (array şeklinde model id'leri)
+
+9. Api `avatarPhoto` işlemi verileri,
+    * photo
+    * x (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu x değeri)
+    * y (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu y değeri)
+    * width (fotoğraf kırpılacaksa; kırpılacak halin width değeri)
+    * height (fotoğraf kırpılacaksa; kırpılacak halin height değeri)
+
+**PhotoRequest**
+
+```php
+public function rules()
+{
+    return [
+        'photo'     => 'required|max:5120|image|mimes:jpeg,jpg,png',
+        'x'         => 'integer',
+        'y'         => 'integer',
+        'width'     => 'integer',
+        'height'    => 'integer',
+    ];
+}
+```
+
+<a name="kullanim-gorunumTasarlama-formAlanlari-role"></a>
+###### Kullanıcı Rolü Formları
+
+1. `store` işlemi form elemanları
+    * name
+    * slug
+    * permissions
+
+**StoreRequest**
+
+```php
+public function rules()
+{
+   return [
+        'name'          => 'required|max:255',
+        'slug'          => 'alpha_dash|max:255|unique:roles',
+        'permissions'   => 'array',
+    ];
+}
+```
+
+2. `update` işlemi form elemanları
+    * name
+    * slug
+    * permissions
+
+**UpdateRequest**
+
+```php
+public function rules()
+{
+    return [
+        'name'          => 'max:255',
+        'slug'          => 'alpha_dash|max:255|unique:roles,slug,'.$this->segment(3),
+        'permissions'   => 'array',
+    ];
+}
+```
+
+3. Api `index` filtreleme işlemi verileri
+    * action=filter
+    * id
+    * name
+    * slug
+    * created_at_from
+    * created_at_to
+
+4. Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır
+
+5. Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır
+
+6. Api `group` işlemi verileri
+    * action=destroy
+    * id (array şeklinde model id'leri)
+
+7. Api `models` işlemi verileri
+    * query (metin şeklinde gönderilir ve `name`, `slug` alanlarında `like` yöntemi ile filtreleme yapar)
+
+
+<a name="#kullanim-onaylamalar"></a>
+### Onaylamalar
+**Laravel User Module** paketi yapılan her form isteği için onaylama kurallarını belirlemiştir. Bu tür form istek onaylama kuralları için yapman gereken bir şey yoktur. Yukarıda `Request` sınıflarının `rules` metotlarında açıklamaları yapılmıştır.
+
+
+<a name="#kullanim-olaylar"></a>
 ### Olaylar
 Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi listener dosyanda bu olayları dinleyebilir ve tetiklendiğinde istediğin işlemleri kolay bir şekilde yapabilirsin.
+
+<a name="kullanim-olaylar-auth"></a>
+##### Giriş - Çıkış - Kayıt Olayları
 
 | Olay | İsim Uzayı | Olay Verisi | Açıklama |
 |------|------------|-------------|----------|
@@ -171,13 +679,41 @@ Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi 
 | LoginFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Giriş formu verileri *(Array)* | Giriş başarısız olduğunda tetiklenir |
 | Logout | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Çıkış yapıldığında tetiklenir |
 | ActivateSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı aktivasyon işleminde tetiklenir |
+| ActivateRemove | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı aktifliği kaldırma işleminde tetiklenir |
 | ActivateFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Aktivasyon bağlantı bilgileri *(id,code)* | Aktivasyon işlemi başarısız olduğunda tetiklenir |
 | PasswordResetMailSend | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Şifre sıfırlama e-postası gönderildiğinde tetiklenir |
-| UserNotFound | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifremi unuttum formu verileri *(Array)* | Şifremi unuttum formundan gelen e-posta adresi ile bir kullanıcı eşleşmediğinde tetiklenir |
+| ForgetPasswordFail | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifremi unuttum formu verileri *(Array)* | Şifremi unuttum formundan gelen e-posta adresi ile bir kullanıcı eşleşmediğinde tetiklenir |
 | ResetPasswordSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Başarılı şifre sıfırlama işleminde tetiklenir |
 | PasswordResetUserNotFound | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Şifre sıfırlama formu verileri (token dahil) *(Array)* | Şifre sıfırlama işlemi sırasında gönderilen e-posta adresi ile bağlantılı bir hesap bulunamadığında tetiklenir |
 | ResetPassowrdIncorrectCode | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | User Model | Şifre sıfırlama bağlantısında bulunan kod yanlış olduğunda tetiklenir |
+| SentinelNotActivated | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Sentinel NotActivatedException | Giriş işlemi yapmak isteyen kullanıcı aktif bir kullanıcı değilse tetiklenir |
+| SentinelThrottling | `ErenMustafaOzdal\LaravelUserModule\Events\Auth` | Sentinel ThrottlingException | Üst üste yanlış hatalı giriş yapıldığında Sentinel tarfında fırlatılan hata olduğunda tetiklenir |
  
+
+<a name="kullanim-olaylar-user"></a>
+##### Kullancı Olayları
+
+| Olay | İsim Uzayı | Olay Verisi | Açıklama |
+|------|------------|-------------|----------|
+| StoreSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\User` | User Model | Ekleme işlemi başarılı olduğunda tetiklenir |
+| StoreFail | `ErenMustafaOzdal\LaravelUserModule\Events\User` | Form verileri *(Array)* | Ekleme işlemi başarısız olduğunda tetiklenir |
+| UpdateSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\User` | User Model | Düzenleme işlemi başarılı olduğunda tetiklenir |
+| UpdateFail | `ErenMustafaOzdal\LaravelUserModule\Events\User` | User Model | Düzenleme işlemi başarısız olduğunda tetiklenir |
+| DestroySuccess | `ErenMustafaOzdal\LaravelUserModule\Events\User` | User Model | Silme işlemi başarılı olduğunda tetiklenir |
+| DestroyFail | `ErenMustafaOzdal\LaravelUserModule\Events\User` | User Model | Silme işlemi başarısız olduğunda tetiklenir |
+ 
+
+<a name="kullanim-olaylar-role"></a>
+##### Kullancı Rolü Olayları
+
+| Olay | İsim Uzayı | Olay Verisi | Açıklama |
+|------|------------|-------------|----------|
+| StoreSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Ekleme işlemi başarılı olduğunda tetiklenir |
+| StoreFail | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Form verileri *(Array)* | Ekleme işlemi başarısız olduğunda tetiklenir |
+| UpdateSuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Düzenleme işlemi başarılı olduğunda tetiklenir |
+| UpdateFail | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Düzenleme işlemi başarısız olduğunda tetiklenir |
+| DestroySuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Silme işlemi başarılı olduğunda tetiklenir |
+| DestroyFail | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Silme işlemi başarısız olduğunda tetiklenir |
  
 Lisans
 ------
