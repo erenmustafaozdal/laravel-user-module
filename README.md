@@ -7,7 +7,7 @@ Laravel User Module
 **Laravel User Module**, Laravel 5.1 projelerinde *kullanıcı*, *rol* ve *giriş* işlemlerini kapsayan bir modül paketidir. Bu paket kullanıcı arayüzü **(views)** hariç, arka plandaki bütün işlemleri barındırmaktadır. İstersen görünümleri kapsayan [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketini kullanarak, modüle tam kapsamıyla sahip olabilirsin.
 
 1. [Kurulum](#kurulum)
-    1. [Dosyaların Yayınlanması](#kurulum-dosyalarınYayinlanmasi)
+    1. [Dosyaların Yayınlanması](#kurulum-dosyalarinYayinlanmasi)
     2. [Migration](#kurulum-migration)
 2. [Kullanım](#kullanim)
     1. [Ayar Dosyası](#kullanim-ayarDosyasi)
@@ -25,8 +25,9 @@ Laravel User Module
             3. [Kullanıcı Rolü Rotaları](#kullanim-gorunumTasarlama-rotalar-role)
         3. [Form Alanları](#kullanim-gorunumTasarlama-formAlanlari)
             1. [Giriş - Çıkış - Kayıt Formları](#kullanim-gorunumTasarlama-formAlanlari-auth)
-            1. [Kullanıcı Formları](#kullanim-gorunumTasarlama-formAlanlari-user)
-            1. [Kullanıcı Rolü Formları](#kullanim-gorunumTasarlama-formAlanlari-role)
+            2. [Kullanıcı Formları](#kullanim-gorunumTasarlama-formAlanlari-user)
+            3. [Kullanıcı Rolü Formları](#kullanim-gorunumTasarlama-formAlanlari-role)
+        4. [İşlem İzin Formları](#kullanim-gorunumTasarlama-islemIzinFormlari)
     3. [Onaylamalar](#kullanim-onaylamalar)
     4. [Olaylar](#kullanim-olaylar)
         1. [Giriş - Çıkış - Kayıt Olayları](#kullanim-olaylar-auth)
@@ -62,11 +63,11 @@ ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider::class,
 ```
 > :exclamation: Eğer **Laravel Modules Core** paketini kullanacaksan, o paketin service provider dosyasını üstte tanımlamalısın.
 
-<a name="kurulum-dosyalarınYayinlanmasi"></a>
+<a name="kurulum-dosyalarinYayinlanmasi"></a>
 ##### Dosyaların Yayınlanması
-**Laravel User Module** paketi [Cartaklyst/Sentinel](https://github.com/cartalyst/sentinel) ve [Laracasts/Flash](https://github.com/laracasts/flash) paketleriyle bağımlıdır. Bu sebeple ilgili paketlerin de dosyalarının publish edilmesi için aşağıdaki kodu çalıştırmalısın.
+**Laravel User Module** paketinin dosyalarını aşağıdaki kodla yayınlamalısın.
 ```bash
-php artisan vendor:publish
+php artisan vendor:publish --provider="ErenMustafaOzdal\LaravelUserModule\LaravelUserModuleServiceProvider"
 ```
 
 <a name="kurulum-migration"></a>
@@ -93,7 +94,7 @@ protected $subscribe = [
     'ErenMustafaOzdal\LaravelUserModule\Listeners\LaravelUserModuleListener',
 ];
 ```
-`config/laravel-user-module.php` dosyasından aktivasyon e-posta blade dosyasını değiştirebilirsin. Varsayılan olarak `emails.activation` değeridir.
+`config/laravel-user-module.php` dosyasından aktivasyon e-posta blade dosyasını değiştirebilirsin.
 
 > Aktivasyon epostası blade dosyasına kullanıcı bilgileri (`user`) ve Sentinel Aktivasyon nesnesi gönderilmektedir (`activation`). Sentinel Aktivasyon nesnesinden `$activation->code` şeklinde kodu eposta içindeki aktivasyon bağlantısına ekleyebilirsin.
 
@@ -203,9 +204,7 @@ Paket içinde kullanılan modeller ile ilgili bazı ayarlamalar. Şu an için sa
 
 <a name="kullanim-gorunumTasarlama"></a>
 ### Görünüm Tasarlama
-Paket [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketiyle beraber direkt kullanıma hazırdır. Ancak istersen kendine özel görünümlerde tasarlayabilirsin. Bu bölümü özel tasarımlar için bir rehberdir.
-:exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
-> `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.
+Paket [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketiyle beraber direkt kullanıma hazırdır. Ancak istersen kendine özel görünümlerde tasarlayabilirsin. Bu bölüm özel tasarımlar için bir rehberdir.
 
 <a name="kullanim-gorunumTasarlama-modelKullanimi"></a>
 ##### Model Kullanımı
@@ -215,9 +214,9 @@ Görünümler içinde `User` ve `Role` modellerinin özellik ve metot kullanım�
 ###### User
 
 ####### Genel Özellikler
-**protected $table =** 'users'
-**protected $fillable =** ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions']
-**protected $hidden =** ['password', 'remember_token']
+1. **protected $table =** 'users'
+2. **protected $fillable =** ['first_name', 'last_name', 'email', 'password', 'is_active', 'photo','permissions']
+3. **protected $hidden =** ['password', 'remember_token']
 
 ####### $user->getPhoto()
 Kullanıcı fotoğrafını HTLM `img` etiketi ile veya sadece url olarak geri döndürür. Eğer fotoğraf yoksa, varsayılan fotoğrafı geri döndürür
@@ -225,8 +224,8 @@ Kullanıcı fotoğrafını HTLM `img` etiketi ile veya sadece url olarak geri d�
 | Parametre | Açıklama | Tür | Varsayılan Değer |
 |---|---|---|---|
 | $attributes | HTML `img` etiketi içinde yer alacak özellikler. Örneğin: *class => 'img-responsive'* | array | [] |
-| $type | string | İstenen resmin türü nedir? `original` değeri fotoğrafın orjinal halini döndürür. Bunun dışında da; ayar dosyasında *thumbnails* alanında belirttiğin isimlerden biri ile çağırabilirsin | 'original' |
-| $onlyUrl | boolean | Resim HTML olarak mı, url olarak mı isteniyor? `true` değeri sadece url'yi geri döndürür | false |
+| $type | İstenen resmin türü nedir? `original` değeri fotoğrafın orjinal halini döndürür. Bunun dışında da; ayar dosyasında *thumbnails* alanında belirttiğin isimlerden biri ile çağırabilirsin | string | 'original' |
+| $onlyUrl | Resim HTML olarak mı, url olarak mı isteniyor? `true` değeri sadece url'yi geri döndürür | boolean | false |
 
 ####### $user->first_name `string`
 Baş harfi büyük şekilde kullanıcı ilk adı
@@ -277,8 +276,8 @@ Kullanıcının güncellenme tarihini `display`(last_login_for_humans) ve `times
 ###### Role
 
 ####### Genel Özellikler
-**protected $table =** 'roles'
-**protected $fillable =** ['name', 'slug', 'permissions']
+1. **protected $table =** 'roles'
+2. **protected $fillable =** ['name', 'slug', 'permissions']
 
 ####### $role->name `string`
 Baş harfi büyük şekilde kullanıcı rolü adı
@@ -386,14 +385,19 @@ Başta kullanıcı rolü CRUD işlemleri olmak üzere, bir kısım *ajax* işlem
 | api.role.fastEdit | Hızlı bir şekilde kullanıcı rolü bilgisini düzenlemek için; bilgilerin çekildiği rotadır. Rotaya kullanıcı rolü id'si iliştirilir ve kullanıcı rolü bilgilerinin tamamı çekilir | POST |
 
 
+
 <a name="kullanim-gorunumTasarlama-formAlanlari"></a>
 ##### Form Alanları
 İşlemler sırasında görünümlerinde kullanacağın form elemanları veri tabanı tablolarındaki sütun isimleriyle aynı olmalıdır. Aşağıda her işlem için gereken eleman listesi verilmiştir.
 
+:exclamation: Aşağıda belirtilen form isimleri kullanılması zorunlu olup, sırası değişebilir.
+
+> `lang/.../validation.php` dosyanda bu form isimlerinin metin değerlerini belirtmeyi unutma! Ayrıca her dil için validation dosyası oluşturmalısın.
+
 <a name="kullanim-gorunumTasarlama-formAlanlari-auth"></a>
 ###### Giriş - Çıkış - Kayıt Formları
 
-1. `register` işlemi form elemanları
+* `register` işlemi form elemanları
     * first_name
     * last_name
     * email
@@ -416,7 +420,7 @@ public function rules()
 }
 ```
 
-2. `login` işlemi form elemanları
+* `login` işlemi form elemanları
     * email
     * password
     * remember
@@ -433,7 +437,7 @@ public function rules()
 }
 ```
 
-3. `forgetPassword` işlemi form elemanları
+* `forgetPassword` işlemi form elemanları
     * email
 
 **ForgetPasswordRequest**
@@ -447,7 +451,7 @@ public function rules()
 }
 ```
 
-4. `resetPassword` işlemi form elemanları
+* `resetPassword` işlemi form elemanları
     * email
     * password
     * password_confirmation
@@ -467,7 +471,7 @@ public function rules()
 <a name="kullanim-gorunumTasarlama-formAlanlari-user"></a>
 ###### Kullanıcı Formları
 
-1. `store` işlemi form elemanları
+* `store` işlemi form elemanları
     * first_name
     * last_name
     * email
@@ -500,7 +504,7 @@ public function rules()
 }
 ```
 
-2. `update` işlemi form elemanları
+* `update` işlemi form elemanları
     * first_name
     * last_name
     * email
@@ -533,7 +537,7 @@ public function rules()
 }
 ```
 
-3. `changePassword` işlemi form elemanları
+* `changePassword` işlemi form elemanları
     * password
     * password_confirmation
 
@@ -548,7 +552,7 @@ public function rules()
 }
 ```
 
-4. `permission` işlemi form elemanları
+* `permission` işlemi form elemanları
     * permissions
 
 **PermissionRequest**
@@ -562,7 +566,7 @@ public function rules()
 }
 ```
 
-5. Api `index` filtreleme işlemi verileri
+* Api `index` filtreleme işlemi verileri
     * action=filter
     * id
     * first_name
@@ -571,15 +575,15 @@ public function rules()
     * created_at_from
     * created_at_to
 
-6. Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
+* Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
 
-7. Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
+* Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır. Sadece fotoğraf verileri kullanılmaz
 
-8. Api `group` işlemi verileri
+* Api `group` işlemi verileri
     * action=activate|not_activate|destroy
     * id (array şeklinde model id'leri)
 
-9. Api `avatarPhoto` işlemi verileri,
+* Api `avatarPhoto` işlemi verileri,
     * photo
     * x (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu x değeri)
     * y (fotoğraf kırpılacaksa; kırpılacak halin sol üst köşe konumu y değeri)
@@ -604,7 +608,7 @@ public function rules()
 <a name="kullanim-gorunumTasarlama-formAlanlari-role"></a>
 ###### Kullanıcı Rolü Formları
 
-1. `store` işlemi form elemanları
+* `store` işlemi form elemanları
     * name
     * slug
     * permissions
@@ -622,7 +626,7 @@ public function rules()
 }
 ```
 
-2. `update` işlemi form elemanları
+* `update` işlemi form elemanları
     * name
     * slug
     * permissions
@@ -640,7 +644,7 @@ public function rules()
 }
 ```
 
-3. Api `index` filtreleme işlemi verileri
+* Api `index` filtreleme işlemi verileri
     * action=filter
     * id
     * name
@@ -648,24 +652,69 @@ public function rules()
     * created_at_from
     * created_at_to
 
-4. Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır
+* Api `store` işlemi verileri, yukarıdaki *store* işlemi ile aynıdır
 
-5. Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır
+* Api `update` işlemi verileri, yukarıdaki *update* işlemi ile aynıdır
 
-6. Api `group` işlemi verileri
+* Api `group` işlemi verileri
     * action=destroy
     * id (array şeklinde model id'leri)
 
-7. Api `models` işlemi verileri
+* Api `models` işlemi verileri
     * query (metin şeklinde gönderilir ve `name`, `slug` alanlarında `like` yöntemi ile filtreleme yapar)
 
 
-<a name="#kullanim-onaylamalar"></a>
+<a name="kullanim-gorunumTasarlama-islemIzinFormlari"></a>
+##### İşlem İzin Formlari
+Hem kullanıcı hem de rol işlem izinleri formu oluşturmak çok kolaydır. **Laravel User Module** bu işlem için `ErenMustafaOzdal\LaravelUserModule\Services\PermissionService` sınıfını kullanmaktadır. Bu sınıf `admin` ve `api` rota adı başlangıcına sahip tüm tanımlı rotaları alır ve `Collection` türünde döndürür. Bu şekilde izinleri *checkbox* ile foreach kullanarak listeleyebilirsin. Örnek kullanım için öncelikle formu oluşturacağın blade dosyasına bu sınıfı enjekte et, daha sonra da listeleme yap.
+
+```php
+@inject('permission', 'ErenMustafaOzdal\LaravelUserModule\Services\PermissionService')
+
+<ul>
+@foreach($permission->groupByController() as $namespace => $routes)
+
+    <li>
+        <span class="route-name">{!! $route['route'] !!}</span>
+        {!! Form::checkbox( "permissions[{$route['route']}]", true, isset($permissions[$route['route']]) ) !!}
+    </li>
+
+@endforeach
+</ul>
+```
+
+###### $permission->getCollection()
+`Illuminate\Routing\RouteCollection` türünden bir liste döndürür
+
+###### $permission->getNames()
+`Illuminate\Support\Collection` türünden bir liste döndürür. Bu listenin `all` anahtarında bütün rotalar yer alır. `admin` ve `api` anahtarlarında ise ilgili rota listeleri yer alır.
+
+###### $permission->getSpecificNames($prefix)
+`Illuminate\Support\Collection` türünden bir liste istenen ön ada sahip rota ismi listesi döndürür. Örneğin: *api*
+
+###### $permission->getNameParts()
+`Illuminate\Support\Collection` türünden bir liste döndürür. `$permission->getNames()` metodundan tek farkı `all` anahtarı olmayışıdır.
+
+###### $permission->getAllNames()
+`Illuminate\Support\Collection` türünden bir liste döndürür. Sadece `all` anahtarındaki listeyi barındırır.
+
+###### $permission->groupByController()
+`Illuminate\Support\Collection` türünden *Controller* türüne göre gruplandırılmış şekilde bütün rotaları döndürür
+
+###### $permission->permissionCount()
+İşlem izin sayısını, yani rota ismi sayısını döndürür
+
+###### $permission->permissionRate($count)
+Metoda gönderilen kullanıcı veya kullanıcı rolü izinli işlem sayısı sonucunda; yüzde kaç yetkiye sahip olduğunu döndürür. Döndürdüğü değer türü: *integer*
+
+
+
+<a name="kullanim-onaylamalar"></a>
 ### Onaylamalar
 **Laravel User Module** paketi yapılan her form isteği için onaylama kurallarını belirlemiştir. Bu tür form istek onaylama kuralları için yapman gereken bir şey yoktur. Yukarıda `Request` sınıflarının `rules` metotlarında açıklamaları yapılmıştır.
 
 
-<a name="#kullanim-olaylar"></a>
+<a name="kullanim-olaylar"></a>
 ### Olaylar
 Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi listener dosyanda bu olayları dinleyebilir ve tetiklendiğinde istediğin işlemleri kolay bir şekilde yapabilirsin.
 
