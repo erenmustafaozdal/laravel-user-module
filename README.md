@@ -32,6 +32,7 @@ Laravel User Module
         1. [Giriş - Çıkış - Kayıt Olayları](#kullanim-olaylar-auth)
         2. [Kullanıcı Olayları](#kullanim-olaylar-user)
         3. [Kullanıcı Rolü Olayları](#kullanim-olaylar-role)
+2. [Lisans](#lisans)
 
 
 <a name="kurulum"></a>
@@ -715,6 +716,8 @@ Paket içindeki hemen hemen tüm işlemler belli bir olayı tetikler. Sen kendi 
 | DestroySuccess | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Silme işlemi başarılı olduğunda tetiklenir |
 | DestroyFail | `ErenMustafaOzdal\LaravelUserModule\Events\Role` | Role Model | Silme işlemi başarısız olduğunda tetiklenir |
  
+ 
+ <a name="lisans"></a>
 Lisans
 ------
 MIT
