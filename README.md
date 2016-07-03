@@ -48,7 +48,7 @@ Ya da `composer.json` dosyana, aşağıdaki gibi ekleme yapıp, paketleri günce
 ```json
 {
     "require": {
-        "erenmustafaozdal/laravel-user-module": "^0.1.0"
+        "erenmustafaozdal/laravel-user-module": "~0.1"
     }
 }
 ```
@@ -665,7 +665,7 @@ public function rules()
 
 
 <a name="kullanim-gorunumTasarlama-islemIzinFormlari"></a>
-##### İşlem İzin Formlari
+##### İşlem İzin Formları
 Hem kullanıcı hem de rol işlem izinleri formu oluşturmak çok kolaydır. **Laravel User Module** bu işlem için `ErenMustafaOzdal\LaravelUserModule\Services\PermissionService` sınıfını kullanmaktadır. Bu sınıf `admin` ve `api` rota adı başlangıcına sahip tüm tanımlı rotaları alır ve `Collection` türünde döndürür. Bu şekilde izinleri *checkbox* ile foreach kullanarak listeleyebilirsin. Örnek kullanım için öncelikle formu oluşturacağın blade dosyasına bu sınıfı enjekte et, daha sonra da listeleme yap.
 
 ```php
