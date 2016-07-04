@@ -78,9 +78,10 @@ Dosyaları yayınladıktan sonra migration işlemi yapmalısın.
 > :exclamation: Sentinel'e ait `...migration_cartalyst_sentinel.php` dosyasında **Laravel User Module**'e özgü bazı değişiklikler yapmalısın. `users` tablosunun sütunlarının belirlendiği satırlarda, `last_name` sütunundan sonra aşağıdaki gibi ekleme yapmalısın.
 
 ```php
-$table->string('last_name')->nullable();    // bu satırdan sonra
-$table->boolean('is_active')->default(0);   // bu satırı eklemelisin
-$table->string('photo')->nullable();        // ve arkasından bu satırı
+$table->string('last_name')->nullable();        // bu satırdan sonra
+$table->boolean('is_active')->default(0);       // bu satırı eklemelisin
+$table->boolean('is_super_admin')->default(0);  // bu satırı da eklemelisin
+$table->string('photo')->nullable();            // ve arkasından bu satırı
 ```
 Daha sonra migrate işlemini yapabilirsin.
 ```bash
@@ -134,6 +135,13 @@ class Role extends EMORole
 <a name="kullanim"></a>
 Kullanım
 --------
+
+Kurulum tamamlandığında; [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketini de dahil ettiysen, `proje.dev/login` adresinden tüm haliyle seni bekliyor olacak.
+
+> :exclamation: metinler yanlış görünüyorsa, [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketinin İngilizce dil dosyaları hazır olmadığı içindir. bu sebeple projenin `config/app.php` dosyasında `'locale' => 'tr'` tanımlaması yapmalısın.
+
+> :exclamation: ilk kullanıcı ile giriş yaptığında hiçbir rotaya erişemeyeceksin. Bunu engellemek için veri tabanında `is_super_admin` sütununu **1** olarak tanımlamalısın. bu şekilde bütün izinlere sahip olarak işlemlere devam edebilirsin.
+
 <a name="kullanim-ayarDosyasi"></a>
 ### Ayar Dosyası
 
@@ -149,6 +157,7 @@ Paketin içinde kullanılan genel ayarlar. Ayar dosyası içinde kök alanda bul
 <a name="kullanim-ayarDosyasi-urlAyarlari"></a>
 ##### URL Ayarları
 Tarayıcının adres çubuğunda görünecek adreslerin tanımlandığı ayarlar. Ayar dosyasının `url` alanında bulunan ayarlardır.
+
 > Örneğin: `activate_route` ayarı ile aktivasyon sayfası adresi `account-activate` şeklinde tanımlanmıştır. Bu şekilde adres çubuğunda şuna benzer bir görünüm olacaktır: `www.siteadi.com/account-activate/{id}/{code}`
 
 | Ayar | Açıklama | Varsayılan Değer |

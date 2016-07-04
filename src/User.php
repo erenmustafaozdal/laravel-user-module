@@ -187,6 +187,17 @@ class User extends SentinelUser
     }
 
     /**
+     * Get the is_super_admin attribute.
+     *
+     * @param boolean $value
+     * @return string
+     */
+    public function getIsSuperAdminAttribute($value)
+    {
+        return $value == 1 ? true : false;
+    }
+
+    /**
      * Get the login_at attribute.
      *
      * @param  $date
