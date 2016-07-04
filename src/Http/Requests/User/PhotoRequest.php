@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 
 use App\Http\Requests\Request;
+use Sentinel;
 
 class PhotoRequest extends Request
 {
@@ -13,7 +14,10 @@ class PhotoRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.user.avatarPhoto')) {
+            return true;
+        }
+        return false;
     }
 
     /**

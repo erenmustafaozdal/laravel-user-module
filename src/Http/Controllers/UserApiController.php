@@ -21,8 +21,8 @@ use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateRemove;
 use ErenMustafaOzdal\LaravelUserModule\Events\Auth\ActivateFail;
 // requests
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\StoreRequest;
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\ApiStoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\ApiUpdateRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PhotoRequest;
 
 
@@ -94,10 +94,10 @@ class UserApiController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreRequest  $request
+     * @param  ApiStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(ApiStoreRequest $request)
     {
         return $this->storeModel(User::class, $request, [
             'success'           => StoreSuccess::class,
@@ -111,10 +111,10 @@ class UserApiController extends AdminBaseController
      * Update the specified resource in storage.
      *
      * @param  User $user
-     * @param  UpdateRequest $request
+     * @param  ApiUpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, User $user)
+    public function update(ApiUpdateRequest $request, User $user)
     {
         $result = $this->updateModel($user, $request, [
             'success'   => UpdateSuccess::class,

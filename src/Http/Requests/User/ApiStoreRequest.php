@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 use App\Http\Requests\Request;
 use Sentinel;
 
-class StoreRequest extends Request
+class ApiStoreRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.user.store')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.user.store')) {
             return true;
         }
         return false;

@@ -17,8 +17,8 @@ use ErenMustafaOzdal\LaravelUserModule\Events\Role\UpdateFail;
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroySuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroyFail;
 // requests
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\StoreRequest;
-use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\UpdateRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\ApiStoreRequest;
+use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\ApiUpdateRequest;
 
 
 class RoleApiController extends AdminBaseController
@@ -82,10 +82,10 @@ class RoleApiController extends AdminBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreRequest  $request
+     * @param  ApiStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(ApiStoreRequest $request)
     {
         return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
             'success'   => StoreSuccess::class,
@@ -97,10 +97,10 @@ class RoleApiController extends AdminBaseController
      * Update the specified resource in storage.
      *
      * @param  Role $role
-     * @param  UpdateRequest $request
+     * @param  ApiUpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Role $role)
+    public function update(ApiUpdateRequest $request, Role $role)
     {
         return $this->updateModel($role, $request, [
             'success'   => UpdateSuccess::class,

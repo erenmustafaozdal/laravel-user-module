@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 
 use App\Http\Requests\Request;
+use Sentinel;
 
 class PermissionRequest extends Request
 {
@@ -13,7 +14,10 @@ class PermissionRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.user.permission')) {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role;
 
 use App\Http\Requests\Request;
+use Sentinel;
 
 class UpdateRequest extends Request
 {
@@ -13,7 +14,10 @@ class UpdateRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.role.update')) {
+            return true;
+        }
+        return false;
     }
 
     /**

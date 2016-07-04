@@ -5,7 +5,7 @@ namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role;
 use App\Http\Requests\Request;
 use Sentinel;
 
-class StoreRequest extends Request
+class ApiUpdateRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.role.store')) {
+        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.role.update')) {
             return true;
         }
         return false;
@@ -28,8 +28,8 @@ class StoreRequest extends Request
     public function rules()
     {
         return [
-            'name'          => 'required|max:255',
-            'slug'          => 'alpha_dash|max:255|unique:roles',
+            'name'          => 'max:255',
+            'slug'          => 'alpha_dash|max:255|unique:roles,slug,'.$this->segment(3),
             'permissions'   => 'array',
         ];
     }
