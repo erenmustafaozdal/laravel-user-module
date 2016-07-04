@@ -33,7 +33,7 @@ Laravel User Module
         1. [Giriş - Çıkış - Kayıt Olayları](#kullanim-olaylar-auth)
         2. [Kullanıcı Olayları](#kullanim-olaylar-user)
         3. [Kullanıcı Rolü Olayları](#kullanim-olaylar-role)
-2. [Lisans](#lisans)
+3. [Lisans](#lisans)
 
 
 <a name="kurulum"></a>
@@ -138,7 +138,7 @@ Kullanım
 
 Kurulum tamamlandığında; [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketini de dahil ettiysen, `proje.dev/login` adresinden tüm haliyle seni bekliyor olacak.
 
-> :exclamation: metinler yanlış görünüyorsa, [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketinin İngilizce dil dosyaları hazır olmadığı içindir. bu sebeple projenin `config/app.php` dosyasında `'locale' => 'tr'` tanımlaması yapmalısın.
+> :exclamation: metinler yanlış görünüyorsa, [Laravel Modules Core](https://github.com/erenmustafaozdal/laravel-modules-core) paketinin İngilizce dil dosyaları hazır olmadığı içindir. Bu sebeple projenin `config/app.php` dosyasında `'locale' => 'tr'` tanımlaması yapmalısın.
 
 > :exclamation: ilk kullanıcı ile giriş yaptığında hiçbir rotaya erişemeyeceksin. Bunu engellemek için veri tabanında `is_super_admin` sütununu **1** olarak tanımlamalısın. bu şekilde bütün izinlere sahip olarak işlemlere devam edebilirsin.
 
@@ -180,20 +180,20 @@ Paketin kullanacağı görünümlerin tanımlandığı ayarlardır. Ayar dosyas�
 | Ayar | Açıklama | Varsayılan Değer |
 |---|---|---|
 |auth.layout | Giriş, kayıt gibi sayfaların şablon görünümü | laravel-modules-core::layouts.auth |
-|auth.login | Giriş sayfası görünümü | laravel-modules-core::auth.login |
-|auth.register | Kayıt sayfası görünümü | laravel-modules-core::auth.register |
-|auth.forget_password | Şifremi unuttum sayfası görünümü | laravel-modules-core::auth.forget_password |
-|auth.reset_password | Şifre sıfırlama sayfası görünümü | laravel-modules-core::auth.reset_password |
-|user.layout | Kullanıcı sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
-|user.index | Kullanıcıların listelendiği sayfanın görünümü | laravel-modules-core::user.index |
-|user.create | Kullanıcı ekleme sayfasının görünümü | laravel-modules-core::user.create |
-|user.show | Kullanıcı bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::user.show |
-|user.edit | Kullanıcı bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::user.edit |
-|role.layout | Kullanıcı rolü sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
-|role.index | Kullanıcı rollerinin listelendiği sayfanın görünümü | laravel-modules-core::role.index |
-|role.create | Kullanıcı rolü ekleme sayfasının görünümü | laravel-modules-core::role.create |
-|role.show | Kullanıcı rolü bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::role.show |
-|role.edit | Kullanıcı rolü bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::role.edit |
+| auth.login | Giriş sayfası görünümü | laravel-modules-core::auth.login |
+| auth.register | Kayıt sayfası görünümü | laravel-modules-core::auth.register |
+| auth.forget_password | Şifremi unuttum sayfası görünümü | laravel-modules-core::auth.forget_password |
+| auth.reset_password | Şifre sıfırlama sayfası görünümü | laravel-modules-core::auth.reset_password |
+| user.layout | Kullanıcı sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
+| user.index | Kullanıcıların listelendiği sayfanın görünümü | laravel-modules-core::user.index |
+| user.create | Kullanıcı ekleme sayfasının görünümü | laravel-modules-core::user.create |
+| user.show | Kullanıcı bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::user.show |
+| user.edit | Kullanıcı bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::user.edit |
+| role.layout | Kullanıcı rolü sayfaları şablon görünümü | laravel-modules-core::layouts.admin |
+| role.index | Kullanıcı rollerinin listelendiği sayfanın görünümü | laravel-modules-core::role.index |
+| role.create | Kullanıcı rolü ekleme sayfasının görünümü | laravel-modules-core::role.create |
+| role.show | Kullanıcı rolü bilgilerinin olduğu sayfanın görünümü | laravel-modules-core::role.show |
+| role.edit | Kullanıcı rolü bilgilerinin düzenlendiği sayfanın görünümü | laravel-modules-core::role.edit |
 | email.activation | Aktivasyon e-postası görünümü | laravel-modules-core::emails.activation |
 | email.forget_password | Şifremi unuttum e-postası görünümü | laravel-modules-core::emails.forget_password |
 
