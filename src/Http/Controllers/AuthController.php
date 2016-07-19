@@ -14,6 +14,7 @@ use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Laracasts\Flash\Flash;
 use DB;
+use App\User;
 
 // requests
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Auth\RegisterRequest;
@@ -125,7 +126,7 @@ class AuthController extends Controller
         $datas = $request->all();
         DB::beginTransaction();
         try {
-            $user = Sentinel::create($datas);
+            $user = User::create($datas);
             if ( ! isset($user->id)) {
                 throw new RegisterException($datas);
             }

@@ -39,7 +39,7 @@ class PasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-        $this->subject = trans('laravel-user-module::auth.forget_password.mail_subject');
+        $this->subject = lmcTrans('laravel-user-module/auth.forget_password.mail_subject');
         $this->redirectTo = config('laravel-user-module.redirect_route');
     }
 
