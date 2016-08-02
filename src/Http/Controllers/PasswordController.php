@@ -78,18 +78,13 @@ class PasswordController extends Controller
             });
             // event fire
             event(new PasswordResetMailSend($request->all()));
-            Flash::success(str_replace(
-                [':name', ':email'],
-                [$user->first_name,$user->email],
-                trans('laravel-user-module::auth.forget_password.success')
-            ));
+            Flash::success(trans('laravel-user-module::auth.forget_password.success', [
+                'name'  => $user->first_name,
+                'email' => $user->email
+            ]));
             return redirect(route('getLogin'));
         } catch (ForgetPasswordException $e) {
-            Flash::error(str_replace(
-                ':email',
-                $request->input('email'),
-                trans('laravel-user-module::auth.forget_password.fail')
-            ));
+            Flash::error(trans('laravel-user-module::auth.forget_password.fail', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ForgetPasswordFail($e->getDatas()));
             return redirect(route('getForgetPassword'))->withInput();
@@ -128,20 +123,12 @@ class PasswordController extends Controller
             if ( ! Reminder::complete($user, $request->input('token'), $request->input('password')) ) {
                 throw new ResetPasswordIncorrectCodeException($request->all());
             }
-            Flash::success(str_replace(
-                ':email',
-                $request->input('email'),
-                trans('laravel-user-module::auth.reset_password.success')
-            ));
+            Flash::success(trans('laravel-user-module::auth.reset_password.success', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ResetPasswordSuccess($user));
             return redirect(route('getLogin'));
         } catch (ResetPasswordUserNotFoundException $e) {
-            Flash::error(str_replace(
-                ':email',
-                $request->input('email'),
-                trans('laravel-user-module::auth.reset_password.user_not_found')
-            ));
+            Flash::error(trans('laravel-user-module::auth.reset_password.user_not_found', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ResetPasswordUserNotFound($e->getDatas()));
             return redirect(route('getResetPassword', ['token' => $request->input('token')]))->withInput();

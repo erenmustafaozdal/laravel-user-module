@@ -67,7 +67,7 @@ class LaravelUserModuleListener
     {
         $free = Carbon::parse($event->e->getFree())->format(config('laravel-user-module.date_format'));
 
-        $message = str_replace(':date',$free,trans('laravel-user-module::auth.login.exception.throttling.'.$event->e->getType()));
+        $message = trans('laravel-user-module::auth.login.exception.throttling.'.$event->e->getType(), [ 'date' => $free ]);
 
         Flash::error($message);
     }

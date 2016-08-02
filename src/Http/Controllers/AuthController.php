@@ -134,7 +134,7 @@ class AuthController extends Controller
             // event fire
             event(new RegisterSuccess($user));
 
-            Flash::success(str_replace([':email'],[$user->email],trans('laravel-user-module::auth.register.success')));
+            Flash::success(trans('laravel-user-module::auth.register.success', [ 'email' => $user->email]));
             DB::commit();
             return redirect(route('getLogin'));
         } catch (RegisterException $e) {
