@@ -122,7 +122,7 @@ class UserApiController extends AdminBaseController
         ]);
 
         // activation
-        $request->has('is_active') ? $this->activationComplete($this->model, [
+        $request->input('is_active') === 'true' ? $this->activationComplete($this->model, [
             'activationSuccess'     => ActivateSuccess::class,
             'activationFail'        => ActivateFail::class
         ]) : $this->activationRemove($this->model, [
