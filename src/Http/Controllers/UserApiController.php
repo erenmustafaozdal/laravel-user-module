@@ -46,7 +46,7 @@ class UserApiController extends AdminBaseController
             'addUrls' => [
                 'activate'      => ['route' => 'api.user.activate', 'id' => true],
                 'not_activate'  => ['route' => 'api.user.notActivate', 'id' => true],
-                'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
+                'edit_page'     => ['route' => 'admin.user.edit', 'id' => true]
             ],
             'status'            => function($model) { return $model->is_active; },
             'fullname'          => function($model) { return $model->fullname; },

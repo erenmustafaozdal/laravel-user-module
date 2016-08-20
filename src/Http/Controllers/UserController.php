@@ -42,7 +42,8 @@ class UserController extends AdminBaseController
      */
     public function create()
     {
-        return view(config('laravel-user-module.views.user.create'));
+        $operation = 'create';
+        return view(config('laravel-user-module.views.user.create'), compact('operation'));
     }
 
     /**
@@ -80,7 +81,8 @@ class UserController extends AdminBaseController
      */
     public function edit(User $user)
     {
-        return view(config('laravel-user-module.views.user.edit'), compact('user'));
+        $operation = 'edit';
+        return view(config('laravel-user-module.views.user.edit'), compact('user','operation'));
     }
 
     /**
