@@ -37,7 +37,8 @@ class RoleController extends AdminBaseController
      */
     public function create()
     {
-        return view(config('laravel-user-module.views.role.create'));
+        $operation = 'create';
+        return view(config('laravel-user-module.views.role.create'), compact('operation'));
     }
 
     /**
@@ -73,7 +74,8 @@ class RoleController extends AdminBaseController
      */
     public function edit(Role $role)
     {
-        return view(config('laravel-user-module.views.role.edit'), compact('role'));
+        $operation = 'edit';
+        return view(config('laravel-user-module.views.role.edit'), compact('role','operation'));
     }
 
     /**

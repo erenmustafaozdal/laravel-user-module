@@ -46,17 +46,17 @@ return [
         'user' => [
             'layout'                => 'laravel-modules-core::layouts.admin',       // user layout
             'index'                 => 'laravel-modules-core::user.index',          // get user index view blade
-            'create'                => 'laravel-modules-core::user.create',         // get user create view blade
+            'create'                => 'laravel-modules-core::user.operation',      // get user create view blade
             'show'                  => 'laravel-modules-core::user.show',           // get user show view blade
-            'edit'                  => 'laravel-modules-core::user.edit',           // get user edit view blade
+            'edit'                  => 'laravel-modules-core::user.operation',      // get user edit view blade
         ],
         // role view
         'role' => [
             'layout'                => 'laravel-modules-core::layouts.admin',       // role layout
             'index'                 => 'laravel-modules-core::role.index',          // get role index view blade
-            'create'                => 'laravel-modules-core::role.create',         // get role create view blade
+            'create'                => 'laravel-modules-core::role.operation',      // get role create view blade
             'show'                  => 'laravel-modules-core::role.show',           // get role show view blade
-            'edit'                  => 'laravel-modules-core::role.edit',           // get role edit view blade
+            'edit'                  => 'laravel-modules-core::role.operation',      // get role edit view blade
         ],
         // email views
         'email' => [
