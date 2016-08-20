@@ -84,9 +84,9 @@ class PermissionService
             return false;
         }
 
-        $namespace = $this->getHyphenNameSpace($action['namespace']);
-        $parts = explode('\\', strchr($action['controller'], '@', true));
-        $controller = end($parts);
+        $parts = $this->getHyphenNameSpace($action['controller']);
+        $namespace = $parts['namespace'];
+        $controller = $parts['controller'];
 
         $this->allRouteNames['all']->put($routeName, [
             'namespace'     => $namespace,
@@ -105,14 +105,24 @@ class PermissionService
     /**
      * get hyphen namespace
      *
-     * @param string $namespace
-     * @return string
+     * @param string $action
+     * @return array
      */
-    protected function getHyphenNameSpace($namespace)
+    protected function getHyphenNameSpace($action)
     {
-        $parts = explode('\\', $namespace);
-        $namespace = preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $parts[1] );
-        return strtolower($namespace);
+        $parts_of_namespace = explode('\\', $action);
+        $parts = explode('@', $action);
+        if ($parts_of_namespace[0] !== 'ErenMustafaOzdal') {
+            $parent_action = get_parent_class( new $parts[0]() );
+            $parts_of_namespace = explode('\\', $parent_action);
+        }
+        $controller = explode('\\',$parts[0]);
+        $controller = end( $controller );
+        $namespace = preg_replace( '/([a-zA-Z])(?=[A-Z])/', '$1-', $parts_of_namespace[1] );
+        return [
+            'controller'    => $controller,
+            'namespace'     => strtolower($namespace)
+        ];
     }
 
     /**

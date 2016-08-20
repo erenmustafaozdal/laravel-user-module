@@ -1,7 +1,7 @@
 {
     "name": "erenmustafaozdal/laravel-user-module",
     "description": "laravel 5.1 user, role and auth module package",
-    "license": "MT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Eren Mustafa ÖZDAL",
