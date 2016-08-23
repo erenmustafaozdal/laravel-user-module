@@ -7,9 +7,11 @@ use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
 class User extends SentinelUser
 {
+    use ModelDataTrait;
 
     /**
      * The database table used by the model.
@@ -31,39 +33,6 @@ class User extends SentinelUser
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Get Data Metods
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * get the html photo element
-     *
-     * @param array $attributes
-     * @param string $type  original or thumbnails key
-     * @param boolean $onlyUrl
-     * @return string
-     */
-    public function getPhoto($attributes = [], $type='original', $onlyUrl = false)
-    {
-        if( ! is_null($this->photo)) {
-            $src  = config('laravel-user-module.user.uploads.path')."/{$this->id}/";
-            $src .= $type === 'original' ? "original/{$this->photo}" : "thumbnails/{$type}_{$this->photo}";
-        } else {
-            $type = $type === 'original' ? 'biggest' : $type;
-            $src = config('laravel-user-module.user.avatar_path') . "/{$type}.jpg";
-        }
-
-        $attr = '';
-        foreach($attributes as $key => $value) {
-            $attr .= $key.'="'.$value.'" ';
-        }
-        return $onlyUrl ? asset($src) : '<img src="'.asset($src).'" '.$attr.'>';
-    }
 
 
 

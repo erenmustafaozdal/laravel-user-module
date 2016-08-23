@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Sentinel;
 use App\Role;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseController;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreFail;
@@ -21,8 +21,17 @@ use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\ApiStoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\ApiUpdateRequest;
 
 
-class RoleApiController extends AdminBaseController
+class RoleApiController extends BaseController
 {
+    /**
+     * default urls of the model
+     *
+     * @var array
+     */
+    private $urls = [
+        'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +47,7 @@ class RoleApiController extends AdminBaseController
         }
 
         $addColumns = [
-            'addUrls' => [
-                'edit_page'     => ['route' => 'admin.role.edit', 'id' => true]
-            ]
+            'addUrls' => $this->urls
         ];
         $editColumns = [
             'created_at'        => function($model) { return $model->created_at_table; }
@@ -87,10 +94,11 @@ class RoleApiController extends AdminBaseController
      */
     public function store(ApiStoreRequest $request)
     {
-        return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
         ]);
+        return $this->storeModel(Sentinel::getRoleRepository()->createModel());
     }
 
     /**
@@ -102,10 +110,11 @@ class RoleApiController extends AdminBaseController
      */
     public function update(ApiUpdateRequest $request, Role $role)
     {
-        return $this->updateModel($role, $request, [
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
         ]);
+        return $this->updateModel($role);
     }
 
     /**
@@ -116,10 +125,11 @@ class RoleApiController extends AdminBaseController
      */
     public function destroy(Role $role)
     {
-        return $this->destroyModel($role, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
+        return $this->destroyModel($role);
     }
 
     /**
@@ -130,7 +140,7 @@ class RoleApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
-        if ( $this->destroyGroupAction(Role::class, $request->input('id'), []) ) {
+        if ( $this->groupAlias(Role::class) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);

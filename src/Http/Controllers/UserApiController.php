@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Sentinel;
 use App\User;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseUserController;
 use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
@@ -26,8 +26,19 @@ use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\ApiUpdateRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PhotoRequest;
 
 
-class UserApiController extends AdminBaseController
+class UserApiController extends BaseUserController
 {
+    /**
+     * default urls of the model
+     *
+     * @var array
+     */
+    private $urls = [
+        'activate'      => ['route' => 'api.user.activate', 'id' => true],
+        'not_activate'  => ['route' => 'api.user.notActivate', 'id' => true],
+        'edit_page'     => ['route' => 'admin.user.edit', 'id' => true]
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -43,17 +54,13 @@ class UserApiController extends AdminBaseController
         }
 
         $addColumns = [
-            'addUrls' => [
-                'activate'      => ['route' => 'api.user.activate', 'id' => true],
-                'not_activate'  => ['route' => 'api.user.notActivate', 'id' => true],
-                'edit_page'     => ['route' => 'admin.user.edit', 'id' => true]
-            ],
-            'status'            => function($model) { return $model->is_active; },
-            'fullname'          => function($model) { return $model->fullname; },
+            'addUrls'       => $this->urls,
+            'status'        => function($model) { return $model->is_active; },
+            'fullname'      => function($model) { return $model->fullname; },
         ];
         $editColumns = [
-            'photo'             => function($model) { return $model->getPhoto([], 'smallest', true); },
-            'created_at'        => function($model) { return $model->created_at_table; }
+            'photo'         => function($model) { return $model->getPhoto([], 'smallest', true); },
+            'created_at'    => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = ['is_active', 'first_name', 'last_name'];
         return $this->getDatatables($users, $addColumns, $editColumns, $removeColumns);
@@ -99,12 +106,13 @@ class UserApiController extends AdminBaseController
      */
     public function store(ApiStoreRequest $request)
     {
-        return $this->storeModel(User::class, $request, [
+        $this->setEvents([
             'success'           => StoreSuccess::class,
             'fail'              => StoreFail::class,
             'activationSuccess' => ActivateSuccess::class,
             'activationFail'    => ActivateFail::class
         ]);
+        return $this->storeModel(User::class);
     }
 
     /**
@@ -116,20 +124,13 @@ class UserApiController extends AdminBaseController
      */
     public function update(ApiUpdateRequest $request, User $user)
     {
-        $result = $this->updateModel($user, $request, [
-            'success'   => UpdateSuccess::class,
-            'fail'      => UpdateFail::class
+        return $this->updateAlias($user,[
+            'success'           => UpdateSuccess::class,
+            'fail'              => UpdateFail::class,
+            'activationSuccess' => ActivateSuccess::class,
+            'activationFail'    => ActivateFail::class,
+            'activationRemove'  => ActivateRemove::class
         ]);
-
-        // activation
-        $request->input('is_active') === 'true' ? $this->activationComplete($this->model, [
-            'activationSuccess'     => ActivateSuccess::class,
-            'activationFail'        => ActivateFail::class
-        ]) : $this->activationRemove($this->model, [
-            'activationRemove'      => ActivateRemove::class,
-            'activationFail'        => ActivateFail::class
-        ]);
-        return $result;
     }
 
     /**
@@ -140,10 +141,14 @@ class UserApiController extends AdminBaseController
      */
     public function destroy(User $user)
     {
-        return $this->destroyModel($user, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
+        $result =  $this->destroyModel($user);
+        $file = new FileRepository(config('laravel-user-module.document.uploads'));
+        $file->deleteDirectories($user);
+        return $result;
     }
 
     /**
@@ -154,10 +159,12 @@ class UserApiController extends AdminBaseController
      */
     public function activate(User $user)
     {
-        $result = $this->activationComplete($user, [
+        $this->setEvents([
             'activationSuccess'     => ActivateSuccess::class,
             'activationFail'        => ActivateFail::class
         ]);
+        $this->setModel($user);
+        $result = $this->activationComplete();
         if ($result) {
             return response()->json(['result' => 'success']);
         }
@@ -172,10 +179,12 @@ class UserApiController extends AdminBaseController
      */
     public function notActivate(User $user)
     {
-        $result = $this->activationRemove($user, [
+        $this->setEvents([
             'activationRemove'      => ActivateRemove::class,
             'activationFail'        => ActivateFail::class
         ]);
+        $this->setModel($user);
+        $result = $this->activationRemove();
         if ($result) {
             return response()->json(['result' => 'success']);
         }
@@ -190,21 +199,7 @@ class UserApiController extends AdminBaseController
      */
     public function group(Request $request)
     {
-        $events = [];
-        switch($request->input('action')) {
-            case 'activate':
-                $events['activationSuccess'] = ActivateSuccess::class;
-                $events['activationFail'] = ActivateFail::class;
-                break;
-            case 'not_activate':
-                $events['activationRemove'] = ActivateRemove::class;
-                $events['activationFail'] = ActivateFail::class;
-                break;
-            case 'destroy':
-                break;
-        }
-        $action = camel_case($request->input('action')) . 'GroupAction';
-        if ( $this->$action(User::class, $request->input('id'), $events) ) {
+        if ( $this->groupAlias(User::class) ) {
             return response()->json(['result' => 'success']);
         }
         return response()->json(['result' => 'error']);
@@ -213,19 +208,18 @@ class UserApiController extends AdminBaseController
     /**
      * destroy photo for this user
      *
-     * @param FileRepository $file
      * @param Request $request
      * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroyAvatar(FileRepository $file, Request $request, User $user)
+    public function destroyAvatar(Request $request, User $user)
     {
-        $file->deleteDirectory(config('laravel-user-module.user.uploads.path') . "/{$user->id}");
-        $user->photo = NULL;
-        if ( $user->save() ) {
-            return response()->json(['result' => 'success']);
-        }
-        return response()->json(['result' => 'error']);
+        $this->setOperationRelation([
+            [ 'relation_type'     => 'not', 'datas' => [ 'photo'    => NULL ] ]
+        ]);
+        $file = new FileRepository(config('laravel-user-module.user.uploads'));
+        $file->deleteDirectories($user);
+        return $this->updateAlias($user);
     }
 
     /**
@@ -237,9 +231,7 @@ class UserApiController extends AdminBaseController
      */
     public function avatarPhoto(PhotoRequest $request, User $user)
     {
-        return $this->updateModel($user, $request, [
-            'success'   => UpdateSuccess::class,
-            'fail'      => UpdateFail::class
-        ], config('laravel-user-module.user.uploads'));
+        $this->setFileOptions([config('laravel-user-module.user.uploads.photo')]);
+        return $this->updateAlias($user);
     }
 }

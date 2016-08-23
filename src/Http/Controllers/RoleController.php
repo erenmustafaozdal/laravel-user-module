@@ -6,7 +6,7 @@ use App\Http\Requests;
 use Sentinel;
 use App\Role;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseController;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\Role\StoreFail;
@@ -18,7 +18,7 @@ use ErenMustafaOzdal\LaravelUserModule\Events\Role\DestroyFail;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\StoreRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role\UpdateRequest;
 
-class RoleController extends AdminBaseController
+class RoleController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -49,10 +49,11 @@ class RoleController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        return $this->storeModel(Sentinel::getRoleRepository()->createModel(), $request, [
+        $this->setEvents([
             'success'   => StoreSuccess::class,
             'fail'      => StoreFail::class
-        ], [], 'index');
+        ]);
+        return $this->storeModel(Sentinel::getRoleRepository()->createModel(), 'index');
     }
 
     /**
@@ -87,10 +88,11 @@ class RoleController extends AdminBaseController
      */
     public function update(UpdateRequest $request, Role $role)
     {
-        return $this->updateModel($role,$request, [
+        $this->setEvents([
             'success'   => UpdateSuccess::class,
             'fail'      => UpdateFail::class
-        ], [],'show');
+        ]);
+        return $this->updateModel($role,'show');
     }
 
     /**
@@ -101,9 +103,10 @@ class RoleController extends AdminBaseController
      */
     public function destroy(Role $role)
     {
-        return $this->destroyModel($role, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
-        ], 'index');
+        ]);
+        return $this->destroyModel($role, 'index');
     }
 }

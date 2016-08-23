@@ -6,7 +6,8 @@ use App\Http\Requests;
 use Sentinel;
 use App\User;
 
-use ErenMustafaOzdal\LaravelModulesBase\Controllers\AdminBaseController;
+use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseUserController;
+use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
@@ -23,7 +24,7 @@ use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\UpdateRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PasswordRequest;
 use ErenMustafaOzdal\LaravelUserModule\Http\Requests\User\PermissionRequest;
 
-class UserController extends AdminBaseController
+class UserController extends BaseUserController
 {
     /**
      * Display a listing of the resource.
@@ -54,12 +55,14 @@ class UserController extends AdminBaseController
      */
     public function store(StoreRequest $request)
     {
-        return $this->storeModel(User::class, $request, [
+        $this->setFileOptions([config('laravel-user-module.user.uploads.photo')]);
+        $this->setEvents([
             'success'           => StoreSuccess::class,
             'fail'              => StoreFail::class,
             'activationSuccess' => ActivateSuccess::class,
             'activationFail'    => ActivateFail::class
-        ], config('laravel-user-module.user.uploads'), 'index');
+        ]);
+        return $this->storeModel(User::class, 'index');
     }
 
     /**
@@ -94,20 +97,14 @@ class UserController extends AdminBaseController
      */
     public function update(UpdateRequest $request, User $user)
     {
-        $result = $this->updateModel($user, $request,  [
-            'success'   => UpdateSuccess::class,
-            'fail'      => UpdateFail::class
-        ], config('laravel-user-module.user.uploads'), 'show');
-
-        // activation
-        $request->has('is_active') ? $this->activationComplete($this->model, [
-            'activationSuccess'     => ActivateSuccess::class,
-            'activationFail'        => ActivateFail::class
-        ]) : $this->activationRemove($this->model, [
-            'activationRemove'      => ActivateRemove::class,
-            'activationFail'        => ActivateFail::class
-        ]);
-        return $result;
+        $this->setFileOptions([config('laravel-user-module.user.uploads.photo')]);
+        return $this->updateAlias($user,[
+            'success'           => UpdateSuccess::class,
+            'fail'              => UpdateFail::class,
+            'activationSuccess' => ActivateSuccess::class,
+            'activationFail'    => ActivateFail::class,
+            'activationRemove'  => ActivateRemove::class
+        ], 'show');
     }
 
     /**
@@ -119,10 +116,10 @@ class UserController extends AdminBaseController
      */
     public function changePassword(PasswordRequest $request, User $user)
     {
-        return $this->updateModel($user,$request,  [
-            'success'   => UpdateSuccess::class,
-            'fail'      => UpdateFail::class
-        ], [], 'show');
+        return $this->updateAlias($user,[
+            'success'           => UpdateSuccess::class,
+            'fail'              => UpdateFail::class
+        ], 'show');
     }
 
     /**
@@ -134,10 +131,10 @@ class UserController extends AdminBaseController
      */
     public function permission(PermissionRequest $request, User $user)
     {
-        return $this->updateModel($user,$request,  [
-            'success'   => UpdateSuccess::class,
-            'fail'      => UpdateFail::class
-        ], [], 'show');
+        return $this->updateAlias($user,[
+            'success'           => UpdateSuccess::class,
+            'fail'              => UpdateFail::class
+        ], 'show');
     }
 
     /**
@@ -148,9 +145,13 @@ class UserController extends AdminBaseController
      */
     public function destroy(User $user)
     {
-        return $this->destroyModel($user, [
+        $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
-        ], 'index');
+        ]);
+        $result =  $this->destroyModel($user, 'index');
+        $file = new FileRepository(config('laravel-user-module.user.uploads'));
+        $file->deleteDirectories($user);
+        return $result;
     }
 }

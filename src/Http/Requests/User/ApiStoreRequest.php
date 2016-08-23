@@ -27,12 +27,14 @@ class ApiStoreRequest extends Request
      */
     public function rules()
     {
+        $max = config('laravel-user-module.user.uploads.photo.max_size');
+        $mimes = config('laravel-user-module.user.uploads.photo.mimes');
         return [
             'first_name'    => 'required|max:255',
             'last_name'     => 'required|max:255',
             'email'         => 'required|unique:users|email|max:255',
             'password'      => 'required|confirmed|min:6|max:255',
-            'photo'         => 'max:5120|image|mimes:jpeg,jpg,png',
+            'photo'         => "max:{$max}|image|mimes:{$mimes}",
             'x'             => 'integer',
             'y'             => 'integer',
             'width'         => 'integer',

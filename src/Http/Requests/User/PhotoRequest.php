@@ -27,8 +27,10 @@ class PhotoRequest extends Request
      */
     public function rules()
     {
+        $max = config('laravel-user-module.user.uploads.photo.max_size');
+        $mimes = config('laravel-user-module.user.uploads.photo.mimes');
         return [
-            'photo'     => 'required|max:5120|image|mimes:jpeg,jpg,png',
+            'photo'     => "required|max:{$max}|image|mimes:{$mimes}",
             'x'         => 'integer',
             'y'         => 'integer',
             'width'     => 'integer',
