@@ -59,7 +59,11 @@ class UserApiController extends BaseUserController
             'fullname'      => function($model) { return $model->fullname; },
         ];
         $editColumns = [
-            'photo'         => function($model) { return $model->getPhoto([], 'smallest', true); },
+            'photo'         => function($model)
+            {
+                $photoKey = array_keys(config('laravel-user-module.user.uploads.photo.thumbnails'));
+                return $model->getPhoto([], $photoKey[0], true);
+            },
             'created_at'    => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = ['is_active', 'first_name', 'last_name'];
