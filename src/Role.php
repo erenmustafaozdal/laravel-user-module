@@ -74,30 +74,6 @@ class Role extends Sentinel
     */
 
     /**
-     * Get the name attribute.
-     *
-     * @param  string $name
-     * @return string
-     */
-    public function getNameAttribute($name)
-    {
-        return ucfirst_tr($name);
-    }
-
-    /**
-     * Set slug encrypted
-     *
-     * @param $slug
-     */
-    public function setSlugAttribute($slug)
-    {
-        if ( ! $slug) {
-            $slug = str_slug($this->name, '-');
-        }
-        $this->attributes['slug'] =  $slug;
-    }
-
-    /**
      * Get the permissions attribute.
      *
      * @param array $value
@@ -124,73 +100,5 @@ class Role extends Sentinel
     public function getPermissionCollectAttribute()
     {
         return $this->permissions ? collect( $this->permissions ) : collect();
-    }
-
-    /**
-     * Get the created_at attribute.
-     *
-     * @param  $date
-     * @return string
-     */
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::parse($date)->format(config('laravel-user-module.date_format'));
-    }
-
-    /**
-     * Get the created_at attribute for humans.
-     *
-     * @return string
-     */
-    public function getCreatedAtForHumansAttribute()
-    {
-        return Carbon::parse($this->created_at)->diffForHumans();
-    }
-
-    /**
-     * Get the created_at attribute for datatable.
-     *
-     * @return array
-     */
-    public function getCreatedAtTableAttribute()
-    {
-        return [
-            'display'       => $this->created_at_for_humans,
-            'timestamp'     => Carbon::parse($this->created_at)->timestamp,
-        ];
-    }
-
-    /**
-     * Get the updated_at attribute.
-     *
-     * @param  $date
-     * @return string
-     */
-    public function getUpdatedAtAttribute($date)
-    {
-        return Carbon::parse($date)->format(config('laravel-user-module.date_format'));
-    }
-
-    /**
-     * Get the updated_at attribute for humans.
-     *
-     * @return string
-     */
-    public function getUpdatedAtForHumansAttribute()
-    {
-        return Carbon::parse($this->updated_at)->diffForHumans();
-    }
-
-    /**
-     * Get the updated_at attribute for datatable.
-     *
-     * @return array
-     */
-    public function getUpdatedAtTableAttribute()
-    {
-        return [
-            'display'       => $this->updated_at_for_humans,
-            'timestamp'     => Carbon::parse($this->updated_at)->timestamp,
-        ];
     }
 }
