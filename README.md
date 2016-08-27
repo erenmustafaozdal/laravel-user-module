@@ -288,7 +288,7 @@ Kullanıcının güncellenme tarihini `display`(last_login_for_humans) ve `times
 1. **protected $table =** 'roles'
 2. **protected $fillable =** ['name', 'slug', 'permissions']
 
-####### $role->name `string`
+####### $role->name_uc_first `string`
 Baş harfi büyük şekilde kullanıcı rolü adı
 
 ####### $role->slug `string`
