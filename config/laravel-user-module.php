@@ -8,6 +8,10 @@ return [
     */
     'date_format'                   => 'd.m.Y H:i:s',
     'use_register'                  => true,                    // if you want to use register form
+    'icons' => [
+        'role'                  => 'icon-users',
+        'user'                  => 'icon-user'
+    ],
 
     /*
     |--------------------------------------------------------------------------
