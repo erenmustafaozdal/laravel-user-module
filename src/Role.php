@@ -3,11 +3,13 @@
 namespace ErenMustafaOzdal\LaravelUserModule;
 
 use Cartalyst\Sentinel\Roles\EloquentRole as Sentinel;
-
 use Carbon\Carbon;
+use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
 
 class Role extends Sentinel
 {
+    use ModelDataTrait;
+
     /**
      * The database table used by the model.
      *
