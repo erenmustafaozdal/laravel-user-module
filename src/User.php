@@ -247,7 +247,7 @@ class User extends SentinelUser
         parent::boot();
 
         /**
-         * model saved metod
+         * model saved method
          *
          * @param $user
          */
