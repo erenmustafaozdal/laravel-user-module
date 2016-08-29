@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Request;
 use ErenMustafaOzdal\LaravelModulesBase\Traits\ModelDataTrait;
+use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 
 class User extends SentinelUser
 {
@@ -249,13 +250,24 @@ class User extends SentinelUser
         /**
          * model saved method
          *
-         * @param $user
+         * @param $model
          */
-        parent::saved(function($user)
+        parent::saved(function($model)
         {
             if (Request::has('roles')) {
-                $user->roles()->sync( Request::get('roles') );
+                $model->roles()->sync( Request::get('roles') );
             }
+        });
+
+        /**
+         * model deleted method
+         *
+         * @param $model
+         */
+        parent::deleted(function($model)
+        {
+            $file = new FileRepository(config('laravel-user-module.user.uploads'));
+            $file->deleteDirectories($model);
         });
     }
 }

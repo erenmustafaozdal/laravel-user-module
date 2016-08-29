@@ -149,9 +149,6 @@ class UserController extends BaseUserController
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
         ]);
-        $result =  $this->destroyModel($user, 'index');
-        $file = new FileRepository(config('laravel-user-module.user.uploads'));
-        $file->deleteDirectories($user);
-        return $result;
+        return $this->destroyModel($user, 'index');
     }
 }
