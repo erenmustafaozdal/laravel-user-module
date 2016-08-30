@@ -118,11 +118,9 @@ return [
                 'aspect_ratio'          => 1,
                 'mimes'                 => 'jpeg,jpg,jpe,png',
                 'thumbnails' => [
-                    'smallest'          => [ 'width' => 35, 'height' => 35],
-                    'small'             => [ 'width' => 150, 'height' => 150],
+                    'small'             => [ 'width' => 35, 'height' => 35],
                     'normal'            => [ 'width' => 300, 'height' => 300],
-                    'big'               => [ 'width' => 500, 'height' => 500],
-                    'biggest'           => [ 'width' => 800, 'height' => 800],
+                    'big'               => [ 'width' => 800, 'height' => 800],
                 ]
             ]
         ]
