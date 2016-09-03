@@ -254,9 +254,16 @@ class User extends SentinelUser
          */
         parent::saved(function($model)
         {
-            $ids = Request::get('roles');
-            $ids = is_string($ids) ? explode(',',$ids) : ( is_null($ids) ? [] : $ids);
-            $model->roles()->sync( $ids );
+            if (Request::has('roles')) {
+                $roles = is_string(Request::get('roles'))
+                    ? explode(',',Request::get('roles'))
+                    : (
+                        ! Request::get('roles')
+                            ? []
+                            : Request::get('roles')
+                    );
+                $model->roles()->sync( $roles );
+            }
         });
 
         /**
