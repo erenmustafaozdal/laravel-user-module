@@ -258,7 +258,7 @@ class User extends SentinelUser
                 $roles = is_string(Request::get('roles'))
                     ? explode(',',Request::get('roles'))
                     : (
-                        ! Request::get('roles')
+                        ! Request::get('roles') || Request::get('category_id')[0] == 0
                             ? []
                             : Request::get('roles')
                     );
