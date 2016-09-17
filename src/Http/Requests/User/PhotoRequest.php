@@ -30,11 +30,7 @@ class PhotoRequest extends Request
         $max = config('laravel-user-module.user.uploads.photo.max_size');
         $mimes = config('laravel-user-module.user.uploads.photo.mimes');
         return [
-            'photo'     => "required|max:{$max}|image|mimes:{$mimes}",
-            'x'         => 'integer',
-            'y'         => 'integer',
-            'width'     => 'integer',
-            'height'    => 'integer',
+            'photo'     => "required|max:{$max}|image|mimes:{$mimes}"
         ];
     }
 }

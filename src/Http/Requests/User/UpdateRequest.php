@@ -35,10 +35,6 @@ class UpdateRequest extends Request
             'slug'          => 'email|max:255|unique:users,slug,'.$this->segment(3), // id
             'password'      => 'confirmed|min:6|max:255',
             'photo'         => "max:{$max}|image|mimes:{$mimes}",
-            'x'             => 'integer',
-            'y'             => 'integer',
-            'width'         => 'integer',
-            'height'        => 'integer',
             'permissions'   => 'array',
         ];
     }

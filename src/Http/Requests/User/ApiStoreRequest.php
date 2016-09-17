@@ -35,10 +35,6 @@ class ApiStoreRequest extends Request
             'email'         => 'required|unique:users|email|max:255',
             'password'      => 'required|confirmed|min:6|max:255',
             'photo'         => "max:{$max}|image|mimes:{$mimes}",
-            'x'             => 'integer',
-            'y'             => 'integer',
-            'width'         => 'integer',
-            'height'        => 'integer',
             'permissions'   => 'array',
         ];
     }
