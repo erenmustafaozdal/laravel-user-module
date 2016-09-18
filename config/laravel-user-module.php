@@ -79,11 +79,6 @@ return [
     | - default_img_path                : model default avatar or photo
     |
     | --- uploads                       : model uploads options
-    | - relation                        : file is in the relation table and what is relation type [false|hasOne|hasMany]
-    | - relation_model                  : relation model [\App\Model etc...]
-    | - type                            : file type [image,file]
-    | - number_type                     : file number type [multiple,single]
-    | - column                          : file database column
     | - path                            : file path
     | - max_size                        : file allowed maximum size
     | - aspect_ratio                    : if file is image; crop aspect ratio
@@ -108,11 +103,6 @@ return [
         'uploads' => [
             // profile photo options
             'photo' => [
-                'relation'              => false,
-                'relation_model'        => null,
-                'type'                  => 'image',
-                'number_type'           => 'single',
-                'column'                => 'photo',
                 'path'                  => 'uploads/user',
                 'max_size'              => '5120',
                 'aspect_ratio'          => 1,
