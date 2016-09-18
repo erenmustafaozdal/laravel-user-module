@@ -64,7 +64,7 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $config['user']['uploads']['photo']['relation_model'] = $default['user']['uploads']['photo']['relation_model'];
         $config['user']['uploads']['photo']['type'] = $default['user']['uploads']['photo']['type'];
         $config['user']['uploads']['photo']['number_type'] = $default['user']['uploads']['photo']['number_type'];
-        $config['user']['uploads']['photo']['column'] = $default['user']['uploads']['photo']['number_type'];
+        $config['user']['uploads']['photo']['column'] = $default['user']['uploads']['photo']['column'];
 
         $this->app['config']->set('laravel-user-module', $config);
     }
