@@ -50,6 +50,7 @@ class RoleApiController extends BaseController
             'addUrls' => $this->urls
         ];
         $editColumns = [
+            'name'              => function($model) { return $model->name_uc_first; },
             'created_at'        => function($model) { return $model->created_at_table; }
         ];
         $removeColumns = [];
@@ -68,6 +69,7 @@ class RoleApiController extends BaseController
         $role = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
 
         $editColumns = [
+            'name'          => function($model) { return $model->name_uc_first; },
             'created_at'    => function($model) { return $model->created_at_table; },
             'updated_at'    => function($model) { return $model->updated_at_table; }
         ];
@@ -155,6 +157,12 @@ class RoleApiController extends BaseController
     public function models(Request $request)
     {
         return Role::where('name', 'like', "%{$request->input('query')}%")
-            ->orWhere('slug', 'like', "%{$request->input('query')}%")->get(['id','name']);
+            ->orWhere('slug', 'like', "%{$request->input('query')}%")
+            ->get(['id','name'])
+            ->map(function($item,$key)
+            {
+                $item->name = $item->name_uc_first;
+                return $item;
+            });
     }
 }
