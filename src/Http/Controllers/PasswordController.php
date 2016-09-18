@@ -82,12 +82,12 @@ class PasswordController extends Controller
                 'name'  => $user->first_name,
                 'email' => $user->email
             ]));
-            return redirect(route('getLogin'));
+            return redirect(lmbRoute('getLogin'));
         } catch (ForgetPasswordException $e) {
             Flash::error(trans('laravel-user-module::auth.forget_password.fail', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ForgetPasswordFail($e->getDatas()));
-            return redirect(route('getForgetPassword'))->withInput();
+            return redirect(lmbRoute('getForgetPassword'))->withInput();
         }
     }
 
@@ -126,17 +126,17 @@ class PasswordController extends Controller
             Flash::success(trans('laravel-user-module::auth.reset_password.success', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ResetPasswordSuccess($user));
-            return redirect(route('getLogin'));
+            return redirect(lmbRoute('getLogin'));
         } catch (ResetPasswordUserNotFoundException $e) {
             Flash::error(trans('laravel-user-module::auth.reset_password.user_not_found', [ 'email' => $request->input('email') ]));
             // event fire
             event(new ResetPasswordUserNotFound($e->getDatas()));
-            return redirect(route('getResetPassword', ['token' => $request->input('token')]))->withInput();
+            return redirect(lmbRoute('getResetPassword', ['token' => $request->input('token')]))->withInput();
         } catch (ResetPasswordIncorrectCodeException $e) {
             Flash::error(trans('laravel-user-module::auth.reset_password.incorrect_code'));
             // event fire
             event(new ResetPasswordIncorrectCode($user));
-            return redirect(route('getForgetPassword'))->withInput();
+            return redirect(lmbRoute('getForgetPassword'))->withInput();
         }
     }
 }

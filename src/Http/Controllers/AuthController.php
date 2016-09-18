@@ -79,7 +79,7 @@ class AuthController extends Controller
 
             // event fire
             event(new LoginSuccess($user));
-            return redirect( route(config('laravel-user-module.url.redirect_route')) );
+            return redirect( lmbRoute(config('laravel-user-module.url.redirect_route')) );
         } catch (NotActivatedException $e) {
             // event fire
             event(new SentinelNotActivated($e));
@@ -92,7 +92,7 @@ class AuthController extends Controller
 
         // event fire
         event(new LoginFail($request->except('_token')));
-        return redirect(route('getLogin'))->withInput();
+        return redirect(lmbRoute('getLogin'))->withInput();
     }
 
     /**
@@ -104,7 +104,7 @@ class AuthController extends Controller
         Sentinel::logout(null, true);
         // event fire
         event(new Logout($user));
-        return redirect(route('getLogin'));
+        return redirect(lmbRoute('getLogin'));
     }
 
     /**
@@ -136,13 +136,13 @@ class AuthController extends Controller
 
             Flash::success(trans('laravel-user-module::auth.register.success', [ 'email' => $user->email]));
             DB::commit();
-            return redirect(route('getLogin'));
+            return redirect(lmbRoute('getLogin'));
         } catch (RegisterException $e) {
             DB::rollback();
             Flash::error(trans('laravel-user-module::auth.register.fail'));
             // event fire
             event(new RegisterFail($e->getDatas()));
-            return redirect(route('getRegister'))->withInput();
+            return redirect(lmbRoute('getRegister'))->withInput();
         }
     }
 
@@ -171,12 +171,12 @@ class AuthController extends Controller
             Flash::success(trans('laravel-user-module::auth.activation.success'));
             // event fire
             event(new ActivateSuccess($user));
-            return redirect(route(config('laravel-user-module.url.redirect_route')));
+            return redirect(lmbRoute(config('laravel-user-module.url.redirect_route')));
         } catch (ActivateException $e) {
             Flash::error(trans('laravel-user-module::auth.activation.'.$e->getType()));
             // event fire
             event(new ActivateFail($e->getId(),$e->getActivationCode(), $e->getType()));
-            return redirect(route('getLogin'));
+            return redirect(lmbRoute('getLogin'));
         }
     }
 }
