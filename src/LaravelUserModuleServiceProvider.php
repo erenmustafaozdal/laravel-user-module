@@ -60,11 +60,13 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $config = $this->app['config']->get('laravel-user-module', []);
         $default = require __DIR__.'/../config/default.php';
 
-        $config['user']['uploads']['photo']['relation'] = $default['user']['uploads']['photo']['relation'];
-        $config['user']['uploads']['photo']['relation_model'] = $default['user']['uploads']['photo']['relation_model'];
-        $config['user']['uploads']['photo']['type'] = $default['user']['uploads']['photo']['type'];
-        $config['user']['uploads']['photo']['number_type'] = $default['user']['uploads']['photo']['number_type'];
-        $config['user']['uploads']['photo']['column'] = $default['user']['uploads']['photo']['column'];
+        $config['user']['uploads']['photo'] = [];
+        $default['user']['uploads']['photo']['path'] = unsetReturn($config['user']['uploads'],'path');
+        $default['user']['uploads']['photo']['max_size'] = unsetReturn($config['user']['uploads'],'max_size');
+        $default['user']['uploads']['photo']['aspect_ratio'] = unsetReturn($config['user']['uploads'],'aspect_ratio');
+        $default['user']['uploads']['photo']['mimes'] = unsetReturn($config['user']['uploads'],'mimes');
+        $default['user']['uploads']['photo']['thumbnails'] = unsetReturn($config['user']['uploads'],'thumbnails');
+        $config['user']['uploads']['photo'] = $default['user']['uploads']['photo'];
 
         $this->app['config']->set('laravel-user-module', $config);
     }

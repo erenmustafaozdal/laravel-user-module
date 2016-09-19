@@ -102,16 +102,14 @@ return [
         'default_img_path'          => 'vendor/laravel-modules-core/assets/global/img/avatar',
         'uploads' => [
             // profile photo options
-            'photo' => [
-                'path'                  => 'uploads/user',
-                'max_size'              => '5120',
-                'aspect_ratio'          => 1,
-                'mimes'                 => 'jpeg,jpg,jpe,png',
-                'thumbnails' => [
-                    'small'             => [ 'width' => 35, 'height' => 35],
-                    'normal'            => [ 'width' => 300, 'height' => 300],
-                    'big'               => [ 'width' => 800, 'height' => 800],
-                ]
+            'path'                  => 'uploads/user',
+            'max_size'              => '5120',
+            'aspect_ratio'          => 1,
+            'mimes'                 => 'jpeg,jpg,jpe,png',
+            'thumbnails' => [
+                'small'             => [ 'width' => 35, 'height' => 35],
+                'normal'            => [ 'width' => 300, 'height' => 300],
+                'big'               => [ 'width' => 800, 'height' => 800],
             ]
         ]
     ],
