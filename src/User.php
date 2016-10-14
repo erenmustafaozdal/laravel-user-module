@@ -93,38 +93,6 @@ class User extends SentinelUser
     */
 
     /**
-     * Get the first_name attribute.
-     *
-     * @param  string $first_name
-     * @return string
-     */
-    public function getFirstNameAttribute($first_name)
-    {
-        return ucfirst_tr($first_name);
-    }
-
-    /**
-     * Get the last_name attribute.
-     *
-     * @param  string $last_name
-     * @return string
-     */
-    public function getLastNameAttribute($last_name)
-    {
-        return strtoupper_tr($last_name);
-    }
-
-    /**
-     * Get the fullname attribute.
-     *
-     * @return string
-     */
-    public function getFullnameAttribute()
-    {
-        return $this->first_name.' '.$this->last_name;
-    }
-
-    /**
      * Set password encrypted
      *
      * @param $password
