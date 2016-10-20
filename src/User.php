@@ -103,28 +103,6 @@ class User extends SentinelUser
     }
 
     /**
-     * Set the is_active attribute.
-     *
-     * @param boolean $value
-     * @return string
-     */
-    public function setIsActiveAttribute($value)
-    {
-        $this->attributes['is_active'] = $value == 1 || $value === 'true' || $value === true ? true : false;
-    }
-
-    /**
-     * Get the is_active attribute.
-     *
-     * @param boolean $value
-     * @return string
-     */
-    public function getIsActiveAttribute($value)
-    {
-        return $value == 1 ? true : false;
-    }
-
-    /**
      * Get the is_super_admin attribute.
      *
      * @param boolean $value
