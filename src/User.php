@@ -93,6 +93,19 @@ class User extends SentinelUser
     */
 
     /**
+     * Set photo encrypted
+     *
+     * @param string $photo
+     */
+    public function setPhotoAttribute($photo)
+    {
+        if($photo == '') {
+            return;
+        }
+        $this->attributes['photo'] =  $photo;
+    }
+
+    /**
      * Set password encrypted
      *
      * @param $password
