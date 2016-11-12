@@ -93,7 +93,7 @@ class User extends SentinelUser
     */
 
     /**
-     * Set photo encrypted
+     * Set photo
      *
      * @param string $photo
      */
