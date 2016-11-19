@@ -112,6 +112,9 @@ class User extends SentinelUser
      */
     public function setPasswordAttribute($password)
     {
+        if ($password == '') {
+            return;
+        }
         $this->attributes['password'] =  Hash::make($password);
     }
 

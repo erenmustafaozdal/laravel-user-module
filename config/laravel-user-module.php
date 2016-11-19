@@ -130,17 +130,25 @@ return [
             'routes' => [
                 'admin.role.index' => [
                     'title'         => 'Veri Tablosu',
-                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda listeleyebilir.',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolleri veri tablosu sayfasına gidebilir.',
                 ],
                 'admin.role.create' => [
+                    'title'         => 'Ekleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolü ekleme sayfasına gidebilir',
+                ],
+                'admin.role.store' => [
                     'title'         => 'Ekleme',
                     'description'   => 'Bu izne sahip olanlar yönetici rolü ekleyebilir',
                 ],
                 'admin.role.show' => [
                     'title'         => 'Gösterme',
-                    'description'   => 'Bu izne sahip olanlar yönetici rolünün bilgilerini görüntüleyebilir',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolü bilgilerini görüntüleyebilir',
                 ],
                 'admin.role.edit' => [
+                    'title'         => 'Düzenleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolünü düzenleme sayfasına gidebilir',
+                ],
+                'admin.role.update' => [
                     'title'         => 'Düzenleme',
                     'description'   => 'Bu izne sahip olanlar yönetici rolünü düzenleyebilir',
                 ],
@@ -148,17 +156,37 @@ return [
                     'title'         => 'Silme',
                     'description'   => 'Bu izne sahip olanlar yönetici rolünü silebilir',
                 ],
+                'api.role.index' => [
+                    'title'         => 'Listeleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda listeleyebilir',
+                ],
+                'api.role.store' => [
+                    'title'         => 'Hızlı Ekleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda hızlı ekleyebilir.',
+                ],
+                'api.role.update' => [
+                    'title'         => 'Hızlı Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda hızlı düzenleyebilir.',
+                ],
+                'api.role.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda silebilir',
+                ],
                 'api.role.models' => [
-                    'title'         => 'Rolleri Listeleme',
+                    'title'         => 'Seçim İçin Listeleme',
                     'description'   => 'Bu izne sahip olanlar yönetici rollerini bazı seçim kutularında listeleyebilir',
                 ],
                 'api.role.group' => [
                     'title'         => 'Toplu İşlem',
-                    'description'   => 'Bu izne sahip olanlar yönetici rolleri veri tablosunda toplu işlem yapabilir',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda toplu işlem yapabilir',
                 ],
                 'api.role.detail' => [
                     'title'         => 'Detaylar',
-                    'description'   => 'Bu izne sahip olanlar yönetici rolleri tablosunda detayını görebilir.',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini tablosunda detayını görebilir.',
+                ],
+                'api.role.fastEdit' => [
+                    'title'         => 'Hızlı Düzenleme Bilgileri',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini tablosunda hızlı düzenleme amacıyla bilgileri getirebilir.',
                 ],
             ],
         ],
@@ -167,9 +195,13 @@ return [
             'routes' => [
                 'admin.user.index' => [
                     'title'         => 'Veri Tablosu',
-                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda listeleyebilir.',
+                    'description'   => 'Bu izne sahip olanlar yöneticiler veri tablosu sayfasına gidebilir.',
                 ],
                 'admin.user.create' => [
+                    'title'         => 'Ekleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar yönetici ekleme sayfasına gidebilir',
+                ],
+                'admin.user.store' => [
                     'title'         => 'Ekleme',
                     'description'   => 'Bu izne sahip olanlar yönetici ekleyebilir',
                 ],
@@ -178,12 +210,40 @@ return [
                     'description'   => 'Bu izne sahip olanlar yönetici bilgilerini görüntüleyebilir',
                 ],
                 'admin.user.edit' => [
+                    'title'         => 'Düzenleme Sayfası',
+                    'description'   => 'Bu izne sahip olanlar yöneticiyi düzenleme sayfasına gidebilir',
+                ],
+                'admin.user.update' => [
                     'title'         => 'Düzenleme',
-                    'description'   => 'Bu izne sahip olanlar yönetici bilgilerini düzenleyebilir',
+                    'description'   => 'Bu izne sahip olanlar yöneticiyi düzenleyebilir',
                 ],
                 'admin.user.destroy' => [
                     'title'         => 'Silme',
                     'description'   => 'Bu izne sahip olanlar yöneticiyi silebilir',
+                ],
+                'admin.user.changePassword' => [
+                    'title'         => 'Şifre Değiştirme',
+                    'description'   => 'Bu izne sahip olanlar yönetici şifresini değiştirebilir.)',
+                ],
+                'admin.user.permission' => [
+                    'title'         => 'İşlem İzinleri',
+                    'description'   => 'Bu izne sahip olanlar yönetici işlem izinlerini güncelleyebilir.',
+                ],
+                'api.user.index' => [
+                    'title'         => 'Listeleme',
+                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda listeleyebilir',
+                ],
+                'api.user.store' => [
+                    'title'         => 'Hızlı Ekleme',
+                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda hızlı ekleyebilir.',
+                ],
+                'api.user.update' => [
+                    'title'         => 'Hızlı Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda hızlı düzenleyebilir.',
+                ],
+                'api.user.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda silebilir',
                 ],
                 'api.user.group' => [
                     'title'         => 'Toplu İşlem',
@@ -192,8 +252,28 @@ return [
                 'api.user.detail' => [
                     'title'         => 'Detaylar',
                     'description'   => 'Bu izne sahip olanlar yöneticiler tablosunda detayını görebilir.',
-                ]
+                ],
+                'api.user.fastEdit' => [
+                    'title'         => 'Hızlı Düzenleme Bilgileri',
+                    'description'   => 'Bu izne sahip olanlar yöneticiler tablosunda hızlı düzenleme amacıyla bilgileri getirebilir.',
+                ],
+                'api.user.activate' => [
+                    'title'         => 'Aktifleştirme',
+                    'description'   => 'Bu izne sahip olanlar yöneticinin durumunu aktifleştirebilir.',
+                ],
+                'api.user.notActivate' => [
+                    'title'         => 'Aktifliği Kaldırma',
+                    'description'   => 'Bu izne sahip olanlar yöneticinin aktifliğini kaldırabilir.',
+                ],
+                'api.user.avatarPhoto' => [
+                    'title'         => 'Profil Fotoğrafı',
+                    'description'   => 'Bu izne sahip olanlar yöneticinin profil fotoğrafını güncelleyebilir.',
+                ],
+                'api.user.destroyAvatar' => [
+                    'title'         => 'Profil Fotoğrafı Silme',
+                    'description'   => 'Bu izne sahip olanlar yöneticinin profil fotoğrafını silebilir.',
+                ],
             ],
-        ]
+        ],
     ],
 ];
