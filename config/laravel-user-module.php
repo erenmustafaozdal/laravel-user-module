@@ -113,4 +113,87 @@ return [
             ]
         ]
     ],
+
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permissions
+    |--------------------------------------------------------------------------
+    */
+    'permissions' => [
+        'role' => [
+            'title'                 => 'Yönetici Rolleri',
+            'routes' => [
+                'admin.role.index' => [
+                    'title'         => 'Veri Tablosu',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini veri tablosunda listeleyebilir.',
+                ],
+                'admin.role.create' => [
+                    'title'         => 'Ekleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolü ekleyebilir',
+                ],
+                'admin.role.show' => [
+                    'title'         => 'Gösterme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolünün bilgilerini görüntüleyebilir',
+                ],
+                'admin.role.edit' => [
+                    'title'         => 'Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolünü düzenleyebilir',
+                ],
+                'admin.role.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolünü silebilir',
+                ],
+                'api.role.models' => [
+                    'title'         => 'Rolleri Listeleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici rollerini bazı seçim kutularında listeleyebilir',
+                ],
+                'api.role.group' => [
+                    'title'         => 'Toplu İşlem',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolleri veri tablosunda toplu işlem yapabilir',
+                ],
+                'api.role.detail' => [
+                    'title'         => 'Detaylar',
+                    'description'   => 'Bu izne sahip olanlar yönetici rolleri tablosunda detayını görebilir.',
+                ],
+            ],
+        ],
+        'user' => [
+            'title'                 => 'Yöneticiler',
+            'routes' => [
+                'admin.user.index' => [
+                    'title'         => 'Veri Tablosu',
+                    'description'   => 'Bu izne sahip olanlar yöneticileri veri tablosunda listeleyebilir.',
+                ],
+                'admin.user.create' => [
+                    'title'         => 'Ekleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici ekleyebilir',
+                ],
+                'admin.user.show' => [
+                    'title'         => 'Gösterme',
+                    'description'   => 'Bu izne sahip olanlar yönetici bilgilerini görüntüleyebilir',
+                ],
+                'admin.user.edit' => [
+                    'title'         => 'Düzenleme',
+                    'description'   => 'Bu izne sahip olanlar yönetici bilgilerini düzenleyebilir',
+                ],
+                'admin.user.destroy' => [
+                    'title'         => 'Silme',
+                    'description'   => 'Bu izne sahip olanlar yöneticiyi silebilir',
+                ],
+                'api.user.group' => [
+                    'title'         => 'Toplu İşlem',
+                    'description'   => 'Bu izne sahip olanlar yöneticiler veri tablosunda toplu işlem yapabilir',
+                ],
+                'api.user.detail' => [
+                    'title'         => 'Detaylar',
+                    'description'   => 'Bu izne sahip olanlar yöneticiler tablosunda detayını görebilir.',
+                ]
+            ],
+        ]
+    ],
 ];
