@@ -49,6 +49,14 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
 
         // model binding
         $router->model(config('laravel-user-module.url.user'),  'App\User');
+        $router->bind(config('laravel-user-module.url.user'),  function($id)
+        {
+            $user = \App\User::findOrFail($id);
+            if (config('laravel-user-module.non_visibility.super_admin') && ! \Sentinel::getUser()->is_super_admin && $user->is_super_admin) {
+                abort(403);
+            }
+            return $user;
+        });
         $router->model(config('laravel-user-module.url.role'),  'App\Role');
     }
 
@@ -59,6 +67,35 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
     {
         $config = $this->app['config']->get('laravel-user-module', []);
         $default = require __DIR__.'/../config/default.php';
+
+        // admin page category routes
+        $route = $config['routes']['admin']['role'];
+        $default['routes']['admin']['role'] = $route;
+        // admin page routes
+        $route = $config['routes']['admin']['user'];
+        $default['routes']['admin']['user'] = $route;
+        $default['routes']['admin']['user_changePassword'] = $route;
+        $default['routes']['admin']['user_permission'] = $route;
+
+        // api page category routes
+        $route = $config['routes']['api']['role'];
+        $default['routes']['api']['role'] = $route;
+        $default['routes']['api']['role_models'] = $route;
+        $default['routes']['api']['role_group'] = $route;
+        $default['routes']['api']['role_detail'] = $route;
+        $default['routes']['api']['role_fastEdit'] = $route;
+        // api page routes
+        $model = $config['routes']['api']['user'];
+        $default['routes']['api']['user'] = $model;
+        $default['routes']['api']['user_group'] = $model;
+        $default['routes']['api']['user_detail'] = $model;
+        $default['routes']['api']['user_fastEdit'] = $model;
+        $default['routes']['api']['user_activate'] = $model;
+        $default['routes']['api']['user_notActivate'] = $model;
+        $default['routes']['api']['user_avatarPhoto'] = $model;
+        $default['routes']['api']['user_destroyAvatar'] = $model;
+
+        $config['routes'] = $default['routes'];
 
         $config['user']['uploads']['photo'] = [];
         $default['user']['uploads']['photo']['path'] = unsetReturn($config['user']['uploads'],'path');

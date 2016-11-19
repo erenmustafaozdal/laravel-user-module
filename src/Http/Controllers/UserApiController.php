@@ -48,6 +48,12 @@ class UserApiController extends BaseUserController
     public function index(Request $request)
     {
         $users = User::select(['id','photo','first_name','last_name', 'is_active','created_at']);
+
+        // super admin visibility
+        if (config('laravel-user-module.non_visibility.super_admin') && ! Sentinel::getUser()->is_super_admin) {
+            $users->where('is_super_admin',false);
+        }
+
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
             $users->filter($request);
@@ -80,6 +86,11 @@ class UserApiController extends BaseUserController
     public function detail($id, Request $request)
     {
         $user = User::where('id',$id)->with('roles')->select(['id','email','last_login','updated_at']);
+
+        // super admin visibility
+        if (config('laravel-user-module.non_visibility.super_admin') && ! Sentinel::getUser()->is_super_admin) {
+            $user->where('is_super_admin',false);
+        }
 
         $editColumns = [
             'roles'         => function($model) { return $model->roles->implode('name', ', '); },

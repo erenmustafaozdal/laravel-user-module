@@ -41,6 +41,11 @@ class RoleApiController extends BaseController
     public function index(Request $request)
     {
         $roles = Role::select(['id','name','slug','created_at']);
+
+        // roles visibility
+        if ( ! Sentinel::getUser()->is_super_admin) {
+            $roles->whereNotIn('slug',config('laravel-user-module.non_visibility.role_slugs'));
+        }
         // if is filter action
         if ($request->has('action') && $request->input('action') === 'filter') {
             $roles->filter($request);
@@ -67,6 +72,11 @@ class RoleApiController extends BaseController
     public function detail($id, Request $request)
     {
         $role = Role::where('id',$id)->select(['id','name','slug', 'created_at','updated_at']);
+
+        // roles visibility
+        if ( ! Sentinel::getUser()->is_super_admin) {
+            $role->whereNotIn('slug',config('laravel-user-module.non_visibility.role_slugs'));
+        }
 
         $editColumns = [
             'name'          => function($model) { return $model->name_uc_first; },
@@ -156,13 +166,17 @@ class RoleApiController extends BaseController
      */
     public function models(Request $request)
     {
-        return Role::where('name', 'like', "%{$request->input('query')}%")
-            ->orWhere('slug', 'like', "%{$request->input('query')}%")
-            ->get(['id','name'])
-            ->map(function($item,$key)
-            {
-                $item->name = $item->name_uc_first;
-                return $item;
-            });
+        $roles = Role::where('name', 'like', "%{$request->input('query')}%");
+
+        // roles visibility
+        if ( ! Sentinel::getUser()->is_super_admin) {
+            $roles->whereNotIn('slug',config('laravel-user-module.non_visibility.role_slugs'));
+        }
+
+        return $roles->get(['id','name','slug'])->map(function($item,$key)
+        {
+            $item->name = $item->name_uc_first;
+            return $item;
+        });
     }
 }

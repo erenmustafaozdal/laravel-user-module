@@ -1,6 +1,35 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Routes on / off
+    | if you don't use any route; set false
+    |--------------------------------------------------------------------------
+    */
+    'routes' => [
+        'admin' => [
+            'role'                  => true,                // admin role resource route
+            'user'                  => true,                // admin user resource route
+            'user_changePassword'   => true,                // admin user publish get route
+            'user_permission'       => true,                // admin user not publish get route
+        ],
+        'api' => [
+            'role'                  => true,                // api role resource route
+            'role_models'           => true,                // api role model post route
+            'role_group'            => true,                // api role group post route
+            'role_detail'           => true,                // api role detail get route
+            'role_fastEdit'         => true,                // api role fast edit post route
+            'user'                  => true,                // api user resource route
+            'user_group'            => true,                // api user group post route
+            'user_detail'           => true,                // api user detail get route
+            'user_fastEdit'         => true,                // api user fast edit post route
+            'user_activate'         => true,                // api user activate get route
+            'user_notActivate'      => true,                // api user not activate get route
+            'user_avatarPhoto'      => true,                // api user avatar photo post route
+            'user_destroyAvatar'    => true,                // api user destroy avatar photo post route
+        ]
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -15,6 +15,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | model non visibility
+    |--------------------------------------------------------------------------
+    */
+    'non_visibility' => [
+        'super_admin'   => true,
+        'role_slugs'    => ['customer']
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | URL config
     |--------------------------------------------------------------------------
     */
@@ -29,6 +39,23 @@ return [
         'role'                      => 'roles',                 // users url
         'redirect_route'            => 'admin',                 // redirect dashboard route name after login
         'admin_url_prefix'          => 'admin',                 // admin dashboard url prefix
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes on / off
+    | if you don't use any route; set false
+    |--------------------------------------------------------------------------
+    */
+    'routes' => [
+        'admin' => [
+            'role'          => true,        // Is the route to be used roles admin
+            'user'          => true,        // Is the route to be used users admin
+        ],
+        'api' => [
+            'role'          => true,        // Is the route to be used roles api
+            'user'          => true,        // Is the route to be used user api
+        ]
     ],
 
     /*
