@@ -14,10 +14,7 @@ class ApiStoreRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.role.store')) {
-            return true;
-        }
-        return false;
+        return hasPermission('api.role.store');
     }
 
     /**

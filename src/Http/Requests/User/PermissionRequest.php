@@ -14,10 +14,7 @@ class PermissionRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.user.permission')) {
-            return true;
-        }
-        return false;
+        return hasPermission('admin.user.permission');
     }
 
     /**

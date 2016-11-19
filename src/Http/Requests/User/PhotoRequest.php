@@ -14,10 +14,7 @@ class PhotoRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.user.avatarPhoto')) {
-            return true;
-        }
-        return false;
+        return hasPermission('api.user.avatarPhoto');
     }
 
     /**

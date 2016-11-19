@@ -14,10 +14,7 @@ class UpdateRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.user.update')) {
-            return true;
-        }
-        return false;
+        return hasPermission('admin.user.update');
     }
 
     /**

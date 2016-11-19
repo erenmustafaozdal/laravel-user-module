@@ -14,10 +14,7 @@ class ApiUpdateRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('api.role.update')) {
-            return true;
-        }
-        return false;
+        return hasPermission('api.role.update');
     }
 
     /**

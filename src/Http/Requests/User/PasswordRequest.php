@@ -14,10 +14,7 @@ class PasswordRequest extends Request
      */
     public function authorize()
     {
-        if (Sentinel::getUser()->is_super_admin || Sentinel::hasAccess('admin.user.changePassword')) {
-            return true;
-        }
-        return false;
+        return hasPermission('admin.user.changePassword');
     }
 
     /**
