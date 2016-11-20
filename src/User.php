@@ -3,6 +3,7 @@
 namespace ErenMustafaOzdal\LaravelUserModule;
 
 use Cartalyst\Sentinel\Users\EloquentUser as SentinelUser;
+use Sentinel;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -115,7 +116,7 @@ class User extends SentinelUser
         if ($password == '') {
             return;
         }
-        $this->attributes['password'] =  Hash::make($password);
+        $this->attributes['password'] =  strlen($password) > 50 ? $password : Hash::make($password);
     }
 
     /**
@@ -237,6 +238,15 @@ class User extends SentinelUser
         {
             $file = new FileRepository(config('laravel-user-module.user.uploads'));
             $file->deleteDirectories($model);
+        });
+
+        /**
+         * model deleted method
+         *
+         * @param $model
+         */
+        parent::deleting(function($model)
+        {
         });
     }
 }

@@ -48,7 +48,6 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $router->middleware('auth',\ErenMustafaOzdal\LaravelUserModule\Http\Middleware\Authenticate::class);
 
         // model binding
-        $router->model(config('laravel-user-module.url.user'),  'App\User');
         $router->bind(config('laravel-user-module.url.user'),  function($id)
         {
             $user = \App\User::findOrFail($id);
@@ -58,6 +57,7 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
             return $user;
         });
         $router->model(config('laravel-user-module.url.role'),  'App\Role');
+        $router->model('role',  'App\Role');
     }
 
     /**

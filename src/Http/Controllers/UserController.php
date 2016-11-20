@@ -7,7 +7,6 @@ use Sentinel;
 use App\User;
 
 use ErenMustafaOzdal\LaravelModulesBase\Controllers\BaseUserController;
-use ErenMustafaOzdal\LaravelModulesBase\Repositories\FileRepository;
 // events
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreSuccess;
 use ErenMustafaOzdal\LaravelUserModule\Events\User\StoreFail;
@@ -145,6 +144,10 @@ class UserController extends BaseUserController
      */
     public function destroy(User $user)
     {
+        if (Sentinel::getUser()->id === $user->id) {
+            abort(403);
+        }
+
         $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class

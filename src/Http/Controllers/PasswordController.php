@@ -72,9 +72,10 @@ class PasswordController extends Controller
                 'user'          => $user,
                 'reminder'      => Reminder::create($user)
             ];
-            Mail::queue(config('laravel-user-module.views.email.forget_password'), $datas, function($message) use($user) {
+            $subject = $this->subject;
+            Mail::queue(config('laravel-user-module.views.email.forget_password'), $datas, function($message) use($user,$subject) {
                 $message->to($user->email, $user->fullname)
-                    ->subject(trans('laravel-user-module::auth.forget_password.mail_subject'));
+                    ->subject($subject);
             });
             // event fire
             event(new PasswordResetMailSend($request->all()));

@@ -152,7 +152,7 @@ Route::group([
     }
     // get role edit data for modal edit
     if (config('laravel-user-module.routes.api.role_fastEdit')) {
-        Route::post('role/{' . config('laravel-user-module.url.role') . '}/fast-edit', [
+        Route::post('role/{role}/fast-edit', [
             'as' => 'api.role.fastEdit',
             'uses' => 'RoleApiController@fastEdit'
         ]);

@@ -156,6 +156,10 @@ class UserApiController extends BaseUserController
      */
     public function destroy(User $user)
     {
+        if (Sentinel::getUser()->id === $user->id) {
+            abort(403);
+        }
+
         $this->setEvents([
             'success'   => DestroySuccess::class,
             'fail'      => DestroyFail::class
