@@ -100,7 +100,7 @@ class User extends SentinelUser
      */
     public function setPhotoAttribute($photo)
     {
-        if($photo == '') {
+        if($photo === '') {
             return;
         }
         $this->attributes['photo'] =  $photo;
