@@ -18,7 +18,7 @@ return [
 
     // login
     'login' => [
-        'fail'                          => 'Giriş başarısız! Lütfen bilgilerini kontrol ederek tekrar dene. Eğer yeni üye olduysan, hesabını aktifleştirmeden hesabına ulaşamazsın.',
+        'fail'                          => 'Giriş başarısız. Lütfen bilgilerinizi kontrol ederek tekrar deneyiniz.',
         'exception' => [
             'throttling' => [
                 'global'                => 'Sistemimiz şu an saldırı altında gibi görünüyor. Ortalık sakinleşene kadar hizmetimize ara vermek zorunda kaldık. Lütfen giriş yapmayı :date tarihinden sonra tekrar dene.',
