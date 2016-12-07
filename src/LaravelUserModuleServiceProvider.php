@@ -51,7 +51,7 @@ class LaravelUserModuleServiceProvider extends ServiceProvider
         $router->bind(config('laravel-user-module.url.user'),  function($id)
         {
             $user = \App\User::findOrFail($id);
-            if (config('laravel-user-module.non_visibility.super_admin') && ! \Sentinel::getUser()->is_super_admin && $user->is_super_admin) {
+            if (Sentinel::check() && config('laravel-user-module.non_visibility.super_admin') && ! \Sentinel::getUser()->is_super_admin && $user->is_super_admin) {
                 abort(403);
             }
             return $user;
