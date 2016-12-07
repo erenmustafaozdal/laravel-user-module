@@ -2,10 +2,10 @@
 
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\Role;
 
-use App\Http\Requests\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Requests\BaseRequest;
 use Sentinel;
 
-class UpdateRequest extends Request
+class UpdateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
