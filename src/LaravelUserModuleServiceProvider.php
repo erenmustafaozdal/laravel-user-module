@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelUserModuleServiceProvider extends ServiceProvider
 {
+
     /**
      * Bootstrap the application services.
      *
