@@ -239,14 +239,5 @@ class User extends SentinelUser
             $file = new FileRepository(config('laravel-user-module.user.uploads'));
             $file->deleteDirectories($model);
         });
-
-        /**
-         * model deleted method
-         *
-         * @param $model
-         */
-        parent::deleting(function($model)
-        {
-        });
     }
 }
