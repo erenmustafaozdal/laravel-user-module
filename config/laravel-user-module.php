@@ -49,12 +49,25 @@ return [
     */
     'routes' => [
         'admin' => [
-            'role'          => true,        // Is the route to be used roles admin
-            'user'          => true,        // Is the route to be used users admin
+            'role'                  => true,                // admin role resource route
+            'user'                  => true,                // admin user resource route
+            'user_changePassword'   => true,                // admin user publish get route
+            'user_permission'       => true,                // admin user not publish get route
         ],
         'api' => [
-            'role'          => true,        // Is the route to be used roles api
-            'user'          => true,        // Is the route to be used user api
+            'role'                  => true,                // api role resource route
+            'role_models'           => true,                // api role model post route
+            'role_group'            => true,                // api role group post route
+            'role_detail'           => true,                // api role detail get route
+            'role_fastEdit'         => true,                // api role fast edit post route
+            'user'                  => true,                // api user resource route
+            'user_group'            => true,                // api user group post route
+            'user_detail'           => true,                // api user detail get route
+            'user_fastEdit'         => true,                // api user fast edit post route
+            'user_activate'         => true,                // api user activate get route
+            'user_notActivate'      => true,                // api user not activate get route
+            'user_avatarPhoto'      => true,                // api user avatar photo post route
+            'user_destroyAvatar'    => true,                // api user destroy avatar photo post route
         ]
     ],
 
@@ -129,14 +142,21 @@ return [
         'default_img_path'          => 'vendor/laravel-modules-core/assets/global/img/avatar',
         'uploads' => [
             // profile photo options
-            'path'                  => 'uploads/user',
-            'max_size'              => '5120',
-            'aspect_ratio'          => 1,
-            'mimes'                 => 'jpeg,jpg,jpe,png',
-            'thumbnails' => [
-                'small'             => [ 'width' => 35, 'height' => 35],
-                'normal'            => [ 'width' => 300, 'height' => 300],
-                'big'               => [ 'width' => 800, 'height' => 800],
+            'photo' => [
+                'relation'              => false,
+                'relation_model'        => null,
+                'type'                  => 'image',
+                'number_type'           => 'single',
+                'column'                => 'photo',
+                'path'                  => 'uploads/user',
+                'aspect_ratio'          => 1,
+                'max_size'              => '5120',
+                'mimes'                 => 'jpeg,jpg,jpe,png',
+                'thumbnails' => [
+                    'small'             => [ 'width' => 35, 'height' => 35],
+                    'normal'            => [ 'width' => 300, 'height' => 300],
+                    'big'               => [ 'width' => 800, 'height' => 800],
+                ]
             ]
         ]
     ],
