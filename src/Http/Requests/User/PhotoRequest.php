@@ -2,10 +2,10 @@
 
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 
-use App\Http\Requests\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Requests\BaseRequest;
 use Sentinel;
 
-class PhotoRequest extends Request
+class PhotoRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

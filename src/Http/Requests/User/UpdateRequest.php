@@ -2,11 +2,18 @@
 
 namespace ErenMustafaOzdal\LaravelUserModule\Http\Requests\User;
 
-use App\Http\Requests\Request;
+use ErenMustafaOzdal\LaravelModulesBase\Requests\BaseRequest;
 use Sentinel;
 
-class UpdateRequest extends Request
+class UpdateRequest extends BaseRequest
 {
+    /**
+     * The input keys that should not be flashed on redirect.
+     *
+     * @var array
+     */
+    protected $dontFlash = ['photo','roles'];
+
     /**
      * Determine if the user is authorized to make this request.
      *
