@@ -13,11 +13,10 @@
             "ErenMustafaOzdal\\LaravelUserModule\\": "src/"
         }
     },
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.5.9",
         "illuminate/support": "~5",
-        "erenmustafaozdal/laravel-modules-base": "dev-master"
+        "erenmustafaozdal/laravel-modules-base": "dev-master@dev"
     },
     "require-dev": {
 
